@@ -1,1 +1,6 @@
+# VSCode files
+.vscode/
 
+# Pycache and MISC
+**/__pycache__/
+*.pyc
