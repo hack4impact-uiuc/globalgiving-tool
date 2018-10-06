@@ -1,16 +1,26 @@
 version: 2
 jobs:
-  unit_tests:
+  microservice_unit_tests:
     docker:
       - image: codebrew28/flask-example-scraper
     steps:
       - checkout
       - run:
-        command: |
-          cd microservices
-          pytest
+          command: |
+            cd microservices
+            pytest
+  microservice_lint:
+    docker:
+      - image: codebrew28/flask-example-scraper
+    steps:
+      - checkout
+      - run:
+          command: |
+            cd microservices
+            black .
 workflows:
   version: 2
-  build_test:
+  build_tool:
     jobs:
-      - unit_tests
+      - microservice_unit_tests
+      - microservice_lint
