@@ -6,17 +6,17 @@ jobs:
     steps:
       - checkout
       - run:
-        command: |
-          cd microservices
-          pytest
+          command: |
+            cd microservices
+            pytest
   lint:
     docker:
       - image: codebrew28/flask-example-scraper
     steps:
       - checkout
       - run:
-        command: |
-          black .
+          command: |
+            black .
 workflows:
   version: 2
   build_tool:
