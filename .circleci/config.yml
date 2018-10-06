@@ -1,6 +1,8 @@
 version: 2
 jobs:
   unit_tests:
+    docker:
+      - image: codebrew28/flask-example-scraper
     steps:
       - checkout
       - run:
@@ -8,6 +10,8 @@ jobs:
           cd microservices
           pytest
   lint:
+    docker:
+      - image: codebrew28/flask-example-scraper
     steps:
       - checkout
       - run:
