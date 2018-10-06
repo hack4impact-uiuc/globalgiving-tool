@@ -5,4 +5,7 @@ jobs:
       - image: codebrew28/flask-example-scraper
     steps:
       - checkout
-      - run: python3 -m unittest discover -t . -p "*_test.py"
+      - run:
+        command: |
+          cd microservices
+          pytest
