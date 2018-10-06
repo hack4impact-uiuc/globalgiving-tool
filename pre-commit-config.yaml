@@ -1,0 +1,9 @@
+exclude: ^(blib2to3/|profiling/|tests/data/)
+repos:
+-   repo: local
+    hooks:
+    - id: black
+      name: black
+      language: system
+      entry: python3 -m black
+      types: [python]
