@@ -8,7 +8,8 @@ jobs:
       - run:
           command: |
             cd microservices
-            pytest
+            pipenv install --skip-lock
+            pipenv run pytest
   microservice_lint:
     docker:
       - image: codebrew28/flask-example-scraper
@@ -17,7 +18,8 @@ jobs:
       - run:
           command: |
             cd microservices
-            black .
+            pipenv install --skip-lock
+            pipenv run black . --check
 workflows:
   version: 2
   build_tool:
