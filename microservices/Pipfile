@@ -14,4 +14,4 @@ black = "==18.6b4"
 [dev-packages]
 
 [requires]
-python_version = "3.5"
+python_version = "3.7"
