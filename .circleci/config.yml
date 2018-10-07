@@ -9,6 +9,7 @@ jobs:
           command: |
             cd microservices
             pipenv install --skip-lock
+            pipenv install --skip-lock --dev
             pipenv run pytest
   microservice_lint:
     docker:
@@ -19,6 +20,7 @@ jobs:
           command: |
             cd microservices
             pipenv install --skip-lock
+            pipenv install --skip-lock --dev
             pipenv run black . --check
 workflows:
   version: 2
