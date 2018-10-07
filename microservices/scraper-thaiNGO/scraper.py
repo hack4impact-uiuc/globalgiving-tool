@@ -1,16 +1,41 @@
 from bs4 import BeautifulSoup
 import requests
 
-thaiwebsite_NGOs = []
 baseurl = "http://www.thaiwebsites.com/social.asp"
+
+ngo_names = []
+ngo_URLs = []
+
+"""
+list of dictionaries to store ngo information
+ngos = {
+    ngo_name: "",
+    ngo_URLs: "",
+    phone_num: "",
+    email: "",
+    registration_id: ""
+}
+"""
+ngos = {}
 
 
 def basepage_scrape():
     page = requests.get(baseurl)
     soup = BeautifulSoup(page.content, "html.parser")
-    thaiwebsites_NGOs = soup.find_all('a')
-    # print(soup)
-    print(thaiwebsites_NGOs, endl = '\n')
+    #find all links that have class="link14"
+    websites_a_tags = soup.find_all("a", {"class": "link14"})
 
-def NGOpage_scrape():
+    ngo_names = [tag.text for tag in websites_a_tags]
+    ngo_URLs = [tag['href'] for tag in websites_a_tags]
+    
+    print(ngo_names)
+    print(ngo_URLs)
+    print(len(ngo_names))
+
+    return websites_a_tags
+
+
+
+def ngo_page_scrape():
+
     pass

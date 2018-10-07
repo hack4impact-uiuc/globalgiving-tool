@@ -10,7 +10,7 @@ app = Flask(__name__)
 @app.route('/')
 def my_first_route():
     basepage_scrape()
-    return "Hello World!"
+    return str(basepage_scrape())
 
 if __name__ == '__main__':
     app.run(debug=True)
