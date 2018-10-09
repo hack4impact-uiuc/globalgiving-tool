@@ -31,11 +31,17 @@ def get_page_data():
     print('purged duplicate links')
 
     # now scrape relevant information from the individual NGOs
+    ngoInformation = []  # a list which hold the dictionaries for all NGOs
     for ngoLink in ngoLinks:
+        ngoDict = {}  # hold whatever information we can find
         target_url = requests.get(ngoLink)
         page_data = BeautifulSoup(target_url.content, "html.parser")
-        
-        break
+        table = page_data.body.find('table', {'class': 'my_table_1'})
+        table_body = table.find_all('tr')
+        for row in table_body:
+            rowData = row.find_all('td')
+            ngoDict[rowData[0].contents[0]] = rowData[1].contents[0]
+        # add the information to the master list
+        ngoInformation.append(ngoDict)
 
-
-    return ngoLinks
+    return ngoInformation
