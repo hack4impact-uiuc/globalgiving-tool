@@ -16,9 +16,12 @@ ngos = {
     registration_id: ""
 }
 """
-ngos = {}
+ngos = []
 
-
+"""
+DESCRIPTION: scrapes the directory for Thai NGOs
+             
+"""
 def basepage_scrape():
     page = requests.get(baseurl)
     soup = BeautifulSoup(page.content, "html.parser")
@@ -35,7 +38,10 @@ def basepage_scrape():
     return websites_a_tags
 
 
-
-def ngo_page_scrape():
+"""
+DESCRIPTION: scrapes a specific Thai NGO website
+INPUT: takes in URL to specific Thai NGO Website
+"""
+def ngo_page_scrape(url):
 
     pass
