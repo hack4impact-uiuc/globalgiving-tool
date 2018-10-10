@@ -13,7 +13,6 @@ def get_page_data():
         if linkText is not None:
             if 'category' in linkText:
                 catLinks.append(linkText)  # get the link for the category
-                break
     print('retreived category page links')
 
     ngoLinks = []  # build list of links for NGOs
@@ -36,8 +35,12 @@ def get_page_data():
     ngoInformation = []  # a list which hold the dictionaries for all NGOs
     for ngoLink in ngoLinks:
         ngoDict = {}  # hold whatever information we can find
+        ngoDict['Source'] = ngoLink  # mark source from where the data came
         target_url = requests.get(ngoLink)
         page_data = BeautifulSoup(target_url.content, "html.parser")
+        name = page_data.body.find('h1', {'class': 'category-title'}).get_text()
+        ngoDict['Name'] = name
+        print(name)
         table = page_data.body.find('table', {'class': 'my_table_1'})
         description = page_data.body.find('div', {'class': 'entry post clearfix'}).find_all('p')
         description = " ".join([item.get_text() for item in description])  # join the paragraphs into one string
