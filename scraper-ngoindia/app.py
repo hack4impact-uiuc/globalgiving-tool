@@ -9,7 +9,7 @@ def my_first_route():
 
 @app.route('/data')
 def page_data():
-	return str(get_specific_page_data())
+	return str(get_page_data())
 
 if __name__ == '__main__':
 	app.run(debug=True)
