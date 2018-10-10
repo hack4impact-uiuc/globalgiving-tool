@@ -19,6 +19,11 @@
 
 ## Contributing Guidelines
 
+Run ```pip install --editable .``` which will initialize your cli tool
+Run ```complex -h``` to see the commands and run them
+
+Deleting pyc files ```find . -name '*.pyc' -delete```
+
 ## API
 
 # Microservices
