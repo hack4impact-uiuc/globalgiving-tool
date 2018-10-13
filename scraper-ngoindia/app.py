@@ -1,6 +1,10 @@
 from flask import Flask
 from scraper import get_page_data
-from scraper import get_specific_page_data
+from scraper import get_ngo_data
+from scraper import get_ngo_page_fromngos
+from scraper import get_ngo_page_fromcounty
+from scraper import extract_information
+
 app = Flask(__name__)
 
 @app.route('/')
