@@ -1,10 +1,6 @@
 from flask import Flask
 from scraper import basepage_scrape
 
-
-from bs4 import BeautifulSoup
-import requests
-
 app = Flask(__name__)
 
 @app.route('/')
