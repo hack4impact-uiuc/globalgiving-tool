@@ -55,6 +55,7 @@ def get_page_data():
             else:
                 ngoDict[str(rowData[0].contents[0])] = str(rowData[1].contents[0])
         # add the information to the master list
+        print(json.dumps(ngoDict, indent=4, separators=(',', ': ')))
         ngoInformation.append(ngoDict)
 
-    return json.dumps(ngoInformation)
+    return json.dumps(ngoInformation, indent=4, separators=(',', ': '))
