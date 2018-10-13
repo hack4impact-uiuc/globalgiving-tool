@@ -8,7 +8,7 @@ def my_first_route():
     return "<h1> no data </h1>"
 
 
-@app.route('/hati-all')
+@app.route('/latin-all')
 def page_data():
     return str(get_page_data())
 
