@@ -1,3 +1,4 @@
 Flask==0.12.2
 requests==2.9.1
 beautifulsoup4==4.6.3
+gunicorn==19.9.0
