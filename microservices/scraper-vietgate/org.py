@@ -24,34 +24,36 @@ def create_org(line):
         if idx == 0:
             name = info
             continue
-        
+
         if ":" not in info:
-            continue 
+            continue
 
         delim = info.split(":", 1)
         category = delim[0].lower()
         data = delim[1].strip()
 
-        if category == 'email':
+        if category == "email":
             email = data
-        if category == 'phone':
+        if category == "phone":
             parseable = True
             phone = data
-        if category == 'contact':
+        if category == "contact":
             parseable = True
             contact = data
-        if category == 'url':
+        if category == "url":
             parseable = True
             url = data
-        if category == 'address':
+        if category == "address":
             parseable = True
             address = data
-    
+
     if parseable:
         org = Org(name, phone, email, address, contact, url)
-        print (org)
+        print(org)
         return org
     return None
+
+
 class Org:
     def __init__(self, name, phone, email, address, contact, url):
         self.name = name
@@ -60,6 +62,13 @@ class Org:
         self.address = address
         self.contact = contact
         self.url = url
-    
+
     def __str__(self):
-        return "%s, %s, %s, %s, %s, %s" % (self.name, self.phone, self.email, self.address, self.contact, self.url)
+        return "%s, %s, %s, %s, %s, %s" % (
+            self.name,
+            self.phone,
+            self.email,
+            self.address,
+            self.contact,
+            self.url,
+        )
