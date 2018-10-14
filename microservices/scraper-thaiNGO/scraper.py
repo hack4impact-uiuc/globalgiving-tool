@@ -40,9 +40,9 @@ def basepage_scrape():
     ngo_tr_tags = soup.find_all("tr")
 
     for row in ngo_tr_tags:
-        ngo_info = row.find_all("td")
         # dictionary to store ngo information
         ngo = {}
+        ngo_info = row.find_all("td")
         if ngo_info is not None and len(ngo_info) > 0:
             ngo_name = ngo_info[1]
             ngo["name"] = ngo_name.text.lstrip()
