@@ -4,8 +4,8 @@ app = Flask(__name__)
 
 @app.route('/')
 def my_first_route():
-	print('page_data()')
-	return "<h1> page_data() </h1>"
+	# print(page_data())
+	return page_data()
 
 @app.route('/data')
 def page_data():
