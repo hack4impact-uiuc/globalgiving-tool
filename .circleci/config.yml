@@ -24,7 +24,7 @@ jobs:
             pipenv run black . --check
 workflows:
   version: 2
-  build_tool:
+  build-test:
     jobs:
       - microservice_test
       - microservice_lint
