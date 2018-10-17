@@ -4,6 +4,28 @@ import json
 
 website = "https://informationcradle.com/africa/list-of-ngos-in-uganda/"
 
+def roy_made_me_do_this(ngo, d):
+    for line in ngo:
+        if line[-4:] == "</p>":
+            line = line[:-4]
+        if line[:3] == "<p>":
+            d["Name"] = line[11:-9]
+        elif line[:7] == "P.O.Box":
+            d["P.O. Box"] = line[8:]
+        elif line[:4] == "www.":
+            d["Website"] = line
+        elif line[:8] == "Category":
+            d["Category"] = line[10:]
+        elif line[:16] == "Physical Address":
+            d["Physical Address"] = line[16:]
+        elif line[:9] == "Telephone":
+            d["Telephone"] = line[11:]
+        elif line[:6] == "E-mail":
+            d["E-mail"] = line[8:]
+        elif line[:14] == "Contact Person":
+            d["Contact Person"] = line[16:]
+        else:
+            d["Description"] = line
 
 def get_page_data():
     # Specify url to scrape from
@@ -15,26 +37,6 @@ def get_page_data():
     for ngo in contents:
         d = {}
         ngo = str(ngo).split("<br/>\n")
-        for line in ngo:
-            if line[-4:] == "</p>":
-                line = line[:-4]
-            if line[:3] == "<p>":
-                d["Name"] = line[11:-9]
-            elif line[:7] == "P.O.Box":
-                d["P.O. Box"] = line[8:]
-            elif line[:4] == "www.":
-                d["Website"] = line
-            elif line[:8] == "Category":
-                d["Category"] = line[10:]
-            elif line[:16] == "Physical Address":
-                d["Physical Address"] = line[16:]
-            elif line[:9] == "Telephone":
-                d["Telephone"] = line[11:]
-            elif line[:6] == "E-mail":
-                d["E-mail"] = line[8:]
-            elif line[:14] == "Contact Person":
-                d["Contact Person"] = line[16:]
-            else:
-                d["Description"] = line
+        roy_made_me_do_this(ngo, d)
         ret.append(d)
     return json.dumps(ret)
