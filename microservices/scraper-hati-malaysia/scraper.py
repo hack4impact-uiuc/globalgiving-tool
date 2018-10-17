@@ -3,13 +3,11 @@ import requests
 import json
 
 
-"""
-Find the links for the subpages of each category by starting from the homepage
-of the website.
-"""
-
-
 def get_cat_links():
+    """
+    Find the links for the subpages of each category by starting from the homepage
+    of the website.
+    """
     # Specify url to scrape from
     target_url = requests.get("http://www.hati.my/")
     page_data = BeautifulSoup(target_url.content, "html.parser")
@@ -23,12 +21,10 @@ def get_cat_links():
     return catLinks
 
 
-"""
-Go to each category link and find all websites inside each.
-"""
-
-
 def get_ngo_links(catLinks):
+    """
+    Go to each category link and find all websites inside each.
+    """
     ngoLinks = []  # build list of links for NGOs
     for link in catLinks:
         # http://www.hati.my/category/<categoryName>/
@@ -53,12 +49,10 @@ def get_ngo_links(catLinks):
     return ngoLinks
 
 
-"""
-Visit each NGO's website and pull information.
-"""
-
-
 def get_ngo_information(ngoLinks):
+    """
+    Visit each NGO's website and pull information.
+    """
     # now scrape relevant information from the individual NGOs
     ngoInformation = []  # a list which hold the dictionaries for all NGOs
     for ngoLink in ngoLinks:
@@ -95,11 +89,9 @@ def get_ngo_information(ngoLinks):
     return ngoInformation
 
 
-"""
-Put everything together.
-"""
-
-
 def scrape():
+    """
+    Put everything together.
+    """
     ngoInformation = get_ngo_information(get_ngo_links(get_cat_links()))
     return json.dumps(ngoInformation, indent=4, separators=(",", ": "))
