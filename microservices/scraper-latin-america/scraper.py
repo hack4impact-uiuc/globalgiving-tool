@@ -3,7 +3,7 @@ import requests
 import json
 
 
-def get_page_data():
+def scrape():
     # Specify url to scrape from
     target_url = requests.get(
         "http://www.oas.org/en/ser/dia/civil_society/registry.shtml"

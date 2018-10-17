@@ -1,17 +1,12 @@
 from flask import Flask
-from scraper import get_page_data
+from scraper import scrape
 
 app = Flask(__name__)
 
 
-@app.route("/")
-def my_first_route():
-    return "<h1> no data </h1>"
-
-
 @app.route("/data")
 def page_data():
-    return str(scrape())
+    return scrape()
 
 
 if __name__ == "__main__":
