@@ -4,6 +4,7 @@ import json
 
 website = "https://informationcradle.com/africa/list-of-ngos-in-uganda/"
 
+
 def roy_made_me_do_this(ngo, d):
     for line in ngo:
         if line[-4:] == "</p>":
@@ -26,6 +27,7 @@ def roy_made_me_do_this(ngo, d):
             d["Contact Person"] = line[16:]
         else:
             d["Description"] = line
+
 
 def get_page_data():
     # Specify url to scrape from
