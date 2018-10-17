@@ -3,7 +3,13 @@ import requests
 import json
 
 
-def get_page_data():
+"""
+Find the links for the subpages of each category by starting from the homepage
+of the website.
+"""
+
+
+def get_cat_links():
     # Specify url to scrape from
     target_url = requests.get("http://www.hati.my/")
     page_data = BeautifulSoup(target_url.content, "html.parser")
@@ -11,10 +17,18 @@ def get_page_data():
     for link in page_data.find_all("a"):
         linkText = link.get("href")
         if linkText is not None:
-            if "category" in linkText:
+            if "category" in linkText:  # only take links containing "category"
                 catLinks.append(linkText)  # get the link for the category
     print("retreived category page links")
+    return catLinks
 
+
+"""
+Go to each category link and find all websites inside each.
+"""
+
+
+def get_ngo_links(catLinks):
     ngoLinks = []  # build list of links for NGOs
     for link in catLinks:
         # http://www.hati.my/category/<categoryName>/
@@ -32,13 +46,19 @@ def get_page_data():
             ngoLinks.append(ngoLink.get("href"))
             if categoryName in ngoLink:
                 ngoLinks.append(ngoLink)
-
     print("retreived NGO page links")
-
     # get rid of duplicate links
     ngoLinks = list(set(ngoLinks))
     print("purged duplicate links")
+    return ngoLinks
 
+
+"""
+Visit each NGO's website and pull information.
+"""
+
+
+def get_ngo_information(ngoLinks):
     # now scrape relevant information from the individual NGOs
     ngoInformation = []  # a list which hold the dictionaries for all NGOs
     for ngoLink in ngoLinks:
@@ -59,19 +79,27 @@ def get_page_data():
         ngoDict["Description"] = description
         table_body = table.find_all("tr")
         for row in table_body:
-            rowData = row.find_all("td")
-            if str(rowData[0].contents[0]) == "Website":
-                ngoDict[str(rowData[0].contents[0])] = (
-                    rowData[1].contents[0].get("href")
-                )
-            elif str(rowData[0].contents[0]) == "Email address":
-                ngoDict[str(rowData[0].contents[0])] = (
-                    rowData[1].contents[0].get("href").replace("mailto:", "")
+            field, value = row.find_all("td")
+            if str(field.contents[0]) == "Website":
+                ngoDict[str(field.contents[0])] = value.contents[0].get("href")
+            elif str(field.contents[0]) == "Email address":
+                ngoDict[str(field.contents[0])] = (
+                    value.contents[0].get("href").replace("mailto:", "")
                 )
             else:
-                ngoDict[str(rowData[0].contents[0])] = str(rowData[1].contents[0])
+                ngoDict[str(field.contents[0])] = str(value.contents[0])
         # add the information to the master list
         print(json.dumps(ngoDict, indent=4, separators=(",", ": ")))
         ngoInformation.append(ngoDict)
 
+    return ngoInformation
+
+
+"""
+Put everything together.
+"""
+
+
+def scrape():
+    ngoInformation = get_ngo_information(get_ngo_links(get_cat_links()))
     return json.dumps(ngoInformation, indent=4, separators=(",", ": "))

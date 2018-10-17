@@ -1,5 +1,5 @@
 from flask import Flask
-from scraper import get_page_data
+from scraper import scrape
 
 app = Flask(__name__)
 
@@ -11,7 +11,7 @@ def my_first_route():
 
 @app.route("/data")
 def page_data():
-    return str(get_page_data())
+    return scrape()
 
 
 if __name__ == "__main__":
