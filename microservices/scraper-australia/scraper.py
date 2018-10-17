@@ -5,7 +5,18 @@ import json
 website = "http://www.findouter.com/Oceania/Australia/Society-and-Culture/Non-Governmental-Organisations/"
 
 
-def roy_made_me_do_this(ngo, d):
+def helper(webpage, ret):
+    target_url = requests.get(webpage)
+    page_data = BeautifulSoup(target_url.content, "html.parser")
+    contents = page_data.find("div", {"class": "container"})
+    print(type(contents))
+    return contents
+    contents = contents.find_all("p")
+    for ngo in contents:
+        d = {}
+        ngo = str(ngo).split("<br/>\n")
+        roy_made_me_do_this(ngo, d)
+        ret.append(d)
     for line in ngo:
         if line[-4:] == "</p>":
             line = line[:-4]
@@ -30,19 +41,8 @@ def roy_made_me_do_this(ngo, d):
 
 
 def get_page_data():
-    # Specify url to scrape from
-    for i in range(1,7):
-        print(website+str(i))
     ret = []
-    target_url = requests.get(website)
-    page_data = BeautifulSoup(target_url.content, "html.parser")
-    contents = page_data.find("div", {"id": "content"})
-    print(type(contents))
-    return contents
-    contents = contents.find_all("p")
-    for ngo in contents:
-        d = {}
-        ngo = str(ngo).split("<br/>\n")
-        roy_made_me_do_this(ngo, d)
-        ret.append(d)
+    for i in range(1,7):
+        webpage = website + str(i)
+        return helper(webpage, ret)
     return json.dumps(ret)
