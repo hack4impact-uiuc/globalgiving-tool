@@ -2,7 +2,7 @@ from bs4 import BeautifulSoup
 import requests
 import json
 
-website = "https://bisgcp.wordpress.com/bali-ngo-list/"
+website = "http://www.findouter.com/Oceania/Australia/Society-and-Culture/Non-Governmental-Organisations/"
 
 
 def roy_made_me_do_this(ngo, d):
@@ -31,6 +31,8 @@ def roy_made_me_do_this(ngo, d):
 
 def get_page_data():
     # Specify url to scrape from
+    for i in range(1,7):
+        print(website+str(i))
     ret = []
     target_url = requests.get(website)
     page_data = BeautifulSoup(target_url.content, "html.parser")
