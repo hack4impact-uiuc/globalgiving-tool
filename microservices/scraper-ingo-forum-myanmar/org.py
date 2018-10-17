@@ -10,7 +10,6 @@ def create_org_ingo_forum_myanmar(name, address, phone, email, org_url):
     # org_url tag has a nested element
     if org_url is not None:
         org_url = org_url.find("a").text if org_url.find("a") is not None else None
-
     org = Org(name, phone, email, address, None, org_url)
     print(org)
     return org

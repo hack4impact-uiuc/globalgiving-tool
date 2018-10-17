@@ -6,7 +6,7 @@ app = Flask(__name__)
 
 @app.route("/routes")
 def get_routes():
-    return ["/data"]
+    return ["/run"]
 
 
 @app.route("/run")

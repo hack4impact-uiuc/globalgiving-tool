@@ -18,7 +18,6 @@ def get_page_data():
         org_url = tag.find("div", attrs={"class": ["web-link"]})
 
         create_org_ingo_forum_myanmar(name, address, phone, email, org_url)
-        print()
 
 
 if __name__ == "__main__":
