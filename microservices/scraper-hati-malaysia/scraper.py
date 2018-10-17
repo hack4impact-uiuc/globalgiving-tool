@@ -22,6 +22,7 @@ def get_page_data():
         # link[28:-1] => <categoryName>
         # To get the category name, take substring from 28 to -1
         categoryName = link[28:-1]
+
         target_url = requests.get(link)
         page_data = BeautifulSoup(target_url.content, "html.parser")
         # we can grab the ngo links most readily from the read more buttons,
@@ -33,6 +34,7 @@ def get_page_data():
             ngoLinks.append(ngoLink.get("href"))
             if categoryName in ngoLink:
                 ngoLinks.append(ngoLink)
+    
     print("retreived NGO page links")
 
     # get rid of duplicate links

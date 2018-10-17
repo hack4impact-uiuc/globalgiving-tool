@@ -9,7 +9,7 @@ def my_first_route():
     return "<h1> no data </h1>"
 
 
-@app.route("/hati-all")
+@app.route("/data")
 def page_data():
     return str(get_page_data())
 
