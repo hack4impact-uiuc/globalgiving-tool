@@ -8,7 +8,6 @@ website = "https://informationcradle.com/africa/list-of-ngos-in-uganda/"
 def get_page_data():
     # Specify url to scrape from
     ret = []
-    # options = set(['Name', 'P.O. Box', 'Website', 'Description', 'Category', 'Physical Address', 'Telephone', 'E-mail', 'Contact Person', ])
     target_url = requests.get(website)
     page_data = BeautifulSoup(target_url.content, "html.parser")
     contents = page_data.find("div", {"class": "entry-content"})
