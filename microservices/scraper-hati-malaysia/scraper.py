@@ -27,14 +27,12 @@ def get_page_data():
         page_data = BeautifulSoup(target_url.content, "html.parser")
         # we can grab the ngo links most readily from the read more buttons,
         # denoted by a "class"="read-more" tag
-        ngoContent = page_data.body.find_all(
-            "a", {"class": "read-more"}
-        )
+        ngoContent = page_data.body.find_all("a", {"class": "read-more"})
         for ngoLink in ngoContent:
             ngoLinks.append(ngoLink.get("href"))
             if categoryName in ngoLink:
                 ngoLinks.append(ngoLink)
-    
+
     print("retreived NGO page links")
 
     # get rid of duplicate links
