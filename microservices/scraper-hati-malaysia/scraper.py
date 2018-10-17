@@ -17,12 +17,18 @@ def get_page_data():
 
     ngoLinks = []  # build list of links for NGOs
     for link in catLinks:
+        # http://www.hati.my/category/<categoryName>/
+        #                             ^[28]         ^[-1]
+        # link[28:-1] => <categoryName>
+        # To get the category name, take substring from 28 to -1
         categoryName = link[28:-1]
         target_url = requests.get(link)
         page_data = BeautifulSoup(target_url.content, "html.parser")
+        # we can grab the ngo links most readily from the read more buttons,
+        # denoted by a "class"="read-more" tag
         ngoContent = page_data.body.find_all(
             "a", {"class": "read-more"}
-        )  # we can grab the ngo links most readily from the read more buttons
+        )
         for ngoLink in ngoContent:
             ngoLinks.append(ngoLink.get("href"))
             if categoryName in ngoLink:
