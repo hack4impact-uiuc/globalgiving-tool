@@ -4,14 +4,13 @@ from scraper import get_page_data
 app = Flask(__name__)
 
 
-@app.route("/")
-def my_first_route():
-    return "<h1> Hello World! </h1>"
-
-
 @app.route("/data")
 def page_data():
     return str(get_page_data())
+
+@app.route("/routes")
+def routes_availible():
+    return ',\n'.join(['%s' % rule for rule in app.url_map.iter_rules()])
 
 
 if __name__ == "__main__":
