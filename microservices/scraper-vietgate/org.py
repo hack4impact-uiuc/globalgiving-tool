@@ -13,39 +13,42 @@ def create_org(line):
         Org object containing the data in the input line. Otherwise, we'll return 
         None.
     """
-    name = phone = email = address = contact = url = ""
-    parseable = False
+    valid_categories = ["name", "phone", "email", "address", "contact", "url"]
+    org_data = {}
+
     for idx, info in enumerate(line):
         if idx == 0:
             name = info
             continue
         if ":" not in info:
             continue
+
         delim = info.split(":", 1)
         category = delim[0].lower()
         data = delim[1].strip()
-        if category == "email":
-            email = data
-        if category == "phone":
-            parseable = True
-            phone = data
-        if category == "contact":
-            parseable = True
-            contact = data
-        if category == "url":
-            parseable = True
-            url = data
-        if category == "address":
-            parseable = True
-            address = data
-    if parseable:
-        org = Org(name, phone, email, address, contact, url)
+
+        if category in valid_categories:
+            org_data[category] = data
+
+    phone = org_data["phone"] if "phone" in org_data.keys() else None
+    email = org_data["email"] if "email" in org_data.keys() else None
+    address = org_data["address"] if "address" in org_data.keys() else None
+    contact = org_data["contact"] if "contact" in org_data.keys() else None
+    url = org_data["url"] if "url" in org_data.keys() else None
+
+    org = Org(name, phone, email, address, contact, url) if bool(org_data) else None
+    if org is not None:
         print(org)
-        return org
-    return None
+    return org
 
 
 class Org:
+    """
+    Serialized object for easy input and retrieval of relevant organization text data.
+    Contains name, phone number, email address, physical address, contact information,
+    and web url.
+    """
+
     def __init__(self, name, phone, email, address, contact, url):
         self.name = name
         self.phone = phone

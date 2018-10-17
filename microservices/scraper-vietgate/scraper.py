@@ -13,10 +13,9 @@ def get_page_data():
 
 
 def parse_data(link):
-    if link == None:
-        return
-    for line in link.split("\n\n"):
-        create_org(line.strip().split("\n"))
+    if link != None:
+        for line in link.split("\n\n"):
+            create_org(line.strip().split("\n"))
 
 
 if __name__ == "__main__":
