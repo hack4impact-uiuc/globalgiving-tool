@@ -4,10 +4,14 @@ from scraper import basepage_scrape
 app = Flask(__name__)
 
 
-@app.route("/")
-def my_first_route():
-    basepage_scrape()
+@app.route("/scrape_all")
+def scrape_all_thai_ngos():
     return str(basepage_scrape())
+
+
+@app.route("/routes")
+def return_all_routes():
+    return ["/scrape_all"]
 
 
 if __name__ == "__main__":
