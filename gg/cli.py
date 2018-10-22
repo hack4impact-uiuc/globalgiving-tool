@@ -3,7 +3,7 @@ import sys
 import click
 
 
-CONTEXT_SETTINGS = dict(auto_envvar_prefix="YIKES")
+CONTEXT_SETTINGS = dict(auto_envvar_prefix="GG")
 
 
 class Context(object):
@@ -27,7 +27,7 @@ pass_context = click.make_pass_decorator(Context, ensure=True)
 cmd_folder = os.path.abspath(os.path.join(os.path.dirname(__file__), "commands"))
 
 
-class Yikes(click.MultiCommand):
+class GG(click.MultiCommand):
     def list_commands(self, ctx):
         rv = []
         for filename in os.listdir(cmd_folder):
@@ -40,13 +40,13 @@ class Yikes(click.MultiCommand):
         try:
             if sys.version_info[0] == 2:
                 name = name.encode("ascii", "replace")
-            mod = __import__("yikes.commands.cmd_" + name, None, None, ["cli"])
+            mod = __import__("gg.commands.cmd_" + name, None, None, ["cli"])
         except ImportError:
             return
         return mod.cli
 
 
-@click.command(cls=Yikes, context_settings=CONTEXT_SETTINGS)
+@click.command(cls=GG, context_settings=CONTEXT_SETTINGS)
 @pass_context
 def cli(ctx, verbose, home):
     """A complex command line interface."""
