@@ -1,5 +1,5 @@
 import click
-from complex.cli import pass_context
+from yikes.cli import pass_context
 
 
 @click.command("whereami", short_help="Gives you your current directory")
