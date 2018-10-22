@@ -1,7 +1,12 @@
 from bs4 import BeautifulSoup
 import requests
 import json
+import pymongo
 
+uri = "mongodb://aria:malkani28@ds139243.mlab.com:39243/gg-db"
+client = pymongo.MongoClient(uri)
+db = client.get_default_database()
+nonprofits = db['nonprofits']
 
 def get_cat_links():
     """
@@ -84,6 +89,8 @@ def get_ngo_information(ngoLinks):
                 ngoDict[str(field.contents[0])] = str(value.contents[0])
         # add the information to the master list
         print(json.dumps(ngoDict, indent=4, separators=(",", ": ")))
+        if (db.mycollection.find(ngoDict).count == 0):
+            nonprofits.insert_one(ngoDict)
         ngoInformation.append(ngoDict)
 
     return ngoInformation
