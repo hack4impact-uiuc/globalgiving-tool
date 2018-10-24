@@ -1,19 +1,22 @@
+from selenium import webdriver
 from bs4 import BeautifulSoup
-import requests
 import json
 
 
 def scrape():
     # Specify url to scrape from
-    target_url = requests.get(
-        "http://www.oas.org/en/ser/dia/civil_society/registry.shtml"
-    )
-    page_data = BeautifulSoup(target_url.content, "html.parser")
+    source_url = "http://www.oas.org/en/ser/dia/civil_society/registry.shtml"
+    # set up JS driver
+    driver = webdriver.PhantomJS()
+    driver.get(source_url)
+    page_data = BeautifulSoup(driver.page_source, "html.parser")
 
     # retreive the html table which holds all the information
     table = page_data.body.find("table", {"id": "AutoNumber8"})
     # get list of all entries in the table
-    table_rows = table.find_all("tr")
+    table_rows = page_data.body.find_all("tr", {"class": "even"}) + table.find_all(
+        "tr", {"class": "odd"}
+    )
     ngoInformation = []
     for entry in table_rows:
         ngoDict = {}
