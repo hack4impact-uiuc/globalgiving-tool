@@ -7,6 +7,7 @@ import json
 def page_data():
     return str(get_page_data())
 
+
 @app.route("/routes")
 def routes_availible():
     return json.dumps(

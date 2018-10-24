@@ -11,7 +11,7 @@ def scrape():
 
 @app.route("/route")
 def get_routes():
-    
+
     return [app.url_map]
 
 

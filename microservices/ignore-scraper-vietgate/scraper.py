@@ -12,7 +12,6 @@ def get_page_data():
         parse_data(link.text)
 
 
-
 def parse_data(link):
     if link != None:
         for line in link.split("\n\n"):

@@ -1,6 +1,7 @@
 from bs4 import BeautifulSoup
 import requests
 import json
+
 # import pymongo
 
 # sets up database connection
@@ -9,6 +10,7 @@ import json
 # db = client.get_default_database()
 # nonprofits = db['nonprofits']
 # db.nonprofits.distinct( "Name" )
+
 
 def get_cat_links():
     """
@@ -91,7 +93,7 @@ def get_ngo_information(ngoLinks):
                 ngoDict[str(field.contents[0])] = str(value.contents[0])
         # add the information to the master list
         print(json.dumps(ngoDict, indent=4, separators=(",", ": ")))
-        # adds the nonprofit to the database 
+        # adds the nonprofit to the database
         # nonprofits.insert(ngoDict)
         ngoInformation.append(ngoDict)
 

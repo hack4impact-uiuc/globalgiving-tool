@@ -14,13 +14,13 @@ class Org:
         self.url = url
 
     def to_json(self):
-        org =  {
+        org = {
             "name": self.name,
             "phone": self.phone,
             "email": self.email,
             "address": self.address,
             "contact": self.contact,
-            "url": self.url
+            "url": self.url,
         }
         return org
 
