@@ -1,6 +1,7 @@
 {
     "public": true,
     "type": "docker",
+    "alias":"gg-scraper-haiti-malaysia",
     "features": {
       "cloud": "v2"
     }
