@@ -1,6 +1,7 @@
 {
     "public": true,
     "type": "docker",
+    "alias":"gg-scraper-ingo-forum-myanmar",
     "features": {
       "cloud": "v2"
     }

@@ -6,11 +6,12 @@ app = Flask(__name__)
 
 @app.route("/run")
 def scrape():
-    return get_page_data()
+    return str(get_page_data())
 
 
 @app.route("/route")
 def get_routes():
+    
     return [app.url_map]
 
 

@@ -13,6 +13,17 @@ class Org:
         self.contact = contact
         self.url = url
 
+    def to_json(self):
+        org =  {
+            "name": self.name,
+            "phone": self.phone,
+            "email": self.email,
+            "address": self.address,
+            "contact": self.contact,
+            "url": self.url
+        }
+        return org
+
     def __str__(self):
         return "%s, %s, %s, %s, %s, %s" % (
             self.name,

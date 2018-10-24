@@ -1,6 +1,7 @@
 {
     "public": true,
     "type": "docker",
+    "alias": "gg-scraper-ngouganda",
     "features": {
       "cloud": "v2"
     }

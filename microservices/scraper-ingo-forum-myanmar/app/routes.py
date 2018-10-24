@@ -1,10 +1,10 @@
 from app import app
-from app.scraper import scrape
+from app.scraper import get_page_data
 import json
 
 @app.route("/data")
 def page_data():
-    return scrape()
+    return str(get_page_data())
 
 @app.route("/routes")
 def routes_availible():

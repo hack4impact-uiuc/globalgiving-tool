@@ -1,6 +1,6 @@
 from bs4 import BeautifulSoup
 from requests import get
-from org import create_org_ingo_forum_myanmar
+from app.org import create_org_ingo_forum_myanmar
 
 url = "http://www.ingoforummyanmar.org/en/members"
 
