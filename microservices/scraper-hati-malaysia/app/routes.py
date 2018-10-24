@@ -1,8 +1,6 @@
-from flask import Flask
-from scraper import scrape
+from app import app
+from app.scraper import scrape
 import json
-
-app = Flask(__name__)
 
 
 @app.route("/data")
@@ -17,7 +15,3 @@ def routes_availible():
         indent=4,
         separators=(",", ": "),
     )
-
-
-if __name__ == "__main__":
-    app.run(debug=True)

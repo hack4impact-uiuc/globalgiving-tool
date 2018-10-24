@@ -5,7 +5,7 @@ import json
 website = "https://informationcradle.com/africa/list-of-ngos-in-uganda/"
 
 
-def roy_made_me_do_this(ngo, d):
+def scrape_page(ngo, d):
     for line in ngo:
         if line[-4:] == "</p>":
             line = line[:-4]
@@ -39,6 +39,6 @@ def get_page_data():
     for ngo in contents:
         d = {}
         ngo = str(ngo).split("<br/>\n")
-        roy_made_me_do_this(ngo, d)
+        scrape_page(ngo, d)
         ret.append(d)
     return json.dumps(ret)

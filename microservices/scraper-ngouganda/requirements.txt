@@ -3,3 +3,4 @@ beautifulsoup4==4.6.3
 Flask==1.0.2
 microservices==0.33.0
 pytest==3.8.2
+gunicorn==19.9.0
