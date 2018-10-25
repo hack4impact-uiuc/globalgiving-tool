@@ -1,7 +1,7 @@
 {
     "public": true,
     "type": "docker",
-    "alias":"gg-scraper-example",
+    "alias":"gg-scraper-ngothai",
     "features": {
       "cloud": "v2"
     }
