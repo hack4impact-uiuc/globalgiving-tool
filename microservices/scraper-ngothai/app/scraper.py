@@ -24,7 +24,7 @@ def basepage_scrape():
     DESCRIPTION: scrapes the homepage, processes each row for ngo data
     """
     page = requests.get(baseurl)
-    soup = BeautifulSoup(page.content, "html5lib")
+    soup = BeautifulSoup(page.content, "html.parser")
     # find all NGO entries represented as a row in html table
     ngo_tr_tags = soup.find_all("tr")
 
