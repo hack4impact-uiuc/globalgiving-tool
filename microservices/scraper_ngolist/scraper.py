@@ -74,7 +74,7 @@ def country_page_scrape(country_link):
     page = requests.get(country_url)
     soup = BeautifulSoup(page.content, "html.parser")
 
-    # get the NGO table
+    # get the NGO tables
     ngo_tables = soup.find_all("table", class_="wsite-multicol-table")
 
     # discard first two tables (general information about country)
@@ -100,7 +100,7 @@ def ngo_table_scrape(ngo_table):
     for td in tds:
         divs = td.find_all("div")
         # only scrape for valid td formats
-        if len(divs) > 3:
+        if len(divs) > 5:
             ngo_td_scrape(td)
 
 
@@ -109,21 +109,38 @@ def ngo_td_scrape(td):
     DESCRIPTION: scrapes one ngo td representing one ngo on country-specific ngo page
     INPUT: ngo td scraped by ngo_table_scrape() on country-specific ngo page
     """
+    ngo_name_div, ngo_descr_div, ngo_contact_div = td.find_all("div", {"class": "paragraph"})
 
-    divs = td.find_all("div")
 
-    # ngo name div corresponds to first div in td
-    ngo_name_div = divs[0]
+    #take out strong tags text in ngo name
+    # for i, strong in enumerate(ngo_name_div('strong')):
+    #     if i != 0:
+    #         strong.decompose()
+    ngo_name_font_tags = ngo_name_div.find_all("font")
+    ngo_name = ngo_name_font_tags[1].text
 
-    # get ngo name from font tag under ngo name diiv
-    ngo_name = ngo_name_div.find_all("font")
-    if (len(ngo_name) > 0):
-        ngo_name = ngo_name[0].text
+    #take out strong tags text in ngo description
+    for strong in ngo_descr_div('strong'):
+        strong.decompose()
+    ngo_descr = ngo_descr_div.get_text()
 
-    # ngo description div corresponds to 4th diiv in td
-    ngo_descr_div = divs[3]
+    ngo_contact_a_tags = ngo_contact_div.find_all("a")
 
-    print(ngo_descr_div.text)
+    ngo_URL = ngo_contact_a_tags[0]['href']
+    ngo_facebook = ngo_contact_a_tags[1]['href']
+
+    print(ngo_URL)
+    print(ngo_facebook)
+
+
+def email_format(email_string):
+    """
+    DESCRIPTION: formats emails read from webpage properly
+    INPUT: email string denoting email read from webpage
+    OUTPUT: properly formatted email string ready for store
+    """
+
+    return ""
 
 
 def write_to_csv():
