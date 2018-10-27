@@ -4,3 +4,6 @@
 # Pycache and MISC
 **/__pycache__/
 *.pyc
+
+# Mac Files
+**/.DS_Store
