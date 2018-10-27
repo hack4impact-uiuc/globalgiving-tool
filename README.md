@@ -19,6 +19,11 @@
 
 ## Contributing Guidelines
 
+Run ```pip install --editable .``` which will initialize your cli tool
+Run ```gg -h``` to see the commands and run them
+
+Deleting pyc files ```find . -name '*.pyc' -delete```
+
 ## API
 
 # Microservices
@@ -63,9 +68,9 @@ Step 9: Run ```python3 app.py``` from command line, it will start up the server.
 If you navigate to ```http://127.0.0.1:5000/``` it will say Hello World. 
 
 ### Unit Testing
-When new web scrapers or any new feature is added, unit testing must be done to ensure code functionality. All of the test files will be stored in the `tests` directory and will be run using the `unittest` python module. CircleCI will be running the test cases and they will be checked prior to merging.
+When new web scrapers or any new feature is added, unit testing must be done to ensure code functionality. All of the test files will be stored in the `tests` directory within your own microservice directory and will be run using the `pytest` python module. CircleCI will be running the test cases and they will be checked prior to merging.
 
-In order for unittest to recognize and run tests, each method in the class should start with the letters `test`. The methods `setUp()` and `tearDown()` can also be used to set up the environment prior to testing. After all of the test cases have been written, they can all be run using `python3 -m unittest discover -t . -p "*_test.py"`, which is unittest discovery that will find and run all tests in files that contain the specified `*_test.py` pattern.
+In order for unittest to recognize and run tests, each method in the class should start with the pattern `test_`. The methods `setUp()` and `tearDown()` can also be used to set up the environment prior to testing. After all of the test cases have been written, they can all be run using `pytest`, which will find and run all tests that have the specified pattern in files in the current directory and any subdirectories.
 
 
 

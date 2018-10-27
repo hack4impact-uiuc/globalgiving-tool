@@ -1,0 +1,17 @@
+[[source]]
+url = "https://pypi.org/simple"
+verify_ssl = true
+name = "pypi"
+
+[packages]
+flask = "==0.11.1"
+requests = "==2.9.1"
+"beautifulsoup4" = "==4.6.3"
+microservices = "==0.33.0"
+
+[dev-packages]
+pytest = "==3.8.2"
+black = "==18.6b4"
+
+[requires]
+python_version = "3.7"
