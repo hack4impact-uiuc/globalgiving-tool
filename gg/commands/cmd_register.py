@@ -17,7 +17,10 @@ def cli(ctx, name, routes):
         ctx.log("Route tried: {}".format(routes))
         return
     url = routes.replace("/routes", "")
-    namesList = [name.replace("/", "").replace("<path:filename>", "").title() for name in routesList]
+    namesList = [
+        name.replace("/", "").replace("<path:filename>", "").title()
+        for name in routesList
+    ]
     routesList = [url + route.replace("<path:filename>", "") for route in routesList]
     ctx.log(routesList)
     ctx.log(namesList)

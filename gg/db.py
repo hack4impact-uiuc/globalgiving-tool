@@ -1,10 +1,9 @@
 import pymongo
-import json
 
 
 def db_get_collection():
     username, password = "invalid", "invalid"
-    with open('db-access.secret', 'r') as secretFile:
+    with open("db-access.secret", "r") as secretFile:
         username, password = [word.strip() for word in secretFile.readlines()]
     uri = "mongodb://{}:{}@ds147073.mlab.com:47073/ggdb-dev".format(username, password)
     client = pymongo.MongoClient(uri)
