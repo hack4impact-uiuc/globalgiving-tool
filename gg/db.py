@@ -13,9 +13,13 @@ def db_get_collection():
     return users_collection
 
 
-def send_to_db(name, routes):
+def send_to_db(name, url, namesList, routesList):
     users_collection = db_get_collection()
-    payload = {"name": name, "routes": routes}
+    payload = {"name": name}
+    routes = {}
+    for routeName, routeURL in zip(namesList, routesList):
+        routes[routeName] = routeURL
+    payload["routes"] = routes
     post_id = users_collection.insert_one(payload).inserted_id
     return post_id
 
