@@ -8,4 +8,5 @@ from gg.db import send_to_db
 @click.argument("routes", required=True)
 @pass_context
 def cli(ctx, name, routes):
-    ctx.log(send_to_db(name, routes))
+    doc_id = send_to_db(name, routes)
+    ctx.log("sent to db with id: {}".format(doc_id))

@@ -4,3 +4,4 @@
 # Pycache and MISC
 **/__pycache__/
 *.pyc
+*.secret
