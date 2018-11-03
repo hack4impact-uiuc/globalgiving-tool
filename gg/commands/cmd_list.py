@@ -7,7 +7,8 @@ from gg.db import list_from_db
 @pass_context
 def cli(ctx):
     """
-    For now, this simply spits out the routes.
+    GG list lists all scrapers registered on the database. It prints out each
+    name and all routes associated with that scraper.
     """
     ctx.log("Listing all registered scrapers!")
     all_docs = list_from_db()
@@ -15,6 +16,6 @@ def cli(ctx):
         ctx.log("\nName: {}".format(doc["name"]))
         ctx.log("Available Routes for {}:".format(doc["_id"]))
         for route in doc["routes"].keys():
-                if route == "Routes":
-                        continue
-                ctx.log("    {}: {}".format(route, doc["routes"][route]))
+            if route == "Routes":
+                continue
+            ctx.log("    {}: {}".format(route, doc["routes"][route]))

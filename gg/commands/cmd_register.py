@@ -9,6 +9,11 @@ from gg.db import send_to_db
 @click.argument("routes", required=True)
 @pass_context
 def cli(ctx, name, routes):
+    """
+    Registers the given scraper with the database. It basically just gets all
+    possible routes from the `/routes` route then sets up appropriate inputs
+    for gg.db.send_to_db().
+    """
     try:
         routesList = list(requests.get(routes).json())
     except Exception as ex:
@@ -25,7 +30,5 @@ def cli(ctx, name, routes):
         for name in routesList
     ]
     routesList = [url + route.replace("<path:filename>", "") for route in routesList]
-    # ctx.log(routesList)
-    # ctx.log(namesList)
     doc_id = send_to_db(name, url, namesList, routesList)
     ctx.log(doc_id)
