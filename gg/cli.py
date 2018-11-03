@@ -48,7 +48,7 @@ class GG(click.MultiCommand):
 
 @click.command(cls=GG, context_settings=CONTEXT_SETTINGS)
 @pass_context
-def cli(ctx, verbose, home):
+def cli(ctx, verbose=False, home=None):
     """A complex command line interface."""
     ctx.verbose = verbose
     if home is not None:

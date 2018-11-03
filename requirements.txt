@@ -1,0 +1,7 @@
+click==6.7
+setuptools==40.4.3
+requests==2.9.1
+Flask==0.11.1
+beautifulsoup4==4.6.3
+PyJWT==1.6.4
+pytest==3.9.3
