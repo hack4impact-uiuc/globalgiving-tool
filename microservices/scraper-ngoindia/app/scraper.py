@@ -26,8 +26,6 @@ def get_page_data():
                 else:
                     #page is at county-level
                     get_ngo_page_fromcounty(list)
-        else:
-            continue
 
     return ngo_content_list
 
