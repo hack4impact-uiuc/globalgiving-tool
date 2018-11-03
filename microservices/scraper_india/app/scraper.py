@@ -4,6 +4,12 @@ import requests
 ngo_content_list = []
 
 
+def get_one_nonprofit():
+    url = "https://andaman-nicobar.ngosindia.com/amazing-life-ministries-andaman-nicobar-islands/"
+    ngo_url = requests.get(url)
+    get_ngo_data(ngo_url)
+    return {"data" : [ngo_content_list[0]] }
+
 def get_page_data():
     # Specify url to scrape from
     target_url = requests.get("https://ngosindia.com/ngos-of-india/")
@@ -39,14 +45,16 @@ def get_ngo_data(ngo_url):
     ngo_name = page_data.find_all(attrs={"class": "ngo-postheader entry-title"})
     contents = page_data.find_all(attrs={"class": "ngo-postcontent"})
     # contents includes data regarding NGO name, address, contact information, & mission statement
+    print(str(ngo_name))
     compile_information(str(ngo_name), contents)
 
 
 def get_ngo_page_fromngos(ngo_list):
     # return ngo_list
     for ngo in ngo_list:
-        print(ngo)
+        # print(ngo)
         ngo_url = requests.get(ngo["href"])
+        # print(ngo["href"])
         get_ngo_data(ngo_url)
 
 
@@ -61,6 +69,9 @@ def get_ngo_page_fromcounty(county_list):
             ].find_all("a", href=True)
         else:
             continue
+        # print("YO")
+        # print(county["href"])
+        # print("YO")
         get_ngo_page_fromngos(ngo_list)
 
 
@@ -69,7 +80,8 @@ def compile_information(ngo_name, contents):
     global ngo_content_list
     ngo_dict = {}
     # seperate neccesary information (phone,email,address,etc.)
-    ngo_dict["Name"] = str(ngo_name)
+    ngo_dict["Name"] = str(ngo_name[ngo_name.find(">")+1: ngo_name.find("<", 2)])
+    # print(ngo_name.substr(ngo_name.find(">")).find("<"))
     if len(contents) > 1:
         content = str(contents[1]).split("\n")
         # Remove additional text in string like ("Add:","Tel:",etc.)
