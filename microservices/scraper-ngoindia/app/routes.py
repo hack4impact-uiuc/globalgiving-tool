@@ -1,12 +1,16 @@
 from flask import Flask
 from scraper import get_page_data
-
+import json
 
 app = Flask(__name__)
 
-@app.route('/')
-def my_first_route():
-	return "<h1> Hello World! </h1>"
+@app.route("/routes")
+def routes_availible():
+    return json.dumps(
+        ["%s" % rule for rule in app.url_map.iter_rules()],
+        indent=4,
+        separators=(",", ": "),
+    )
 
 @app.route('/data')
 def page_data():
