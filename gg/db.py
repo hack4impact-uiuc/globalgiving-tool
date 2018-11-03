@@ -3,7 +3,7 @@ import dotenv
 import os
 
 
-def db_get_collection():
+def db_get_collection(collectionName="scrapers"):
     """
     Gets the scapers collection from the database. This function pulls the URI
     stored in an environment file. The purpose is simply to pass on the
@@ -12,24 +12,27 @@ def db_get_collection():
     dotenv.load_dotenv(dotenv.find_dotenv())
     uri = os.getenv("URI")
     client = pymongo.MongoClient(uri)
-    db = client.get_default_database()
-    scrapers = db.scrapers
-    return scrapers
+    db = client["ggdb-dev"]
+    collection = db[collectionName]
+    return collection
 
 
-def send_to_db(name, url, namesList, routesList):
+def send_to_db(name, url, namesList, routesList, test=False):
     """
     Sends the name and routes to the database.
     Input:
         name: the name of the scraper
         url: the base url of the scaper
         namesList: a list of the names of the various routes
-        routesLise: a list of the addresses of the various routes
+        routesList: a list of the addresses of the various routes
     Returns:
         A confirmation that the scraper has been registered, otherwise an
         exception.
     """
-    scrapers = db_get_collection()
+    if test:
+        scrapers = db_get_collection("tests")
+    else:
+        scrapers = db_get_collection()
     payload = {"name": name}
     payload["_id"] = url
     routes = {}
@@ -44,12 +47,15 @@ def send_to_db(name, url, namesList, routesList):
     return "Registration sent to db with id: " + post_id
 
 
-def list_from_db():
+def list_from_db(test=False):
     """
     Gets all scrapers listed in the database. This function merely returns the
     scrapers as a list. Printing and whatnot happens later.
     """
-    scrapers = db_get_collection()
+    if test:
+        scrapers = db_get_collection("tests")
+    else:
+        scrapers = db_get_collection()
     cursor = scrapers.find({})
     document_list = [doc for doc in cursor]
     return document_list

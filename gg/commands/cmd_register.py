@@ -23,7 +23,7 @@ def cli(ctx, name, routes):
         ctx.log(message)
         ctx.log("Getting information from the provided /routes failed.")
         ctx.log("Route tried: {}".format(routes))
-        return
+        return "exception"
     url = routes.replace("/routes", "")
     namesList = [
         name.replace("/", "").replace("<path:filename>", "").title()
@@ -32,3 +32,4 @@ def cli(ctx, name, routes):
     routesList = [url + route.replace("<path:filename>", "") for route in routesList]
     doc_id = send_to_db(name, url, namesList, routesList)
     ctx.log(doc_id)
+    return namesList, routesList

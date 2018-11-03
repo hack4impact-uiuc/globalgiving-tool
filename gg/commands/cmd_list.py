@@ -19,3 +19,4 @@ def cli(ctx):
             if route == "Routes":
                 continue
             ctx.log("    {}: {}".format(route, doc["routes"][route]))
+    return all_docs  # for testing
