@@ -3,13 +3,9 @@ import requests
 import json
 
 
-"""
-Scripts and functions to scrape relevant data from a website.
-"""
+"""Scripts and functions to scrape relevant data from a website."""
 
 
 def scrape():
-    """
-    Put everything together and scrape relevant data from the webpage.
-    """
-    return
+    """Put everything together and scrape relevant data from the webpage."""
+    return "No Data"
