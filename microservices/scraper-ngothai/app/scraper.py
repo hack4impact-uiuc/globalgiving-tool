@@ -1,10 +1,9 @@
 from bs4 import BeautifulSoup
 import requests
-from urllib.request import urlopen
+from requests import get
 import csv
 
 baseurl = "http://wiki.p2pfoundation.net/NGOs_in_Thailand"
-
 
 # list of dictionaries to store ngo information
 ngos = []
@@ -23,8 +22,8 @@ def basepage_scrape():
     """
     DESCRIPTION: scrapes the homepage, processes each row for ngo data
     """
-    page = requests.get(baseurl)
-    soup = BeautifulSoup(page.content, "html5lib")
+    page = get(baseurl)
+    soup = BeautifulSoup(page.content, "html.parser")
     # find all NGO entries represented as a row in html table
     ngo_tr_tags = soup.find_all("tr")
 
