@@ -9,8 +9,12 @@ def cli(ctx):
     """
     For now, this simply spits out the routes.
     """
-    ctx.log("Listing all registered scrapers!\n")
+    ctx.log("Listing all registered scrapers!")
     all_docs = list_from_db()
     for doc in all_docs:
-        ctx.log("Name: {}".format(doc["name"]))
-        ctx.log("Routes: {}\n".format(doc["routes"]))
+        ctx.log("\nName: {}".format(doc["name"]))
+        ctx.log("Available Routes for {}:".format(doc["_id"]))
+        for route in doc["routes"].keys():
+                if route == "Routes":
+                        continue
+                ctx.log("    {}: {}".format(route, doc["routes"][route]))
