@@ -41,13 +41,15 @@ Step 1: Navigate into the microservices folder and run ```cookiecutter .```
 
 Step 2: Specify the name of the directory/scraper to create.
 
-Step 3: Run ```pip3 install pipenv```
+Step 3: Navigate into the new created directory.
 
-Step 4: Run ```pipenv shell```
+Step 4: Run ```pip3 install pipenv```
 
-Step 5: Run ```pip3 install -r requirements.txt``` to install everything from requirements.txt
+Step 5: Run ```pipenv shell```
 
-Step 6: Run ```python3 app.py``` from command line, it will start up the server. 
+Step 6: Run ```pip3 install -r requirements.txt``` to install everything from requirements.txt
+
+Step 7: Run ```python3 app.py``` from command line, it will start up the server. 
 
 If you navigate to ```http://127.0.0.1:5000/``` it will say Hello World. 
 
