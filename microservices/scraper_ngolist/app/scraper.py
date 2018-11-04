@@ -8,16 +8,9 @@ base_url = "https://www.thengolist.com"
 
 # list of dictionaries to store ngo information
 ngos = []
-ngos_store_keys = [
-    "ngo_name",
-    "description",
-    "ngo_URL",
-    "facebook",
-    "email",
-    "country"
-]
+ngos_store_keys = ["ngo_name", "description", "ngo_URL", "facebook", "email", "country"]
 
-#dictionary of key:value pairs of "region": [list of country links]
+# dictionary of key:value pairs of "region": [list of country links]
 region_country_links_dict = {}
 
 
@@ -28,7 +21,7 @@ def basepage_scrape():
     """
     page = get(base_url)
     soup = BeautifulSoup(page.content, "html.parser")
-    
+
     # get "the list" menu item from menubar
     region_title = soup.find("li", {"id": "pg383366003599184948"})
     # find all ul's under "the list"
@@ -37,12 +30,12 @@ def basepage_scrape():
     countries_uls = region_country_ul[1:]
     # store all country links in list of lists
     countries_links = [ul.findChildren("a") for ul in countries_uls]
-    
+
     # assemble region to country links dictionary mapping
     region_country_links_dict = {
         "South-America": countries_links[0],
         "Central-America": countries_links[1],
-        "Asia": countries_links[2]
+        "Asia": countries_links[2],
     }
 
     # scrape only South-America country pages:
@@ -114,12 +107,14 @@ def ngo_td_scrape(td, country_name):
     ngo_country = country_name
 
     try:
-        ngo_name_div, ngo_descr_div, ngo_contact_div = td.find_all("div", {"class": "paragraph"})
+        ngo_name_div, ngo_descr_div, ngo_contact_div = td.find_all(
+            "div", {"class": "paragraph"}
+        )
     except ValueError:
         print("Country could not be scraped.")
         return
     # -----------------------FIND NGO NAME-----------------------------
-    ngo_name_font_tags = ngo_name_div.find_all("font", {"size":"5"})
+    ngo_name_font_tags = ngo_name_div.find_all("font", {"size": "5"})
     # ngo name's font tag either has no children or is
     # is the first child of the font tags found
     # CASE 1:
@@ -132,40 +127,40 @@ def ngo_td_scrape(td, country_name):
     #     <font> DONT CARE </font>
     # </font>
     for font_tag in ngo_name_font_tags:
-        if (font_tag.findChild() == None):
+        if font_tag.findChild() == None:
             ngo_name = font_tag.text
             break
         else:
             ngo_name = font_tag.findChild().text
             break
 
-    if(ngo_name == ""):
+    if ngo_name == "":
         print("Ngo name was not found!!")
 
     # -----------------------FIND NGO DESCRIPTION---------------------------
-    for strong in ngo_descr_div('strong'):
+    for strong in ngo_descr_div("strong"):
         strong.decompose()
     ngo_descr = ngo_descr_div.get_text()
-
 
     # -----------------------FIND NGO CONTACT INFO-----------------------------
     ngo_contact_a_tags = ngo_contact_div.find_all("a")
     if ngo_contact_a_tags != None:
         try:
-            ngo_URL = ngo_contact_a_tags[0]['href']
+            ngo_URL = ngo_contact_a_tags[0]["href"]
         except IndexError:
             print("ngo URL could not be found!")
         try:
-            ngo_facebook = ngo_contact_a_tags[1]['href']
+            ngo_facebook = ngo_contact_a_tags[1]["href"]
         except IndexError:
             print("ngo facebook could not be found!")
-        
 
     ngo_contact_text = ngo_contact_div.text
     ngo_contact_text = ngo_contact_text.replace("fb:", " ")
-    match = re.search(r'mail:[\w\. -]+\(at\)[\w\. -]+\(dot\)[\w\. -]+', ngo_contact_text)
-    
-    if(match == None):
+    match = re.search(
+        r"mail:[\w\. -]+\(at\)[\w\. -]+\(dot\)[\w\. -]+", ngo_contact_text
+    )
+
+    if match == None:
         print("NGO email could not be found!!")
     else:
         ngo_email = email_format(match.group())

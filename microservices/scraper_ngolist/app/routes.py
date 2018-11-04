@@ -13,25 +13,31 @@ def scrape_all_ngos():
 def scrape_colombia():
     return str(country_page_scrape("/colombia.html"))
 
+
 @app.route("/ecuador")
 def scrape_ecuador():
     return str(country_page_scrape("/ecuador.html"))
+
 
 @app.route("/peru")
 def scrape_peru():
     return str(country_page_scrape("/peru.html"))
 
+
 @app.route("/bolivia")
 def scrape_bolivia():
     return str(country_page_scrape("/bolivia.html"))
+
 
 @app.route("/argentina")
 def scrape_argentina():
     return str(country_page_scrape("/argentina.html"))
 
+
 @app.route("/chile")
 def scrape_chile():
     return str(country_page_scrape("/chile.html"))
+
 
 @app.route("/brazil")
 def scrape_brazili():
@@ -46,5 +52,3 @@ def routes_available():
         indent=4,
         separators=(",", ": "),
     )
-
-
