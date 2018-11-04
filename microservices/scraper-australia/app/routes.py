@@ -6,6 +6,9 @@ from app.scraper import get_page_data
 def get_routes():
     return ["/data"]
 
+@app.route("/test")
+def test():
+    return json.dumps(get_one_nonprofit(), indent=4, separators=(",", ": "))
 
 @app.route("/data")
 def page_data():
