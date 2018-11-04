@@ -1,8 +1,6 @@
 from app import app
-from app.scraper import get_page_data
+from app.scraper import get_page_data, get_one_nonprofit
 import json
-from app.scraper import get_one_nonprofit
-
 
 @app.route("/routes")
 def routes_availible():
@@ -20,8 +18,6 @@ def test():
         indent=4,
         separators=(",", ": "),
     )
-
-
 
 @app.route("/data")
 def page_data():
