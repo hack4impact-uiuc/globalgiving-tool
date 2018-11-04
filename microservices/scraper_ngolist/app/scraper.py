@@ -1,6 +1,5 @@
 from bs4 import BeautifulSoup
-import requests
-from urllib.request import urlopen
+from requests import get
 import csv
 import re
 
@@ -27,7 +26,7 @@ def basepage_scrape():
     DESCRIPTION: scrapes the homepage, gets all the links to country pages
                  and puts them in a dictionary that maps region to country links
     """
-    page = requests.get(base_url)
+    page = get(base_url)
     soup = BeautifulSoup(page.content, "html.parser")
     
     # get "the list" menu item from menubar
@@ -67,7 +66,7 @@ def country_page_scrape(country_link):
     country_url = base_url + country_link
 
     # get soup object
-    page = requests.get(country_url)
+    page = get(country_url)
     soup = BeautifulSoup(page.content, "html.parser")
 
     # get the NGO tables

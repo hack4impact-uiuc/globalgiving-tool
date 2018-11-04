@@ -1,9 +1,7 @@
-from flask import Flask
-from scraper import basepage_scrape
-from scraper import country_page_scrape
+from app import app
+from app.scraper import basepage_scrape
+from app.scraper import country_page_scrape
 import json
-
-app = Flask(__name__)
 
 
 @app.route("/scrape_all")
@@ -50,5 +48,3 @@ def routes_available():
     )
 
 
-if __name__ == "__main__":
-    app.run(debug=True)
