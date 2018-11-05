@@ -4,6 +4,7 @@
 # Pycache and MISC
 **/__pycache__/
 *.pyc
+*.secret
 
 # Mac Files
 **/.DS_Store
