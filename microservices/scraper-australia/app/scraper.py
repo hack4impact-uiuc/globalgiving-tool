@@ -5,7 +5,11 @@ import json
 website = "http://www.findouter.com/Oceania/Australia/Society-and-Culture/Non-Governmental-Organisations/"
 
 
-def helper(webpage):
+def get_one_nonprofit():
+    return parse_page(website + "1")[0]
+
+
+def parse_page(webpage):
     list_of_ds = []
     target_url = requests.get(webpage)
     page_data = BeautifulSoup(target_url.content, "html.parser")
@@ -38,5 +42,5 @@ def get_page_data():
     ret = []
     for i in range(1, 7):
         webpage = website + str(i)
-        ret.extend(helper(webpage))
+        ret.extend(parse_page(webpage))
     return json.dumps(ret)
