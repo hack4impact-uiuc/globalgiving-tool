@@ -59,3 +59,11 @@ def list_from_db(test=False):
     cursor = scrapers.find({})
     document_list = [doc for doc in cursor]
     return document_list
+
+
+def DELETE_ALL_PLEASE_ONLY_USE_THIS_FOR_TESTING(test=False):
+    if test:
+        scrapers = db_get_collection("tests")
+        scrapers.delete_many({})
+    else:
+        pass  # Don't do anything if called by accident!
