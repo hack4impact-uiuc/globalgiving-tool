@@ -17,6 +17,20 @@ ngos_store_keys = [
     "description",
 ]
 
+def get_one_ngo():
+    """
+    DESCRIPTION: scrapes the homepage, processes each row for ngo data
+    """
+    page = get(baseurl)
+    soup = BeautifulSoup(page.content, "html.parser")
+    # find all NGO entries represented as a row in html table
+    ngo_tr_tags = soup.find_all("tr")
+
+    ngo_row_scrape(ngo_tr_tags[4])
+    return ngos[0]
+
+    # write_to_csv()
+
 
 def basepage_scrape():
     """
