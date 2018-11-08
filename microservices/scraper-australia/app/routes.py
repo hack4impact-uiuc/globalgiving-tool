@@ -4,8 +4,13 @@ import json
 
 
 @app.route("/routes")
-def get_routes():
-    return ["/data"]
+def routes_availible():
+    return json.dumps(
+        ["%s" % rule for rule in app.url_map.iter_rules()],
+        indent=4,
+        separators=(",", ": "),
+    )
+
 
 
 @app.route("/test")
