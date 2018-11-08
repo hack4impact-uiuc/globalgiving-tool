@@ -15,3 +15,8 @@ def routes_availible():
         indent=4,
         separators=(",", ": "),
     )
+
+
+@app.route("/test")
+def test():
+    return scrape(one=True)  # switches to getting only one scraper
