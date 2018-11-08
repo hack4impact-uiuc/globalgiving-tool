@@ -37,13 +37,18 @@ Every microservice is a scraper for a specific url that will give us as much inf
 If you navigate to "/routes" you can see all the routes they support. This will include "/test" which will scrape one nonprofit from the page as an example, and "/data" which will run the entire scraper.
 
 https://gg-scraper-australia.now.sh
-https://gg-scraper-haiti-malaysia.now.sh
-https://gg-scraper-ingo-forum-myanmar.now.sh
-https://gg-scraper-ngothai.now.sh
-https://gg-scraper-ngouganda.now.sh
-https://gg-scraper-ngolist.now.sh
-https://gg-scraper-australia.now.sh
 
+https://gg-scraper-haiti-malaysia.now.sh
+
+https://gg-scraper-ingo-forum-myanmar.now.sh
+
+https://gg-scraper-ngothai.now.sh
+
+https://gg-scraper-ngouganda.now.sh
+
+https://gg-scraper-ngolist.now.sh
+
+https://gg-scraper-australia.now.sh
 
 ## Contributing Guidelines
 
