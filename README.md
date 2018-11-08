@@ -20,7 +20,7 @@
 ## Contributing Guidelines
 
 Run ```pip install --editable .``` which will initialize your cli tool
-Run ```complex -h``` to see the commands and run them
+Run ```gg -h``` to see the commands and run them
 
 Deleting pyc files ```find . -name '*.pyc' -delete```
 
@@ -37,33 +37,19 @@ Every microservice is a scraper for a specific url that will give us as much inf
 
 ### Adding a new microservice for scraping a new website
 
-Step 1: Make a new folder with called "scraper-```<name of what your scraping>```
+Step 1: Navigate into the microservices folder and run ```cookiecutter .```
 
-Step 2: Add a file called ```app.py``` and copy paste this boilerplate code in. This starts up a flask server and sets up a basic route. 
+Step 2: Specify the name of the directory/scraper to create.
 
-```Python
-from flask import Flask
-app = Flask(__name__)
+Step 3: Navigate into the new created directory.
 
-@app.route('/')
-def my_first_route():
-	return "Hello World!"
+Step 4: Run ```pip3 install pipenv```
 
-if __name__ == '__main__':
-	app.run(debug=True)
-```
+Step 5: Run ```pipenv shell```
 
-Step 3: Run ```pip3 install pipreqs```
+Step 6: Run ```pip3 install -r requirements.txt``` to install everything from requirements.txt
 
-Step 4: Navigate to inside the folder, and run ``` pipreqs . ```. This should generate a ```requirements.txt``` file.
-
-Step 6: Run ```pip3 install pipenv```
-
-Step 7: Run ```pipenv shell```
-
-Step 8: Run ```pip3 install -r requirements.txt``` to install everython from requirements.txt
-
-Step 9: Run ```python3 app.py``` from command line, it will start up the server. 
+Step 7: Run ```python3 app.py``` from command line, it will start up the server. 
 
 If you navigate to ```http://127.0.0.1:5000/``` it will say Hello World. 
 

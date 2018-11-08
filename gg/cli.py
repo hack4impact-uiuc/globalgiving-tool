@@ -51,5 +51,3 @@ class GG(click.MultiCommand):
 def cli(ctx, verbose=False):
     """A complex command line interface."""
     ctx.verbose = verbose
-    # if home is not None:
-    #     ctx.home = home
