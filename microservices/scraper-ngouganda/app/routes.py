@@ -7,6 +7,7 @@ import json
 def page_data():
     return str(get_page_data())
 
+
 @app.route("/test")
 def test():
     return str(get_one())

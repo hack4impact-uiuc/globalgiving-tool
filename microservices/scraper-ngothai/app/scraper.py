@@ -17,12 +17,14 @@ ngos_store_keys = [
     "description",
 ]
 
+
 def get_one_ngo():
     page = get(baseurl)
     soup = BeautifulSoup(page.content, "html.parser")
     ngo_tr_tags = soup.find_all("tr")
     ngo_row_scrape(ngo_tr_tags[4])
     return ngos[0]
+
 
 def basepage_scrape():
     """

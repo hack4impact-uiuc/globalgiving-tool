@@ -43,6 +43,7 @@ def get_page_data():
         ret.append(d)
     return json.dumps(ret)
 
+
 def get_one():
     # Specify url to scrape from
     ret = []
@@ -56,4 +57,3 @@ def get_one():
     scrape_page(ngo, d)
     ret.append(d)
     return json.dumps(ret)
-

@@ -13,8 +13,6 @@ def test():
     return str(get_one_ngo())
 
 
-
-
 @app.route("/routes")
 def routes_availible():
     return json.dumps(
