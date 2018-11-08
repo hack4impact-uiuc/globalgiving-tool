@@ -1,6 +1,7 @@
 import pymongo
 import dotenv
 import os
+from s3_interface import init_s3_credentials
 
 
 def db_get_collection(collectionName="scrapers"):
@@ -35,6 +36,10 @@ def send_to_db(name, url, namesList, routesList, test=False):
         scrapers = db_get_collection()
     payload = {"name": name}
     payload["_id"] = url
+    bucket_name = name + "-" + str(hash(name))
+    payload[name] = bucket_name
+    client = init_s3_credentials()
+    client.create_bucket(Bucket=bucket_name)
     routes = {}
     for routeName, routeURL in zip(namesList, routesList):
         routes[routeName] = routeURL
