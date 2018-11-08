@@ -4,6 +4,7 @@ import csv
 import re
 
 base_url = "https://www.thengolist.com"
+divs_per_td = 5  # expected number of divs within a td on website
 
 
 # list of dictionaries to store ngo information
@@ -89,7 +90,7 @@ def ngo_table_scrape(ngo_table, country_name):
     for td in tds:
         divs = td.find_all("div")
         # only scrape for valid td formats
-        if len(divs) > 5:
+        if len(divs) > divs_per_td:
             ngo_td_scrape(td, country_name)
 
 
