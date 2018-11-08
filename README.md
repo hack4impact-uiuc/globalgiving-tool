@@ -32,7 +32,7 @@ Global Giving's focus of this project is to scrape as many directories of nonpro
 
 Every microservice is a scraper for a specific url that will give us as much information as possible. 
 
-# List of currently deployed scrapers
+## List of currently deployed scrapers
 
 If you navigate to "/routes" you can see all the routes they support. This will include "/test" which will scrape one nonprofit from the page as an example, and "/data" which will run the entire scraper.
 
