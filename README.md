@@ -48,8 +48,6 @@ https://gg-scraper-ngouganda.now.sh
 
 https://gg-scraper-ngolist.now.sh
 
-https://gg-scraper-australia.now.sh
-
 ## Contributing Guidelines
 
 ### Adding a new microservice for scraping a new website
