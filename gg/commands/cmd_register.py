@@ -30,6 +30,8 @@ def cli(ctx, name, routes):
         for name in routesList
     ]
     routesList = [url + route.replace("<path:filename>", "") for route in routesList]
-    doc_id = send_to_db(name, url, namesList, routesList)
+    doc_id, updated = send_to_db(name, url, namesList, routesList)
+    if updated:
+        ctx.log("Updated scraper {}!".format(name))
     ctx.log(doc_id)
     return namesList, routesList

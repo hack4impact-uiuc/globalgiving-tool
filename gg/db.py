@@ -44,12 +44,15 @@ def send_to_db(name, url, namesList, routesList, test=False):
     for routeName, routeURL in zip(namesList, routesList):
         routes[routeName] = routeURL
     payload["routes"] = routes
+    updated = False
     try:
         post_id = scrapers.insert_one(payload).inserted_id
     except Exception as e:
         if type(e).__name__ == "DuplicateKeyError":
-            return "Exception: DuplicateKeyError: Scraper with the same URL is already in the database."
-    return "Registration sent to db with id: " + post_id
+            delete_ngo(payload["_id"])
+            post_id = scrapers.insert_one(payload).inserted_id
+            updated = True
+    return "Registration sent to db with id: " + post_id, updated
 
 
 def list_from_db(test=False):
@@ -64,6 +67,11 @@ def list_from_db(test=False):
     cursor = scrapers.find({})
     document_list = [doc for doc in cursor]
     return document_list
+
+
+def delete_ngo(ngo_id):
+    scrapers = db_get_collection()
+    return scrapers.delete_one({'_id': ngo_id})
 
 
 def DELETE_ALL_PLEASE_ONLY_USE_THIS_FOR_TESTING(test=False):
