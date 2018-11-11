@@ -9,13 +9,12 @@ from gg.cli import pass_context
 def cli(ctx, n):
     search = "Finding scraper {} from list of registered scrapers..."
     ctx.log(search.format(n))
-
     try:
-        scraper = next(filter(lambda scraper: scraper["name"] == n, list_from_db()))
+        scrapers = list_from_db()
+        route = filter(lambda scraper: scraper["name"] == str(n), scrapers)[0]["routes"]["Test"]
         ctx.log("Scraper {} found!".format(n))
     except StopIteration:
         ctx.log("Scraper {} not found.".format(n))
         return
-
-    contents = requests.get(scraper["routes"]["Routes"]).text
-    ctx.log(contents)
+    contents = requests.get(route).text
+    print(contents)
