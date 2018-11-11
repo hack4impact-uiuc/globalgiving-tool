@@ -1,11 +1,16 @@
 from app import app
-from app.scraper import get_page_data
+from app.scraper import get_page_data, get_one_ngo
 import json
 
 
 @app.route("/data")
 def page_data():
     return str(get_page_data())
+
+
+@app.route("/test")
+def test():
+    return str(get_one_ngo())
 
 
 @app.route("/routes")
