@@ -34,11 +34,11 @@ def get_one_ngo():
 
     # create_org_ingo_forum_myanmar(name, address, phone, email, org_url)
     return {
-        "name": name,
-        "address": address,
-        "phone": phone,
-        "email": email,
-        "org_url": org_url,
+        "name": name.text,
+        "address": address.text,
+        "phone": phone.text,
+        "email": email.text,
+        "org_url": org_url.text,
     }
 
 
