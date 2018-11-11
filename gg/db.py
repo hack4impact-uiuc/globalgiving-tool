@@ -71,7 +71,7 @@ def list_from_db(test=False):
 
 def delete_ngo(ngo_id):
     scrapers = db_get_collection()
-    return scrapers.delete_one({'_id': ngo_id})
+    return scrapers.delete_one({"_id": ngo_id})
 
 
 def DELETE_ALL_PLEASE_ONLY_USE_THIS_FOR_TESTING(test=False):
