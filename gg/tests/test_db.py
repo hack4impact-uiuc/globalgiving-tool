@@ -15,11 +15,12 @@ def test_existence():
         "https://gg-scraper-example.now.sh/routes",
         "https://gg-scraper-example.now.sh/test1",
         "https://gg-scraper-example.now.sh/data",
-        "https://gg-scraper-example.now.sh/static/"
-
+        "https://gg-scraper-example.now.sh/static/",
     ]
     status = send_to_db(name, url, namesList, routesList, test=True)
-    assert status == "Registration sent to db with id: https://gg-scraper-example.now.sh"
+    assert (
+        status == "Registration sent to db with id: https://gg-scraper-example.now.sh"
+    )
 
     docs = list_from_db(test=True)
     assert len(docs) == 1
