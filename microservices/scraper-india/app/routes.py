@@ -1,11 +1,6 @@
 from app import app
-from app.scraper import scrape
+from app.scraper import get_page_data, get_one_nonprofit
 import json
-
-
-@app.route("/data")
-def page_data():
-    return scrape()
 
 
 @app.route("/routes")
@@ -19,4 +14,9 @@ def routes_availible():
 
 @app.route("/test")
 def test():
-    return scrape(one=True)  # switches to getting only one scraper
+    return json.dumps(get_one_nonprofit(), indent=4, separators=(",", ": "))
+
+
+@app.route("/data")
+def page_data():
+    return str(get_page_data())

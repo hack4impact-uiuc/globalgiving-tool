@@ -1,20 +1,17 @@
 from app import app
-from app.scraper import get_page_data, get_one
+from app.scraper import scrape
 import json
 
 
 @app.route("/data")
 def page_data():
-    return str(get_page_data())
-
-
-@app.route("/test")
-def test():
-    return str(get_one())
+    """Gets the relevant data from the page"""
+    return scrape()
 
 
 @app.route("/routes")
-def routes_availible():
+def routes_available():
+    """Returns a list of available routes to hit for this scraper."""
     return json.dumps(
         ["%s" % rule for rule in app.url_map.iter_rules()],
         indent=4,

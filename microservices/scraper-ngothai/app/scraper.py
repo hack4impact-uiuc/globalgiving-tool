@@ -1,5 +1,6 @@
 from bs4 import BeautifulSoup
 import requests
+import json
 from requests import get
 import csv
 
@@ -18,6 +19,14 @@ ngos_store_keys = [
 ]
 
 
+def get_one_ngo():
+    page = get(baseurl)
+    soup = BeautifulSoup(page.content, "html.parser")
+    ngo_tr_tags = soup.find_all("tr")
+    ngo_row_scrape(ngo_tr_tags[4])
+    return ngos
+
+
 def basepage_scrape():
     """
     DESCRIPTION: scrapes the homepage, processes each row for ngo data
@@ -31,6 +40,7 @@ def basepage_scrape():
         ngo_row_scrape(row)
 
     write_to_csv()
+    return json.dumps(ngos, indent=4, separators=(",", ": "))
 
 
 def ngo_row_scrape(row):

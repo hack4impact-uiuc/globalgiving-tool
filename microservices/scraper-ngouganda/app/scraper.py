@@ -42,3 +42,18 @@ def get_page_data():
         scrape_page(ngo, d)
         ret.append(d)
     return json.dumps(ret)
+
+
+def get_one():
+    # Specify url to scrape from
+    ret = []
+    target_url = requests.get(website)
+    page_data = BeautifulSoup(target_url.content, "html.parser")
+    contents = page_data.find("div", {"class": "entry-content"})
+    contents = contents.find_all("p")
+    # for ngo in contents:
+    d = {}
+    ngo = str(contents[0]).split("<br/>\n")
+    scrape_page(ngo, d)
+    ret.append(d)
+    return json.dumps(ret)
