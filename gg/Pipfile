@@ -11,3 +11,5 @@ click = "==6.7"
 python-dotenv = "==0.9.1"
 
 [dev-packages]
+pytest = "==3.8.2"
+black = "==18.6b4"
