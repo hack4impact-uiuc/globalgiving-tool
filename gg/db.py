@@ -1,7 +1,7 @@
 import pymongo
 import dotenv
 import os
-from s3_interface import init_s3_credentials
+from gg.s3_interface import init_s3_credentials
 
 
 def db_get_collection(collectionName="scrapers"):
