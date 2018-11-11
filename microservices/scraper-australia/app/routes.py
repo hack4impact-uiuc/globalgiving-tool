@@ -12,7 +12,6 @@ def routes_availible():
     )
 
 
-
 @app.route("/test")
 def test():
     return json.dumps(get_one_nonprofit(), indent=4, separators=(",", ": "))

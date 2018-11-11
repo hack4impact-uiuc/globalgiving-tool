@@ -4,7 +4,7 @@ from app.scraper import country_page_scrape
 import json
 
 
-@app.route("/scrape_all")
+@app.route("/data")
 def scrape_all_ngos():
     return str(basepage_scrape())
 
