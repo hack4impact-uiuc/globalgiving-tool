@@ -10,7 +10,7 @@ def page_data():
 
 @app.route("/test")
 def test():
-    return str(get_one_ngo())
+    return json.dumps(get_one_ngo(), indent=4, separators=(",", ": "))
 
 
 @app.route("/routes")
