@@ -1,4 +1,5 @@
 import click
+import hashlib
 from ..s3_interface import *
 from tabulate import tabulate
 from gg.cli import pass_context
@@ -8,7 +9,7 @@ from gg.cli import pass_context
     "log", short_help="Gives all runs for the scraper with associated s3-names"
 )
 @click.option(
-    "--bucket_name",
+    "--scraper_name",
     help="The name of the scraper that logs will be outputted from",
     required=True,
     default=None,
@@ -20,14 +21,19 @@ from gg.cli import pass_context
     default=None,
 )
 @pass_context
-def cli(ctx, bucket_name, filename):
+def cli(ctx, scraper_name, filename):
     # if (not bucket_name and not filename) or (bucket_name and filename):
     #     ctx.log("Please specify either bucket_name or filename!")
     #     return
-    client = init_s3_credentials()
-    # client.create_bucket(Bucket='test-bucket-jingtao-1')
     # filename = 'requirements.txt'
     # client.upload_file(filename, bucket_name, filename)
+    client = init_s3_credentials()
+
+    h = hashlib.md5()
+    h.update(scraper_name.encode('utf-8'))
+    bucket_name = scraper_name + '-' + h.hexdigest()
+    # client.create_bucket(Bucket=bucket_name)
+
     if not filename:  # MAKE IT SO THE SCRAPER NAME MAPS TO S3 BUCKET NAME
         response = client.list_buckets()
         if bucket_name not in [bucket["Name"] for bucket in response["Buckets"]]:
