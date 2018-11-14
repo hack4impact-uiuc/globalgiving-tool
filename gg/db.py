@@ -34,12 +34,12 @@ def send_to_db(name, url, namesList, routesList, test=False):
         scrapers = db_get_collection("tests")
     else:
         scrapers = db_get_collection()
+        bucket_name = name + "-" + str(hash(name))
+        payload[name] = bucket_name
+        client = init_s3_credentials()
+        client.create_bucket(Bucket=bucket_name)
     payload = {"name": name}
     payload["_id"] = url
-    bucket_name = name + "-" + str(hash(name))
-    payload[name] = bucket_name
-    client = init_s3_credentials()
-    client.create_bucket(Bucket=bucket_name)
     routes = {}
     for routeName, routeURL in zip(namesList, routesList):
         routes[routeName] = routeURL
