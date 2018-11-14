@@ -30,8 +30,8 @@ def cli(ctx, scraper_name, filename):
     client = init_s3_credentials()
 
     h = hashlib.md5()
-    h.update(scraper_name.encode('utf-8'))
-    bucket_name = scraper_name + '-' + h.hexdigest()
+    h.update(scraper_name.encode("utf-8"))
+    bucket_name = scraper_name + "-" + h.hexdigest()
     # client.create_bucket(Bucket=bucket_name)
 
     if not filename:  # MAKE IT SO THE SCRAPER NAME MAPS TO S3 BUCKET NAME
