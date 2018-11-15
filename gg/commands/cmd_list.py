@@ -16,7 +16,6 @@ def cli(ctx):
         ctx.log("\nName: {}".format(doc["name"]))
         ctx.log("Available Routes for {}:".format(doc["_id"]))
         for route in doc["routes"].keys():
-            if route == "Routes":
-                continue
-            ctx.log("    {}: {}".format(route, doc["routes"][route]))
+            if route != "Routes":
+                ctx.log("    {}: {}".format(route, doc["routes"][route]))
     return all_docs  # for testing
