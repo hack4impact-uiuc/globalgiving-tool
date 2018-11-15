@@ -12,7 +12,7 @@ import json
 # db.nonprofits.distinct( "Name" )
 
 
-def get_cat_links():
+def get_cat_links(test=False):
     """
     Find the links for the subpages of each category by starting from the homepage
     of the website.
@@ -26,11 +26,13 @@ def get_cat_links():
         if linkText is not None:
             if "category" in linkText:  # only take links containing "category"
                 catLinks.append(linkText)  # get the link for the category
+                if test:
+                    break
     print("retreived category page links")
     return catLinks
 
 
-def get_ngo_links(catLinks):
+def get_ngo_links(catLinks, test=False):
     """
     Go to each category link and find all websites inside each.
     """
@@ -51,10 +53,13 @@ def get_ngo_links(catLinks):
             ngoLinks.append(ngoLink.get("href"))
             if categoryName in ngoLink:
                 ngoLinks.append(ngoLink)
+            if test:
+                break
     print("retreived NGO page links")
     # get rid of duplicate links
     ngoLinks = list(set(ngoLinks))
     print("purged duplicate links")
+    print(len(ngoLinks))
     return ngoLinks
 
 
@@ -100,9 +105,11 @@ def get_ngo_information(ngoLinks):
     return ngoInformation
 
 
-def scrape():
+def scrape(one=False):
     """
     Put everything together.
     """
-    ngoInformation = get_ngo_information(get_ngo_links(get_cat_links()))
+    ngoInformation = get_ngo_information(
+        get_ngo_links(get_cat_links(test=one), test=one)
+    )
     return json.dumps(ngoInformation, indent=4, separators=(",", ": "))
