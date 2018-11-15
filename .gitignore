@@ -8,3 +8,6 @@
 
 # Mac Files
 **/.DS_Store
+
+# ENV Variables
+.env

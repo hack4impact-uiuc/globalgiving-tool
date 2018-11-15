@@ -22,9 +22,33 @@ jobs:
             pipenv install --skip-lock
             pipenv install --skip-lock --dev
             pipenv run black . --check
+  cli_test:
+    docker:
+      - image: circleci/python:3.7
+    steps:
+      - checkout
+      - run:
+          command: |
+            cd gg
+            pipenv install --skip-lock
+            pipenv install --skip-lock --dev
+            pipenv run pytest
+  cli_lint:
+    docker:
+      - image: circleci/python:3.7
+    steps:
+      - checkout
+      - run:
+          command: |
+            cd gg
+            pipenv install --skip-lock
+            pipenv install --skip-lock --dev
+            pipenv run black . --check
 workflows:
   version: 2
   build-test:
     jobs:
       - microservice_test
       - microservice_lint
+      - cli_test
+      - cli_lint
