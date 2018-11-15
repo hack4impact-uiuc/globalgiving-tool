@@ -55,5 +55,5 @@ def cli(ctx, scraper_name, filename, output_filename):
         if not output_filename:
             output_filename = filename
         client.download_file(Bucket=bucket_name, Key=filename, Filename=output_filename)
-        ctx.log("Downladed file to: %s", click.format_filename(filename))
+        ctx.log("Downladed file to: %s", click.format_filename(output_filename))
         return
