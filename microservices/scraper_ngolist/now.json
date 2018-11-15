@@ -1,7 +1,7 @@
 {
     "public": true,
     "type": "docker",
-    "alias":"gg-scraper-australia",
+    "alias":"gg-scraper-ngolist",
     "features": {
       "cloud": "v2"
     }
