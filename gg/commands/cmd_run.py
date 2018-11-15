@@ -30,14 +30,14 @@ def cli(ctx, n):
 
     h.update(n.encode("utf-8"))
     bucket_name = n + "-" + h.hexdigest()
-    
-    filename = str(uuid.uuid4()) + '.txt'
 
-    f = open(filename,"w+")
+    filename = str(uuid.uuid4()) + ".txt"
+
+    f = open(filename, "w+")
     f.write(contents)
     f.close()
 
     client.upload_file(filename, bucket_name, filename)
-    
+
     os.remove(filename)
-    ctx.log('Wrote logs to file: ' + filename)
+    ctx.log("Wrote logs to file: " + filename)

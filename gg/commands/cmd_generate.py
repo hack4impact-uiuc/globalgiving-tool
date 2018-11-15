@@ -12,8 +12,8 @@ def cli(ctx):
     GG list lists all scrapers registered on the database. It prints out each
     name and all routes associated with that scraper.
     """
-    p = subprocess.Popen(["cookiecutter","--no-input" ,"."], cwd=str(os.path.dirname(os.path.realpath(__file__)))[:-11] + "microservices")
+    p = subprocess.Popen(
+        ["cookiecutter", "--no-input", "."],
+        cwd=str(os.path.dirname(os.path.realpath(__file__)))[:-11] + "microservices",
+    )
     p.wait()
-
-    
-
