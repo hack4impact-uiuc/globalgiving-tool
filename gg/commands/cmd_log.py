@@ -28,19 +28,13 @@ from gg.cli import pass_context
 )
 @pass_context
 def cli(ctx, scraper_name, filename, output_filename):
-    # if (not bucket_name and not filename) or (bucket_name and filename):
-    #     ctx.log("Please specify either bucket_name or filename!")
-    #     return
-    # filename = 'requirements.txt'
-    # client.upload_file(filename, bucket_name, filename)
     client = init_s3_credentials()
 
     h = hashlib.md5()
     h.update(scraper_name.encode("utf-8"))
     bucket_name = scraper_name + "-" + h.hexdigest()
-    # client.create_bucket(Bucket=bucket_name)
 
-    if not filename:  # MAKE IT SO THE SCRAPER NAME MAPS TO S3 BUCKET NAME
+    if not filename:
         response = client.list_buckets()
         if bucket_name not in [bucket["Name"] for bucket in response["Buckets"]]:
             ctx.log("The provided scraper has no logs!")
