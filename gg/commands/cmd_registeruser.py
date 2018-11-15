@@ -11,6 +11,8 @@ def cli(ctx, key):
 
     client = pymongo.MongoClient(uri)
     db = client.get_database()
+    for u in db["whitelist_keys"].find({}):
+        print(u)
 
     whitelist_key = db["whitelist_keys"].find_one({"whitelist_key": key})
 
@@ -26,7 +28,10 @@ def cli(ctx, key):
     encoded_jwt = jwt.encode(
         {"mongo_uri": whitelist_key["mongo_url"]}, "secret", algorithm="HS256"
     )
-    ctx.log("Encoded jwt token is " + str(encoded_jwt))
+
+    with open(".jwt", 'bw+') as f:
+        f.write(encoded_jwt)
+        f.close()
 
     try:
         db["users"].insert_one(
