@@ -20,8 +20,14 @@ from gg.cli import pass_context
     required=False,
     default=None,
 )
+@click.option(
+    "--output_filename",
+    help="The name of the file it will be downloaded to",
+    required=False,
+    default=None,
+)
 @pass_context
-def cli(ctx, scraper_name, filename):
+def cli(ctx, scraper_name, filename, output_filename):
     # if (not bucket_name and not filename) or (bucket_name and filename):
     #     ctx.log("Please specify either bucket_name or filename!")
     #     return
@@ -46,6 +52,8 @@ def cli(ctx, scraper_name, filename):
             print(table)
             return
     else:
-        client.download_file(Bucket=bucket_name, Key=filename, Filename=filename)
+        if not output_filename:
+            output_filename = filename
+        client.download_file(Bucket=bucket_name, Key=filename, Filename=output_filename)
         ctx.log("Downladed file to: %s", click.format_filename(filename))
         return

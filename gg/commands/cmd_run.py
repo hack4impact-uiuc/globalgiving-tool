@@ -35,6 +35,7 @@ def cli(ctx, n):
 
     f = open(filename,"w+")
     f.write(contents)
+    f.close()
 
     client.upload_file(filename, bucket_name, filename)
     
