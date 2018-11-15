@@ -12,10 +12,11 @@ from gg.crawl_functions import rank_all, url_rank
 
 
 def cli(ctx,country,ngo_type):
-    for url in search('ngo directory' + country + ngo_type, lang='es', num=10, stop=20):
+    for url in search('ngo directory' + country + ngo_type, lang='es', num=1, stop=1):
         print(url)
         url_rank[url] = []
         rank_all()
+
 
 
 
