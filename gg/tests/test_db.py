@@ -36,6 +36,7 @@ def test_rejection():
 
     name = "TEST"
     url = "https://gg-scraper-example.now.sh"
+    # create a fake routes called Test1
     namesList = ["Routes", "Test1", "Data", "Static"]
     routesList = [url + "/" + name.lower() for name in namesList]
     routesList[-1] += "/"  # last route is always static which has another /
