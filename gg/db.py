@@ -30,6 +30,8 @@ def send_to_db(name, url, namesList, routesList, test=False):
         A confirmation that the scraper has been registered, otherwise an
         exception.
     """
+    payload = {"name": name}
+    payload["_id"] = url
     if test:
         scrapers = db_get_collection("tests")
     else:
@@ -38,8 +40,6 @@ def send_to_db(name, url, namesList, routesList, test=False):
         payload[name] = bucket_name
         client = init_s3_credentials()
         client.create_bucket(Bucket=bucket_name)
-    payload = {"name": name}
-    payload["_id"] = url
     routes = {}
     for routeName, routeURL in zip(namesList, routesList):
         routes[routeName] = routeURL
@@ -66,7 +66,7 @@ def list_from_db(test=False):
     return document_list
 
 
-def DELETE_ALL_PLEASE_ONLY_USE_THIS_FOR_TESTING(test=False):
+def delete_all(test=False):
     if test:
         scrapers = db_get_collection("tests")
         scrapers.delete_many({})
