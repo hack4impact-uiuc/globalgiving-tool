@@ -1,6 +1,6 @@
 import os
 import sys
-import click
+import click, jwt, dotenv, pymongo
 
 
 CONTEXT_SETTINGS = dict(auto_envvar_prefix="GG")
@@ -48,8 +48,37 @@ class GG(click.MultiCommand):
 
 @click.command(cls=GG, context_settings=CONTEXT_SETTINGS)
 @pass_context
-def cli(ctx, verbose=False, home=None):
+def cli(ctx, verbose=False):
     """A complex command line interface."""
     ctx.verbose = verbose
-    if home is not None:
-        ctx.home = home
+
+
+def authenticate():
+    """
+    Authenticates a user's actions. This is done as follows:
+    - grab the user/password pair from the decoded jwt token
+    - perform lookup in the table to see if there is a match
+    - if yes, then allowed to run any command, otherwise, blocked.
+    """
+
+    with open(".jwt", "br+") as f:
+        token = f.read()
+        decoded = jwt.decode(token, "secret", algorithms="HS256")
+        f.close()
+
+    dotenv.load_dotenv(dotenv.find_dotenv())
+    uri = os.getenv("URI")
+
+    client = pymongo.MongoClient(uri)
+    db = client.get_database()
+
+    users = db["users"].find_one(
+        {"user": decoded["user"], "password": decoded["password"]}
+    )
+
+    if users is None:
+        # presumably, throw some error here.
+        # print("error") -> prints are just for debugging at the moment.
+        return
+    # print("success") -> prints are just for debugging at the moment
+
