@@ -1,4 +1,5 @@
 from bs4 import BeautifulSoup
+from microservices.models.organization import Org
 import requests
 import json
 from requests import get
@@ -24,7 +25,7 @@ def get_one_ngo():
     soup = BeautifulSoup(page.content, "html.parser")
     ngo_tr_tags = soup.find_all("tr")
     ngo_row_scrape(ngo_tr_tags[4])
-    return ngos
+    return ngos[0]
 
 
 def basepage_scrape():
@@ -39,8 +40,8 @@ def basepage_scrape():
     for row in ngo_tr_tags:
         ngo_row_scrape(row)
 
-    write_to_csv()
-    return json.dumps(ngos, indent=4, separators=(",", ": "))
+    # write_to_csv()
+    return ngos
 
 
 def ngo_row_scrape(row):
@@ -50,21 +51,23 @@ def ngo_row_scrape(row):
     INPUT: table row object representing information for ngo
     """
     # dictionary to store ngo information
-    ngo = {}
+    # ngo = {}
     ngo_info = row.find_all("td")
 
     # check if row data is valid
     if ngo_info is not None and len(ngo_info) > 0:
         _, ngo_name, ngo_descr, ngo_URL, ngo_email, _ = row.find_all("td")
-        ngo["name"] = ngo_name.text.lstrip()
-        ngo["description"] = ngo_descr.text.lstrip()
+        name = ngo_name.text.lstrip()
+        description = ngo_descr.text.lstrip()
         # check for empty URL
         if ngo_URL.a is not None:
-            ngo["URL"] = ngo_URL.a.get("href")
+            url = ngo_URL.a.get("href")
+        else:
+            url = None
         # read email from website if possible
-        ngo["email"] = format_ngo_email(ngo_email.text)
-    # append ngo dictionary to list of ngos
-    ngos.append(ngo)
+        email = format_ngo_email(ngo_email.text)
+        # append ngo dictionary to list of ngos
+        ngos.append(Org(name=name, description=description, url=url, email=email).to_json())
 
 
 def format_ngo_email(email):
@@ -77,8 +80,6 @@ def format_ngo_email(email):
     if "requested" not in email:
         ngo_email = email.lstrip().replace(" at ", "@")
         return ngo_email
-
-    return ""
 
 
 def write_to_csv():

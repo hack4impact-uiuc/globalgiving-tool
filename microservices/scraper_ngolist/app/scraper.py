@@ -1,5 +1,7 @@
 from bs4 import BeautifulSoup
 from requests import get
+from microservices.models.organization import Org
+import json
 import csv
 import re
 
@@ -46,9 +48,11 @@ def basepage_scrape():
         country_page_scrape(country_link)
 
     # store scraped data into csv
-    write_to_csv()
+    # (@achcello) -- let's hold off on this; we just need to get the data
+    # serialized then passed through
+    # write_to_csv()
 
-    return region_country_links_dict["South-America"]
+    return json.dumps(ngos, indent=4, separators=(",", ": "))
 
 
 def country_page_scrape(country_link):
@@ -161,22 +165,30 @@ def ngo_td_scrape(td, country_name):
         r"mail:[\w\. -]+\(at\)[\w\. -]+\(dot\)[\w\. -]+", ngo_contact_text
     )
 
-    if match == None:
+    if match is None:
         print("NGO email could not be found!!")
     else:
         ngo_email = email_format(match.group())
 
     # assemble ngo dict
-    ngo = {}
-    ngo["ngo_name"] = ngo_name
-    ngo["description"] = ngo_descr
-    ngo["ngo_URL"] = ngo_URL
-    ngo["facebook"] = ngo_facebook
-    ngo["email"] = ngo_email
-    ngo["country"] = ngo_country
-    print(ngo)
-    # append ngo dictionary to list of ngos
-    ngos.append(ngo)
+    # ngo = {}
+    # ngo["ngo_name"] = ngo_name
+    # ngo["description"] = ngo_descr
+    # ngo["ngo_URL"] = ngo_URL
+    # ngo["facebook"] = ngo_facebook
+    # ngo["email"] = ngo_email
+    # ngo["country"] = ngo_country
+
+    ngos.append(
+        Org(
+            name=ngo_name,
+            email=ngo_email,
+            url=ngo_URL,
+            facebook=ngo_facebook,
+            description=ngo_descr,
+            country=ngo_country,
+        ).to_json()
+    )
 
 
 def email_format(email_string):

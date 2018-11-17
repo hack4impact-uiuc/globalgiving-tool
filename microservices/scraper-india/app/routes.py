@@ -14,9 +14,9 @@ def routes_availible():
 
 @app.route("/test")
 def test():
-    return json.dumps(get_one_nonprofit(), indent=4, separators=(",", ": "))
+    return get_one_nonprofit()
 
 
 @app.route("/data")
 def page_data():
-    return str(get_page_data())
+    return get_page_data()

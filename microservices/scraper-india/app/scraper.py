@@ -1,5 +1,7 @@
 from bs4 import BeautifulSoup
+from microservices.models.organization import Org
 import requests
+import json
 
 ngo_content_list = []
 
@@ -8,7 +10,7 @@ def get_one_nonprofit():
     url = "https://andaman-nicobar.ngosindia.com/amazing-life-ministries-andaman-nicobar-islands/"
     ngo_url = requests.get(url)
     get_ngo_data(ngo_url)
-    return {"data": [ngo_content_list[0]]}
+    return json.dumps(ngo_content_list[0], indent=4, separators=(",", ": "))
 
 
 def get_page_data():
@@ -37,7 +39,7 @@ def get_page_data():
                     # page is at county-level
                     get_ngo_page_fromcounty(list)
 
-    return ngo_content_list
+    return json.dumps(ngo_content_list, indent=4, separators=(",", ": "))
 
 
 def get_ngo_data(ngo_url):
@@ -78,26 +80,48 @@ def compile_information(ngo_name, contents):
     if len(contents) > 1:
         content = str(contents[1]).split("\n")
         # Remove additional text in string like ("Add:","Tel:",etc.)
+        add = None
+        tel = None
+        email = None
+        website = None
+        contact = None
+        description = None
         for item in content:
             if "Add" in item:
-                ngo_dict["Address"] = item.replace("Add", "").replace(":", "")
+                add = item.replace("Add", "").replace(":", "")
             if "Tel" in item:
-                ngo_dict["Telephone"] = item.replace("Tel", "").replace(":", "")
-            if "Mobile" in item:
-                ngo_dict["Mobile"] = item.replace("Mobile", "").replace(":", "")
+                tel = item.replace("Tel", "").replace(":", "")
+            # if "Mobile" in item:
+            #     ngo_dict["Mobile"] = item.replace("Mobile", "").replace(":", "")
             if "Email" in item:
-                ngo_dict["Email"] = item.replace("Email", "").replace(":", "")
+                email = item.replace("Email", "").replace(":", "")
             if "Website" in item:
-                ngo_dict["Website"] = item.replace("Website", "").replace(":", "")
+                website = item.replace("Website", "").replace(":", "")
             if "Contact" in item:
-                ngo_dict["Point of Contact"] = item.replace("Contact", "").replace(
-                    ":", ""
-                )
+                contact = item.replace("Contact", "").replace(":", "")
             if "Purpose" in item:
-                ngo_dict["Purpose"] = item.replace("Purpose", "").replace(":", "")
+                if description is not None:
+                    description += item.replace("Purpose", "").replace(":", "")
+                else:
+                    description = item.replace("Purpose", "").replace(":", "")
             if "Aim/Objective/Mission" in item:
-                ngo_dict["Mission"] = item.replace("Aim/Objective/Mission", "").replace(
-                    ":", ""
-                )
+                if description is not None:
+                    description += item.replace("Aim/Objective/Mission", "").replace(
+                        ":", ""
+                    )
+                else:
+                    description = item.replace("Aim/Objective/Mission", "").replace(
+                        ":", ""
+                    )
 
-    ngo_content_list.append(ngo_dict)
+        ngo_content_list.append(
+            Org(
+                address=add,
+                phone=tel,
+                email=email,
+                url=website,
+                contact=contact,
+                description=description,
+                country="India",
+            ).to_json()
+        )

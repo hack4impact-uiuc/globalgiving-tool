@@ -5,12 +5,20 @@ import json
 
 @app.route("/data")
 def page_data():
-    return str(basepage_scrape())
+    return json.dumps(
+        basepage_scrape(),
+        indent=4,
+        separators=(",", ": "),
+    )
 
 
 @app.route("/test")
 def test():
-    return str(get_one_ngo())
+    return json.dumps(
+        get_one_ngo(),
+        indent=4,
+        separators=(",", ": "),
+    )
 
 
 @app.route("/routes")
