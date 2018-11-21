@@ -67,7 +67,9 @@ def ngo_row_scrape(row):
         # read email from website if possible
         email = format_ngo_email(ngo_email.text)
         # append ngo dictionary to list of ngos
-        ngos.append(Org(name=name, description=description, url=url, email=email).to_json())
+        ngos.append(
+            Org(name=name, description=description, url=url, email=email).to_json()
+        )
 
 
 def format_ngo_email(email):
