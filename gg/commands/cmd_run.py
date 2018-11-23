@@ -16,28 +16,28 @@ def cli(ctx, n):
     h = hashlib.md5()
     h.update(n.encode("utf-8"))
     bucket_name = n + "-" + h.hexdigest()
- 
+
     filename = str(uuid.uuid4()) + ".txt"
     f = open(filename, "w+")
 
     search = "Finding scraper {} from list of registered scrapers..."
-    f.write(search.format(n) + '\n')
+    f.write(search.format(n) + "\n")
     try:
         scrapers = list_from_db()
         route = list(filter(lambda scraper: scraper["name"] == str(n), scrapers))[0][
             "routes"
         ]["Data"]
-        f.write("Scraper {} found!".format(n) + '\n')
+        f.write("Scraper {} found!".format(n) + "\n")
     except StopIteration:
-        f.write("Scraper {} not found!".format(n) + '\n')
+        f.write("Scraper {} not found!".format(n) + "\n")
         f.close()
         client.upload_file(filename, bucket_name, filename)
         os.remove(filename)
         return
     try:
-        contents = requests.get(route).text + '\nSUCCESS'
+        contents = requests.get(route).text + "\nSUCCESS"
     except Exception as e:
-        contents = str(e)  + '\nFAILED'
+        contents = str(e) + "\nFAILED"
 
     f.write(contents)
     f.close()
