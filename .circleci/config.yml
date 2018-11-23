@@ -8,9 +8,9 @@ jobs:
       - run:
           command: |
             cd microservices
-            pipenv install --skip-lock
-            pipenv install --skip-lock --dev
-            pipenv run pytest
+            pip install -r requirements.txt --user
+            pip install -r requirements-dev.txt --user
+            /home/circleci/.local/bin/pytest
   microservice_lint:
     docker:
       - image: circleci/python:3.7
@@ -19,9 +19,9 @@ jobs:
       - run:
           command: |
             cd microservices
-            pipenv install --skip-lock
-            pipenv install --skip-lock --dev
-            pipenv run black . --check
+            pip install -r requirements.txt --user
+            pip install -r requirements-dev.txt --user
+            /home/circleci/.local/bin/black . --check
   cli_test:
     docker:
       - image: circleci/python:3.7
@@ -30,9 +30,9 @@ jobs:
       - run:
           command: |
             cd gg
-            pipenv install --skip-lock
-            pipenv install --skip-lock --dev
-            pipenv run pytest
+            pip install -r requirements.txt --user
+            pip install -r requirements-dev.txt --user
+            /home/circleci/.local/bin/pytest
   cli_lint:
     docker:
       - image: circleci/python:3.7
@@ -41,9 +41,9 @@ jobs:
       - run:
           command: |
             cd gg
-            pipenv install --skip-lock
-            pipenv install --skip-lock --dev
-            pipenv run black . --check
+            pip install -r requirements.txt --user
+            pip install -r requirements-dev.txt --user
+            /home/circleci/.local/bin/black . --check
 workflows:
   version: 2
   build-test:
