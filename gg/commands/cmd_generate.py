@@ -1,6 +1,5 @@
 import click
 import os
-import subprocess
 from cookiecutter.main import cookiecutter
 
 from gg.cli import pass_context
