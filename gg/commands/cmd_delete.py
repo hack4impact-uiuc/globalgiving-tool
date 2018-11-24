@@ -3,11 +3,11 @@ from gg.db import list_from_db, delete_ngo
 from gg.cli import pass_context
 
 
-@click.command("delete", short_help="Test a scraper")
+@click.command("delete", short_help="Delete a scraper's registration.")
 @click.argument("name", required=True, type=str)
 @pass_context
 def cli(ctx, name):
-    search = "Finding scraper {} from list of registered scrapers..."
+    search = "Finding scraper {} from list of registered scrapers . . . "
     ctx.log(search.format(name))
     try:
         scrapers = list_from_db()
