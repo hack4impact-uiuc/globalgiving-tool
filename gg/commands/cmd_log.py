@@ -1,4 +1,5 @@
 import click
+import hashlib
 from ..s3_interface import *
 from tabulate import tabulate
 from gg.cli import pass_context
@@ -8,7 +9,7 @@ from gg.cli import pass_context
     "log", short_help="Gives all runs for the scraper with associated s3-names"
 )
 @click.option(
-    "--bucket_name",
+    "--scraper_name",
     help="The name of the scraper that logs will be outputted from",
     required=True,
     default=None,
@@ -19,16 +20,21 @@ from gg.cli import pass_context
     required=False,
     default=None,
 )
+@click.option(
+    "--output_filename",
+    help="The name of the file it will be downloaded to",
+    required=False,
+    default=None,
+)
 @pass_context
-def cli(ctx, bucket_name, filename):
-    # if (not bucket_name and not filename) or (bucket_name and filename):
-    #     ctx.log("Please specify either bucket_name or filename!")
-    #     return
+def cli(ctx, scraper_name, filename, output_filename):
     client = init_s3_credentials()
-    # client.create_bucket(Bucket='test-bucket-jingtao-1')
-    # filename = 'requirements.txt'
-    # client.upload_file(filename, bucket_name, filename)
-    if not filename:  # MAKE IT SO THE SCRAPER NAME MAPS TO S3 BUCKET NAME
+
+    h = hashlib.md5()
+    h.update(scraper_name.encode("utf-8"))
+    bucket_name = scraper_name + "-" + h.hexdigest()
+
+    if not filename:
         response = client.list_buckets()
         if bucket_name not in [bucket["Name"] for bucket in response["Buckets"]]:
             ctx.log("The provided scraper has no logs!")
@@ -40,6 +46,8 @@ def cli(ctx, bucket_name, filename):
             print(table)
             return
     else:
-        client.download_file(Bucket=bucket_name, Key=filename, Filename=filename)
-        ctx.log("Downladed file to: %s", click.format_filename(filename))
+        if not output_filename:
+            output_filename = filename
+        client.download_file(Bucket=bucket_name, Key=filename, Filename=output_filename)
+        ctx.log("Downladed file to: %s", click.format_filename(output_filename))
         return
