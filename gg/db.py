@@ -72,7 +72,7 @@ def list_from_db(test=False):
 def delete_ngo(ngo_id):
     scrapers = db_get_collection()
     return scrapers.delete_one({"_id": ngo_id})
-  
+
 
 def delete_all(test=False):
     if test:
