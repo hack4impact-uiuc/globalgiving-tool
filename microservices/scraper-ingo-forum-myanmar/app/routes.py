@@ -5,7 +5,7 @@ import json
 
 @app.route("/data")
 def page_data():
-    return str(get_page_data())
+    return json.dumps(get_page_data(), indent=4, separators=(",", ": "))
 
 
 @app.route("/test")

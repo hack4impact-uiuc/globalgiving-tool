@@ -9,6 +9,11 @@ def scrape_all_ngos():
     return str(basepage_scrape())
 
 
+@app.route("/test")
+def test():
+    return str(country_page_scrape("/colombia.html")[0])
+
+
 @app.route("/colombia")
 def scrape_colombia():
     return str(country_page_scrape("/colombia.html"))

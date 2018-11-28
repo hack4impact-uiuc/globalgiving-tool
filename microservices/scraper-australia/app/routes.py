@@ -19,4 +19,4 @@ def test():
 
 @app.route("/data")
 def page_data():
-    return str(get_page_data())
+    return get_page_data()

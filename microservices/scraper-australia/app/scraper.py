@@ -1,4 +1,5 @@
 from bs4 import BeautifulSoup
+from app.models.organization import Org
 import requests
 import json
 
@@ -14,27 +15,36 @@ def parse_page(webpage):
     target_url = requests.get(webpage)
     page_data = BeautifulSoup(target_url.content, "html.parser")
     contents = page_data.find("div", {"class": "container"})
-    title = True
-    for ngo in str(contents).split('<div class="firstline">\n'):
-        d = {}
-        if title:
-            title = False
-            continue
+    for ngo in str(contents).split('<div class="firstline">\n')[1:]:
         # print(ngo)
+        website = None
+        name = None
+        telephone = None
+        address = None
+        description = None
         for line in ngo.split("\n"):
             if line[:23] == '<span class="sitename">':
                 line = line.split(">")
-                d["Website"] = line[1].split('"')[1]
-                d["Name"] = line[2][:-3]
+                website = line[1].split('"')[1]
+                name = line[2][:-3]
             elif line[:20] == '<span class="phone">':
-                d["Telephone"] = line[25:40]
+                telephone = line[25:40]
             elif line[:22] == '<span class="address">':
                 line = line.split(">")
-                d["Address"] = line[1][:-6]
+                address = line[1][:-6]
             elif line[:25] == '<div class="description">':
                 line = line.split(">")
-                d["Description"] = line[1][:-5]
-        list_of_ds.append(d)
+                description = line[1][:-5]
+        list_of_ds.append(
+            Org(
+                name=name,
+                phone=telephone,
+                address=address,
+                description=description,
+                url=website,
+                country="Australia",
+            ).to_json()
+        )
     return list_of_ds
 
 
