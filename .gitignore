@@ -6,4 +6,11 @@
 *.pyc
 
 # Mac Files
+<<<<<<< HEAD
 **/.DS_Store
+=======
+**/.DS_Store
+
+# ENV Variables
+.env
+>>>>>>> cebd25ac9aa97f3dd1cee32993796ae26f29885e

@@ -5,9 +5,17 @@ import json
 
 @app.route("/data")
 def page_data():
-    return str(basepage_scrape())
+    return json.dumps(basepage_scrape(), indent=4, separators=(",", ": "))
 
 
+<<<<<<< HEAD
+=======
+@app.route("/test")
+def test():
+    return json.dumps(get_one_ngo(), indent=4, separators=(",", ": "))
+
+
+>>>>>>> cebd25ac9aa97f3dd1cee32993796ae26f29885e
 @app.route("/routes")
 def routes_availible():
     return json.dumps(

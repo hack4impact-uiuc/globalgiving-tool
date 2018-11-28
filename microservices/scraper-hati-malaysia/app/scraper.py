@@ -1,6 +1,7 @@
 from bs4 import BeautifulSoup
 import requests
 import json
+from app.models.organization import Org
 
 # import pymongo
 
@@ -95,7 +96,41 @@ def get_ngo_information(ngoLinks):
         print(json.dumps(ngoDict, indent=4, separators=(",", ": ")))
         # adds the nonprofit to the database
         # nonprofits.insert(ngoDict)
-        ngoInformation.append(ngoDict)
+        name = None
+        email = None
+        url = None
+        phone = None
+        registration = None
+        address = None
+        contact = None
+        for key in ngoDict.keys():
+            if key == "Name":
+                name = ngoDict[key]
+            if key == "Email address":
+                email = ngoDict[key]
+            if key == "Website":
+                url = ngoDict[key]
+            if key == "Phone number":
+                phone = ngoDict[key]
+            if key == "Registration number":
+                registration = ngoDict[key]
+            if key == "Address":
+                address = ngoDict[key]
+            if key == "Contact person":
+                contact = ngoDict[key]
+        ngoInformation.append(
+            Org(
+                name=name,
+                phone=phone,
+                email=email,
+                address=address,
+                contact=contact,
+                registration=registration,
+                url=url,
+                description=description,
+                country="Malaysia",
+            ).to_json()
+        )
 
     return ngoInformation
 
