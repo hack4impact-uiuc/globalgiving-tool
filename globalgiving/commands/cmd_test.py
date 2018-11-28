@@ -1,9 +1,9 @@
 import click, requests
-from gg.db import list_from_db
-from gg.cli import pass_context
+from globalgiving.db import list_from_db
+from globalgiving.cli import pass_context
 
 
-@click.command("run", short_help="Run a scraper")
+@click.command("test", short_help="Test a scraper")
 @click.option("--n", nargs=1, required=True, type=str)
 @pass_context
 def cli(ctx, n):
@@ -13,10 +13,10 @@ def cli(ctx, n):
         scrapers = list_from_db()
         route = list(filter(lambda scraper: scraper["name"] == str(n), scrapers))[0][
             "routes"
-        ]["Data"]
+        ]["Test"]
         ctx.log("Scraper {} found!".format(n))
     except StopIteration:
         ctx.log("Scraper {} not found.".format(n))
         return
     contents = requests.get(route).text
-    ctx.log(contents)
+    print(contents)
