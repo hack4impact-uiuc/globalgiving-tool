@@ -1,19 +1,34 @@
 import click
+import os
+import os
+from cookiecutter.main import cookiecutter
+
 from globalgiving.cli import pass_context
 from globalgiving.db import list_from_db
-import os
-import subprocess
-
 
 @click.command("generate", short_help="Generate a new scraper template")
+@click.argument("name", required=True, type=str)
 @pass_context
-def cli(ctx):
+def cli(ctx, name):
     """
-    GG list lists all scrapers registered on the database. It prints out each
-    name and all routes associated with that scraper.
+    GG generate creates a new template scraper
     """
-    p = subprocess.Popen(
-        ["cookiecutter", "--no-input", "."],
-        cwd=str(os.path.dirname(os.path.realpath(__file__)))[:-11] + "microservices",
+    # Get root directory set start of scraper search to the root microservices directory
+    rootdir = os.getcwd() + "/microservices"
+    subdir_list = next(os.walk(rootdir))[1]
+
+    # Check if scraper already exists in list of subdirectories
+    for scraper in subdir_list:
+        name_start_idx = scraper.find("-")
+        if name == scraper[name_start_idx + 1 :]:
+            ctx.log("Scraper {} already exists!".format(name))
+            return
+
+    # If scraper doesn't already exist, create new scraper template with the passed in name
+    cookiecutter(
+        rootdir + "/cookiecutter-scraper",
+        extra_context={"project_slug": name},
+        no_input=True,
+        output_dir=rootdir,
     )
-    p.wait()
+    ctx.log("Scraper {} successfully created!".format(name))
