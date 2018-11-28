@@ -1,10 +1,12 @@
 import click
 import requests
-from gg.cli import pass_context
-from gg.db import send_to_db
+from globalgiving.cli import pass_context
+from globalgiving.db import send_to_db
 
 
-@click.command("register", short_help="Register a new scraper or update an existing one.")
+@click.command(
+    "register", short_help="Register a new scraper or update an existing one."
+)
 @click.argument("name", required=True)
 @click.argument("routes", required=True)
 @pass_context

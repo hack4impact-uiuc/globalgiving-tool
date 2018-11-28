@@ -1,6 +1,6 @@
 import click, requests
-from gg.db import list_from_db, delete_ngo
-from gg.cli import pass_context
+from globalgiving.db import list_from_db, delete_ngo
+from globalgiving.cli import pass_context
 
 
 @click.command("delete", short_help="Delete a scraper's registration.")

@@ -3,7 +3,11 @@ import os
 import dotenv
 import requests
 import pytest
-from gg.db import send_to_db, list_from_db, DELETE_ALL_PLEASE_ONLY_USE_THIS_FOR_TESTING
+from globalgiving.db import (
+    send_to_db,
+    list_from_db,
+    DELETE_ALL_PLEASE_ONLY_USE_THIS_FOR_TESTING,
+)
 
 
 def test_existence():

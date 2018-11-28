@@ -1,6 +1,6 @@
 import click
-from gg.cli import pass_context
-from gg.db import list_from_db
+from globalgiving.cli import pass_context
+from globalgiving.db import list_from_db
 import os
 import subprocess
 
