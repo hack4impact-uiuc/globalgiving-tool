@@ -31,7 +31,6 @@ jobs:
           command: |
             cd globalgiving
             pip install -r requirements.txt --user
-            pip install -r requirements-dev.txt --user
             /home/circleci/.local/bin/pytest
   cli_lint:
     docker:
@@ -42,7 +41,6 @@ jobs:
           command: |
             cd globalgiving
             pip install -r requirements.txt --user
-            pip install -r requirements-dev.txt --user
             /home/circleci/.local/bin/black . --check
 workflows:
   version: 2
