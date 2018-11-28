@@ -7,7 +7,7 @@
 
 * gg list => get all the scrapers availible
 
-![GitHub Logo](/resources/carbon.png)
+![](/resources/carbon.png)
 To run scraper and have logs written to s3:
 * gg run --n [scraper]
 
