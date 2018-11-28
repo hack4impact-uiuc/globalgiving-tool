@@ -17,14 +17,14 @@ def cli(ctx, name, routes):
     for gg.db.send_to_db().
     """
     try:
-        routesList = list(requests.get(routes).json())
+        routesList = list(requests.get(routes + "/routes").json())
     except Exception as ex:
         # source: https://stackoverflow.com/questions/9823936/python-how-do-i-know-what-type-of-exception-occurred
         template = "An exception of type {0} occurred. Arguments:\n{1!r}"
         message = template.format(type(ex).__name__, ex.args)
         ctx.log(message)
         ctx.log("Getting information from the provided /routes failed.")
-        ctx.log("Route tried: {}".format(routes))
+        ctx.log("Route tried: {}".format(routes + "/routes"))
         return "exception"
     url = routes.replace("/routes", "")
     namesList = [
