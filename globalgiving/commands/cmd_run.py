@@ -7,6 +7,7 @@ from globalgiving.db import list_from_db
 from globalgiving.cli import pass_context
 from ..s3_interface import *
 
+
 @click.command("run", short_help="Run a scraper")
 @click.option("--n", nargs=1, required=True, type=str)
 @pass_context
