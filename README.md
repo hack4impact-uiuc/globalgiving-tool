@@ -5,16 +5,23 @@
 
 ## API
 
-*gg list* => get all the scrapers availible
+* gg list => get all the scrapers availible
+
+![GitHub Logo](/resources/carbon.png)
+To run scraper and have logs written to s3:
+* gg run --n [scraper]
+
+To get list of logs from scraper:
+* gg log --scraper_name [scraper]
+
+To download specific log from scraper and have it written to a specific file name:
+* gg log --scraper_name [scraper] --filename [file name] --output_filename [output file name]
 
 
-*gg log <scraper_name>* => lets you choose the timestamp => gets logs for how that information was scraped for that nonprofit
+* gg run <scraper_name>* => kicks off a job to run that scraper and update the database
 
 
-*gg run <scraper_name>* => kicks off a job to run that scraper and update the database
-
-
-*gg submit* => from our database, take all new entries, format them, and send them to global givings central database
+* gg submit => from our database, take all new entries, format them, and send them to global givings central database
 
 
 ## Contributing Guidelines
@@ -23,8 +30,6 @@ Run ```pip install --editable .``` which will initialize your cli tool
 Run ```gg -h``` to see the commands and run them
 
 Deleting pyc files ```find . -name '*.pyc' -delete```
-
-## API
 
 # Microservices
 
