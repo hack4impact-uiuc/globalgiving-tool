@@ -1,7 +1,7 @@
 from bs4 import BeautifulSoup
 from requests import get
 from app.org import create_org_ingo_forum_myanmar
-from microservices.models.organization import Org
+from app.models.organization import Org
 
 url = "http://www.ingoforummyanmar.org/en/members"
 

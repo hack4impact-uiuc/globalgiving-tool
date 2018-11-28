@@ -4,7 +4,7 @@ from globalgiving.cli import pass_context
 
 
 @click.command("test", short_help="Test a scraper")
-@click.option("--n", nargs=1, required=True, type=str)
+@click.argument("n", required=True, type=str)
 @pass_context
 def cli(ctx, n):
     search = "Finding scraper {} from list of registered scrapers..."

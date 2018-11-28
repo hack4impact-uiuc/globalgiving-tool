@@ -1,6 +1,7 @@
 from bs4 import BeautifulSoup
 from requests import get
-from microservices.models.organization import Org
+
+# from microservices.models.organization import Org
 import json
 import csv
 import re
@@ -179,16 +180,16 @@ def ngo_td_scrape(td, country_name):
     # ngo["email"] = ngo_email
     # ngo["country"] = ngo_country
 
-    ngos.append(
-        Org(
-            name=ngo_name,
-            email=ngo_email,
-            url=ngo_URL,
-            facebook=ngo_facebook,
-            description=ngo_descr,
-            country=ngo_country,
-        ).to_json()
-    )
+    # ngos.append(
+    #     Org(
+    #         name=ngo_name,
+    #         email=ngo_email,
+    #         url=ngo_URL,
+    #         facebook=ngo_facebook,
+    #         description=ngo_descr,
+    #         country=ngo_country,
+    #     ).to_json()
+    # )
 
 
 def email_format(email_string):

@@ -9,7 +9,6 @@ globalgiving/__init__.py
 globalgiving/cli.py
 globalgiving/db.py
 globalgiving/s3_interface.py
-globalgiving/test_db.py
 globalgiving/commands/__init__.py
 globalgiving/commands/cmd_delete.py
 globalgiving/commands/cmd_generate.py
