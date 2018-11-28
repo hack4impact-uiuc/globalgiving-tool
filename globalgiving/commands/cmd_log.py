@@ -2,7 +2,7 @@ import click
 import hashlib
 from ..s3_interface import *
 from tabulate import tabulate
-from gg.cli import pass_context
+from globalgiving.cli import pass_context
 
 
 @click.command(

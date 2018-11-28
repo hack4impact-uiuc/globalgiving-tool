@@ -1,6 +1,6 @@
 import click
-from gg.cli import pass_context
-from gg.db import list_from_db
+from globalgiving.cli import pass_context
+from globalgiving.db import list_from_db
 
 
 @click.command("list", short_help="List all available scrapers.")
@@ -13,9 +13,5 @@ def cli(ctx):
     ctx.log("Listing all registered scrapers!")
     all_docs = list_from_db()
     for doc in all_docs:
-        ctx.log("\nName: {}".format(doc["name"]))
-        ctx.log("Available Routes for {}:".format(doc["_id"]))
-        for route in doc["routes"].keys():
-            if route != "Routes":
-                ctx.log("    {}: {}".format(route, doc["routes"][route]))
+        ctx.log("  {}".format(doc["name"]))
     return all_docs  # for testing

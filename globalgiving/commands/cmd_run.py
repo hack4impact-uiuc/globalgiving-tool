@@ -1,9 +1,10 @@
 import click, requests
+
 import hashlib
 import os
 import uuid
-from gg.db import list_from_db
-from gg.cli import pass_context
+from globalgiving.db import list_from_db
+from globalgiving.cli import pass_context
 from ..s3_interface import *
 
 
