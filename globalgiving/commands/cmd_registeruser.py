@@ -6,13 +6,12 @@ from globalgiving.cli import pass_context
 @click.option("--key", nargs=1, required=True, type=str)
 @pass_context
 def cli(ctx, key):
+    # endpoint containing db of users and whitelist keys
     dotenv.load_dotenv(dotenv.find_dotenv())
     uri = os.getenv("URI")
 
     client = pymongo.MongoClient(uri)
     db = client.get_database()
-    for u in db["whitelist_keys"].find({}):
-        print(u)
 
     whitelist_key = db["whitelist_keys"].find_one({"key": key})
 
@@ -26,7 +25,9 @@ def cli(ctx, key):
     password = input()
 
     encoded_jwt = jwt.encode(
-        {"mongo_uri": whitelist_key["mongo"]}, "secret", algorithm="HS256"
+        {"user": username, "password": password, "mongo_uri": whitelist_key["mongo"]},
+        "secret",
+        algorithm="HS256",
     )
 
     try:
@@ -34,11 +35,11 @@ def cli(ctx, key):
             {"user": username, "password": password, "jwt": encoded_jwt}
         )
         ctx.log("Success!")
-
-        with open(".jwt", 'bw+') as f:
-            f.write(encoded_jwt)
-            f.close()
     except pymongo.errors.DuplicateKeyError:
         ctx.log("Duplicate user name. Please retry with a different username")
+        return
 
-    
+    # write jw token to a file - this is used for authentication of other commands
+    with open(".jwt", "wb") as f:
+        f.write(encoded_jwt)
+        f.close()

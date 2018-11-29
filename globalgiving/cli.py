@@ -1,7 +1,9 @@
 import os
 import sys
 import click
-
+import jwt
+import dotenv
+import pymongo
 
 CONTEXT_SETTINGS = dict(auto_envvar_prefix="GlobalGiving")
 
@@ -51,3 +53,32 @@ class GlobalGiving(click.MultiCommand):
 def cli(ctx, verbose=False):
     """A complex command line interface."""
     ctx.verbose = verbose
+
+
+def authenticate():
+    """
+    Authenticates a request to run any command (other than registeruser).
+    This is done by using the jw token stored locally and performing a lookup
+    of user/password pairs with the database.
+    """
+    dotenv.load_dotenv(dotenv.find_dotenv())
+    uri = os.getenv("URI")
+
+    client = pymongo.MongoClient(uri)
+    db = client.get_database()
+
+    with open(".jwt", "rb") as jwt_file:
+        encoded_jwt = jwt_file.read()
+
+    auth_info = jwt.decode(encoded_jwt, "secret", algorithms=["HS256"])
+    user_match = db["users"].find_one(
+        {"user": auth_info["user"], "password": auth_info["password"]}
+    )
+
+    if user_match is None:
+        print(
+            "Not authenticated - please register using registeruser or fetch your jwt using fetch"
+        )
+        return
+
+    pass

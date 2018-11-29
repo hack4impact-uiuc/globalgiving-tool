@@ -1,5 +1,5 @@
 import click
-from globalgiving.cli import pass_context
+from globalgiving.cli import pass_context, authenticate
 from globalgiving.db import list_from_db
 
 
@@ -10,6 +10,7 @@ def cli(ctx):
     GG list lists all scrapers registered on the database. It prints out each
     name and all routes associated with that scraper.
     """
+    authenticate()
     ctx.log("Listing all registered scrapers!")
     all_docs = list_from_db()
     for doc in all_docs:
