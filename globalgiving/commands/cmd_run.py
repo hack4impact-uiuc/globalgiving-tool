@@ -4,7 +4,7 @@ import hashlib
 import os
 import uuid
 from globalgiving.db import list_from_db
-from globalgiving.cli import pass_context
+from globalgiving.cli import pass_context, authenticate
 from ..s3_interface import *
 
 
@@ -12,6 +12,7 @@ from ..s3_interface import *
 @click.option("--n", nargs=1, required=True, type=str)
 @pass_context
 def cli(ctx, n):
+    authenticate()
     client = init_s3_credentials()
 
     h = hashlib.md5()

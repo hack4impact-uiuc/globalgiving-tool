@@ -67,8 +67,12 @@ def authenticate():
     client = pymongo.MongoClient(uri)
     db = client.get_database()
 
-    with open(".jwt", "rb") as jwt_file:
-        encoded_jwt = jwt_file.read()
+    try:
+        with open(".jwt", "rb") as jwt_file:
+            encoded_jwt = jwt_file.read()
+    except FileNotFoundError:
+        print("No JW token found")
+        exit(0)
 
     auth_info = jwt.decode(encoded_jwt, "secret", algorithms=["HS256"])
     user_match = db["users"].find_one(
@@ -77,8 +81,6 @@ def authenticate():
 
     if user_match is None:
         print(
-            "Not authenticated - please register using registeruser or fetch your jwt using fetch"
+            "Authentication failed"
         )
-        return
-
-    pass
+        exit(0)

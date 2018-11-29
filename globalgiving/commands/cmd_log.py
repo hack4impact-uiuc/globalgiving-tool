@@ -2,7 +2,7 @@ import click
 import hashlib
 from ..s3_interface import *
 from tabulate import tabulate
-from globalgiving.cli import pass_context
+from globalgiving.cli import pass_context, authenticate
 
 
 @click.command(
@@ -28,6 +28,7 @@ from globalgiving.cli import pass_context
 )
 @pass_context
 def cli(ctx, scraper_name, filename, output_filename):
+    authenticate()
     client = init_s3_credentials()
 
     h = hashlib.md5()
