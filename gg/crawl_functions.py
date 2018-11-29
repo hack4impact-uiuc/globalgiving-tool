@@ -1,6 +1,7 @@
 from googlesearch import search
 from bs4 import BeautifulSoup
 from bs4.element import Comment
+from urllib.parse import urlparse
 import requests
 
 # dictionary that maps directory url to rank_info for one website
@@ -50,7 +51,7 @@ def rank_page(url):
     page = requests.get(url)
     soup = BeautifulSoup(page.content, "html.parser")
     
-    all_visible_text = ""
+    all_visible_text = get_all_visible_text(url)
     
     # get all subpages
     subpages = find_subpages(url)
@@ -64,13 +65,13 @@ def rank_page(url):
 
     # perform webpage analysis on all_visible_text HERE, update rank_info
     
-
+    # print(all_visible_text)
 
 
     # get composite_score
-    composite_score = get_composite_score(url_rank[url])
+    # composite_score = get_composite_score(url_rank[url])
     #store composite_score
-    url_rank[url]['composite_score'] = composite_score
+    # url_rank[url]['composite_score'] = composite_score
     
 def count_phone_numbers(visible_text):
     """
@@ -90,9 +91,10 @@ def get_composite_score(rank_info):
               dictionary stores information pertinent to ranking as well as composite rank score
     """
     #heuristic can be altered here:
-    composite_score = rank_info['num_phone_numbers']
+    # composite_score = rank_info['num_phone_numbers']
 
-    return composite_score
+    # return composite_score
+    pass
 
 
 #-----------------------------------------------------------------------------------------------
@@ -120,7 +122,7 @@ def get_all_visible_text(url):
     visible_texts = filter(tag_visible, texts)  
     visible_text =  " ".join(t.strip() for t in visible_texts)
 
-    print(visible_text)
+    # print(visible_text)
 
     return visible_text
 
@@ -144,6 +146,13 @@ def find_subpages(url):
     INPUT: url --- absolute URL denoting ngo website homepage
     OUTPUT: list of all subpage URLs
     """
+
+    #get the domain url from homepage url
+    parsed_uri = urlparse(url)
+    home_url = '{uri.scheme}://{uri.netloc}/'.format(uri=parsed_uri)
+    print("STRIPPED URL:")
+    print(home_url)
+
     subpages = []
     valid_subpages = []
 
@@ -154,31 +163,32 @@ def find_subpages(url):
     anchors = soup.findAll('a', href = True)
     links = [anchor['href'] for anchor in anchors]
     '''
+    Note that homepage url could be e.g. "https://care.ca/directory" due to
+    google search not taking us to true homepage
+    Need to remove "/directory" for true homepage url
+
     Three types of links that can be found
     1) relative links for subpages (e.g. /about-us/mission)
     2) absolute links for subpages (e.g. https://care.ca/about-us/mission)
     3) irrevelant external absolute link (e.g. https://mcafee.com/blahblahblah)
     '''
-    
+    home_url_length = len(home_url)
     # consider case 1) and 2) for subpage links, discard case 3)
     for link in links:
-        url_length = len(url)
         # discard case 3)
-        if (link[:1] != '/' and link[:url_length] != url):
+        if (link[:1] != '/' and link[:home_url_length] != home_url):
+            print("LINK IS NOT SUBPAGE: "+ link)
             continue
         # case 2)
-        if (link[:4] == "http"):
+        if (link[:home_url_length] == home_url):
             subpages.append(link)
         # case 1)
         if (link[:1] == '/'):
             subpages.append(url + link)
-        
-    print("SUBPAGES:")
-    print(subpages)
+            subpages.append(home_url + link)
 
     # remove duplicates in valid_subpages
     subpages = list(set(subpages))
-
 
     # remove faulty subpage links
     for link in subpages:
@@ -195,6 +205,12 @@ def find_subpages(url):
 
     print("VALID SUBPAGES: " + str(len(valid_subpages)))
     print(valid_subpages)
+
+    # output all subpage links to text file for easier examination
+    f = open('subpages.txt','w')
+    for valid_subpage in valid_subpages:
+        f.write(valid_subpage + "\n")
+    f.close()
 
     return valid_subpages
 
