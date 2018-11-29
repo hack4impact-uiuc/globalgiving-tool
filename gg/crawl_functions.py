@@ -15,12 +15,14 @@ url_rank = {}
 rank_info = {}
 '''
 {
-    'page_or_dir': (boolean to indicate whether URL is ngo page or ngo directory)
     'num_links': (number of links),
     'num_subpages': (number of subpages)
     'num_addresses': (number of addresses)
     'num_phone_numbers': (number of phone numbers)
+    'num_word_ngo' : (number of times word "ngo" appears on website)
+    'num_word_directory': (number of times word "directory appears on website)
     'composite_score': (composite score for website)
+    'page_or_dir': (boolean to indicate whether we think URL is ngo page or ngo directory)
 }
 '''
 
