@@ -21,7 +21,7 @@ To download specific log from scraper and have it written to a specific file nam
 
 INSERT IMAGE
 
-To kick off a job to run that scraper and update the database:
+To kick off a job to run a scraper and update the database:
 * globalgiving run [scraper_name]
 
 
