@@ -80,7 +80,5 @@ def authenticate():
     )
 
     if user_match is None:
-        print(
-            "Authentication failed"
-        )
+        print("Authentication failed")
         exit(0)
