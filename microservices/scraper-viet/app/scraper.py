@@ -1,3 +1,10 @@
+from bs4 import BeautifulSoup
+from requests import get
+import json
+from app.models.organization import Org
+
+url = "https://www.viet.net/community/nonprofit/"
+
 def create_org(line):
     """
     Attempts to parse a line of data into the Org class.
@@ -36,33 +43,41 @@ def create_org(line):
     contact = org_data["contact"] if "contact" in org_data.keys() else None
     url = org_data["url"] if "url" in org_data.keys() else None
 
-    org = Org(name, phone, email, address, contact, url) if bool(org_data) else None
-    if org is not None:
-        print(org)
-    return org
+    if bool(org_data):
+        org = Org(
+                name=name,
+                phone=phone,
+                email=email,
+                address=address,
+                contact=contact,
+                url=url,
+                country="Vietnam",
+            ).to_json()
+        return org
+    return None
+
+def parse_data(link):
+    orgs = []
+    if link != None:
+        for line in link.split("\n\n"):
+            org = create_org(line.strip().split("\n"))
+            if (org is not None):
+                print(org)
+                orgs += [org]
+    return orgs
+
+def get_page_data():
+    response = get(url)
+    soup = BeautifulSoup(response.text, "html.parser")
+    orgs = []
+    for link in soup.findAll("p"):
+        orgs += parse_data(link.text)
+    return orgs
 
 
-class Org:
-    """
-    Serialized object for easy input and retrieval of relevant organization text data.
-    Contains name, phone number, email address, physical address, contact information,
-    and web url.
-    """
+def get_test_data():
+    response = get(url)
+    soup = BeautifulSoup(response.text, "html.parser")
+    return parse_data((soup.findAll("p")[0]).text)
 
-    def __init__(self, name, phone, email, address, contact, url):
-        self.name = name
-        self.phone = phone
-        self.email = email
-        self.address = address
-        self.contact = contact
-        self.url = url
 
-    def __str__(self):
-        return "%s, %s, %s, %s, %s, %s" % (
-            self.name,
-            self.phone,
-            self.email,
-            self.address,
-            self.contact,
-            self.url,
-        )
