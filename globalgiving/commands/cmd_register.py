@@ -1,6 +1,6 @@
 import click
 import requests
-from globalgiving.cli import pass_context
+from globalgiving.cli import pass_context, authenticate
 from globalgiving.db import send_to_db
 
 
@@ -16,6 +16,7 @@ def cli(ctx, name, routes):
     possible routes from the `/routes` route then sets up appropriate inputs
     for gg.db.send_to_db().
     """
+    authenticate()
     try:
         routesList = list(requests.get(routes + "/routes").json())
     except Exception as ex:

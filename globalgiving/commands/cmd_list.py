@@ -1,11 +1,12 @@
 import click
-from globalgiving.cli import pass_context
+from globalgiving.cli import pass_context, authenticate
 from globalgiving.db import list_from_db
 
 
 @click.command("list", short_help="List all available scrapers.")
 @pass_context
 def cli(ctx):
+    authenticate()
     """
     GG list lists all scrapers registered on the database. It prints out each
     name and all routes associated with that scraper.
