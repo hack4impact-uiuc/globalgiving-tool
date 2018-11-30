@@ -3,9 +3,10 @@ import click, requests
 import hashlib
 import os
 import uuid
-from globalgiving.db import list_from_db
+from globalgiving.db import list_from_db, upload_data
 from globalgiving.cli import pass_context
 from ..s3_interface import *
+import json
 
 
 @click.command("run", short_help="Run a scraper")
@@ -36,7 +37,9 @@ def cli(ctx, n):
         os.remove(filename)
         return
     try:
-        contents = requests.get(route).text + "\nSUCCESS"
+        data = requests.get(route)
+        result = upload_data(data.json())
+        contents = str(data.text) + "\nSUCCESS"
     except Exception as e:
         contents = str(e) + "\nFAILED"
 
@@ -51,8 +54,6 @@ def cli(ctx, n):
 
     if not (bucket_name in buckets):
         client.create_bucket(Bucket=bucket_name)
-
-    client.upload_file(filename, bucket_name, filename)
 
     os.remove(filename)
     ctx.log("Wrote logs to file: " + filename)
