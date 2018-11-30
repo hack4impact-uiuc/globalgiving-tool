@@ -7,9 +7,9 @@ from globalgiving.cli import pass_context
 
 
 @click.command("register-user", short_help="Registers a new user")
-@click.option('--key', prompt=True)
-@click.option('--username', prompt=True)
-@click.option('--password', prompt=True, hide_input=True, confirmation_prompt=True)
+@click.option("--key", prompt=True)
+@click.option("--username", prompt=True)
+@click.option("--password", prompt=True, hide_input=True, confirmation_prompt=True)
 @pass_context
 def cli(ctx, key, username, password):
     # endpoint containing db of users and whitelist keys
@@ -24,8 +24,7 @@ def cli(ctx, key, username, password):
         return
 
     encoded_jwt = jwt.encode(
-        {"user": username, "password": password,
-            "mongo_uri": whitelist_key["mongo"]},
+        {"user": username, "password": password, "mongo_uri": whitelist_key["mongo"]},
         "secret",
         algorithm="HS256",
     )
