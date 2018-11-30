@@ -43,6 +43,15 @@ def cli(ctx, n):
     f.write(contents)
     f.close()
 
+    # Call S3 to list current buckets
+    response = client.list_buckets()
+
+    # Get a list of all bucket names from the response
+    buckets = [bucket['Name'] for bucket in response['Buckets']]
+
+    if not (bucket_name in buckets):
+        client.create_bucket(Bucket=bucket_name)
+
     client.upload_file(filename, bucket_name, filename)
 
     os.remove(filename)
