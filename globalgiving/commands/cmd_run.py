@@ -9,7 +9,7 @@ from ..s3_interface import *
 
 
 @click.command("run", short_help="Run a scraper")
-@click.option("--n", nargs=1, required=True, type=str)
+@click.argument("n", required=True)
 @pass_context
 def cli(ctx, n):
     client = init_s3_credentials()
