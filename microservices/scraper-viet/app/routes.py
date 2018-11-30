@@ -2,18 +2,11 @@ from app import app
 from app.scraper import get_page_data, get_test_data
 import json
 
-
-@app.route("/")
-def index():
-    return "Hello, Python World!"
-
-
 @app.route("/data")
 def page_data():
     orgs = get_page_data()
     print(orgs[0:2])
     return str(orgs)
-
 
 @app.route("/routes")
 def routes_availible():
@@ -22,10 +15,6 @@ def routes_availible():
         indent=4,
         separators=(",", ": "),
     )
-
-
-"""Test Routes!"""
-
 
 @app.route("/test")
 def test():
