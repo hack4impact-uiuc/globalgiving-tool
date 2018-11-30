@@ -5,6 +5,7 @@ from app.models.organization import Org
 
 url = "https://www.viet.net/community/nonprofit/"
 
+
 def create_org(line):
     """
     Attempts to parse a line of data into the Org class.
@@ -45,26 +46,28 @@ def create_org(line):
 
     if bool(org_data):
         org = Org(
-                name=name,
-                phone=phone,
-                email=email,
-                address=address,
-                contact=contact,
-                url=url,
-                country="Vietnam",
-            ).to_json()
+            name=name,
+            phone=phone,
+            email=email,
+            address=address,
+            contact=contact,
+            url=url,
+            country="Vietnam",
+        ).to_json()
         return org
     return None
+
 
 def parse_data(link):
     orgs = []
     if link != None:
         for line in link.split("\n\n"):
             org = create_org(line.strip().split("\n"))
-            if (org is not None):
+            if org is not None:
                 print(org)
                 orgs += [org]
     return orgs
+
 
 def get_page_data():
     response = get(url)
@@ -79,5 +82,3 @@ def get_test_data():
     response = get(url)
     soup = BeautifulSoup(response.text, "html.parser")
     return parse_data((soup.findAll("p")[0]).text)
-
-
