@@ -80,3 +80,26 @@ def delete_all(test=False):
         scrapers.delete_many({})
     else:
         pass  # Don't do anything if called by accident!
+
+
+def upload_data(data, test=False):
+    """
+    Sends the NGO/CSO data to the database.
+    Input:
+        data: A list of dictionaries representing the NGOs.
+    Returns:
+        A confirmation that the data has been sent, otherwise an
+        exception.
+    """
+    scrapers = db_get_collection("ngo_data")
+    # bucket_name = name + "-" + str(hash(name))  # we need to figure out how
+    # logging is going to work for uploading ngo data
+    # payload[name] = bucket_name
+    # client = init_s3_credentials()
+    # client.create_bucket(Bucket=bucket_name)
+    post_ids = scrapers.insert_many(data, ordered=False).inserted_ids
+    try:
+        assert len(data) == len(post_ids)
+    except AssertionError:
+        return "Not all NGO data was uploaded."
+    return "Data for {} NGOs sent to the database.".format(len(post_ids))
