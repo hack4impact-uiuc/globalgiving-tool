@@ -62,10 +62,6 @@ Uses the test endpoint to give you an example of what the data looks like
 Runs the scraper on the entire directory and adds all the nonprofits to the database
     * Example: globalgiving run australia
 
-* **globalgiving run <scrape_name>** 
-Runs the scraper on the entire directory and adds all the nonprofits to the database
-    * Example: globalgiving run australia
-
 * **globalgiving log --scraper_name <scrape_name>** 
 Gets a list of all uploaded logs from every run of the scraper
     * Example: globalgiving run australia
