@@ -1,4 +1,4 @@
-requests==2.19.1
+requests==2.20.0
 beautifulsoup4==4.6.3
 Flask==1.0.2
 microservices==0.33.0
