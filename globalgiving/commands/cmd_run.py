@@ -48,7 +48,7 @@ def cli(ctx, n):
     response = client.list_buckets()
 
     # Get a list of all bucket names from the response
-    buckets = [bucket['Name'] for bucket in response['Buckets']]
+    buckets = [bucket["Name"] for bucket in response["Buckets"]]
 
     if not (bucket_name in buckets):
         client.create_bucket(Bucket=bucket_name)
