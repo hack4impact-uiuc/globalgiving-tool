@@ -17,9 +17,6 @@ Through the command line tool you can get a list of the registered scrapers, run
  
 We wanted to create a crawler in which you can search for potential directories of nonprofits so you know the one's to scraper. To rank the list of nonprofits, we are currently using heuristics such as the number of subpages, number of nonprofits that match one's we have already found, and finding repeated structures on the webpage. 
 
-![GitHub Logo](/resources/carbon.png)
-
-
 ### Architecture
 
 ![GitHub Logo](/resources/architecture.png)
