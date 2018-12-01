@@ -89,4 +89,17 @@ In order for unittest to recognize and run tests, each method in the class shoul
 
 
 
+## Features before handoff
+
+
+- [ ] Web Crawler
+- [ ] Handle updates, dont replicate same nonprofit
+- [ ] Tests
+
+- [ ] Kill jobs
+- [ ] Submit Funcionality
+- [ ] Registration Ids scraper
+
+
+
 
