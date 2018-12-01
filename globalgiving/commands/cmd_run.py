@@ -3,9 +3,9 @@ import click, requests
 import hashlib
 import os
 import uuid
-from globalgiving.db import list_from_db
+from globalgiving.db import list_from_db, upload_data
 from globalgiving.cli import pass_context, authenticate
-from ..s3_interface import *
+from globalgiving.s3_interface import init_s3_credentials
 
 
 @click.command("run", short_help="Run a scraper")
@@ -37,11 +37,12 @@ def cli(ctx, n):
         os.remove(filename)
         return
     try:
-        contents = requests.get(route).text + "\nSUCCESS"
+        contents = requests.get(route)
+        upload_data(contents.json())
     except Exception as e:
         contents = str(e) + "\nFAILED"
 
-    f.write(contents)
+    f.write(contents.text)
     f.close()
 
     # Call S3 to list current buckets
