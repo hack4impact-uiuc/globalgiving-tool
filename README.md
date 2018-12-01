@@ -95,6 +95,7 @@ In order for unittest to recognize and run tests, each method in the class shoul
 - [ ] Web Crawler
 - [ ] Handle updates, dont replicate same nonprofit
 - [ ] Tests
+- [ ] Run all command 
 
 - [ ] Kill jobs
 - [ ] Submit Funcionality
