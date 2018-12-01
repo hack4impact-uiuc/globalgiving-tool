@@ -4,9 +4,7 @@ from globalgiving.cli import pass_context, authenticate
 from globalgiving.db import send_to_db
 
 
-@click.command(
-    "add", short_help="Add a new scraper or update an existing one."
-)
+@click.command("add", short_help="Add a new scraper or update an existing one.")
 @click.argument("name", required=True)
 @click.argument("routes", required=True)
 @pass_context
