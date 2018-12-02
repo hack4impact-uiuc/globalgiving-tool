@@ -13,6 +13,11 @@ def test():
     return str(get_one())
 
 
+@app.route("/url")
+def url():
+    return "https://informationcradle.com/africa/list-of-ngos-in-uganda/"
+
+
 @app.route("/routes")
 def routes_availible():
     return json.dumps(

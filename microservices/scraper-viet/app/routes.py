@@ -19,6 +19,11 @@ def routes_availible():
     )
 
 
+@app.route("/url")
+def url():
+    return "https://www.viet.net/community/nonprofit/"
+
+
 @app.route("/test")
 def test():
     orgs = get_test_data()

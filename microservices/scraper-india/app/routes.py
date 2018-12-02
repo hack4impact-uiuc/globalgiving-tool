@@ -17,6 +17,11 @@ def test():
     return get_one_nonprofit()
 
 
+@app.route("/url")
+def url():
+    return "https://ngosindia.com/ngos-of-india/"
+
+
 @app.route("/data")
 def page_data():
     return get_page_data()
