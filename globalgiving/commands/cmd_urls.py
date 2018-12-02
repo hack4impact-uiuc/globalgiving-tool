@@ -4,16 +4,15 @@ from globalgiving.cli import pass_context, authenticate
 
 
 @click.command("urls", short_help="Lists all the urls with scrapers")
-@click.argument("n", required=True, type=str)
 @pass_context
-def cli(ctx, n):
+def cli(ctx):
     authenticate()
     search = "Finding scraper {} from list of registered scrapers..."
     scrapers = list_from_db()
-    routes = list(
-        map(lambda scraper: scraper["routes"]["Test"][0:-4] + "url", scrapers)
-    )
-    for route in routes:
-        print(route)
-        contents = requests.get(route).text
-        print(contents)
+    for scraper in scrapers:
+        print("Scraper: " + scraper["name"])
+        contents = requests.get(scraper["routes"]["Test"][0:-4] + "url").text
+        if "http" in contents:
+            print("       " + contents)
+        else:
+            print("       ERROR: Scraper not availible")
