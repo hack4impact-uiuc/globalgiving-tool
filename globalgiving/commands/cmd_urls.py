@@ -15,4 +15,4 @@ def cli(ctx):
         if "http" in contents:
             print("       " + contents)
         else:
-            print("       ERROR: Scraper not availible")
+            print("       ERROR: Scraper not avalible")
