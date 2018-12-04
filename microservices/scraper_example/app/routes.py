@@ -3,14 +3,14 @@ from app.scraper import get_page_data
 import json
 
 
-@app.route("/")
-def index():
-    return "Hello, Python World!"
-
-
 @app.route("/data")
 def page_data():
     return str(get_page_data())
+
+
+@app.route("/url")
+def url():
+    return "<no website currently being scraped>"
 
 
 @app.route("/routes")
@@ -22,9 +22,6 @@ def routes_availible():
     )
 
 
-"""Test Routes!"""
-
-
-@app.route("/test1")
+@app.route("/test")
 def test1():
-    return "test1"
+    return "test"

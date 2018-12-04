@@ -12,6 +12,11 @@ def routes_availible():
     )
 
 
+@app.route("/url")
+def url():
+    return "http://www.findouter.com/Oceania/Australia/Society-and-Culture/Non-Governmental-Organisations/"
+
+
 @app.route("/test")
 def test():
     return json.dumps(get_one_nonprofit(), indent=4, separators=(",", ": "))
