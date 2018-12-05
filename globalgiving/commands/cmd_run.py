@@ -105,7 +105,6 @@ def run_all():
     # Get a list of all bucket names from the response
     buckets = [bucket["Name"] for bucket in response["Buckets"]]
 
-    response = ""  # pass back to cli() so it can be relayed to the cli
     for name, route, log, filename in zip(names, routes, log_files, log_filenames):
         try:
             contents = requests.get(route)
@@ -123,4 +122,5 @@ def run_all():
         client.upload_file(filename, bucket_name, filename)
 
         os.remove(filename)
-        response += "Wrote logs to file: " + filename + "\n"
+        ctx.log("Wrote logs to file: " + filename)
+    
