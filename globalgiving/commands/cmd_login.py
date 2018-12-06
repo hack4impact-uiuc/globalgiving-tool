@@ -22,7 +22,9 @@ def cli(ctx, username, password):
     if user is None:
         print("Incorrect username or password, please try logging in again")
     else:
-        with open(".jwt", "wb") as f:
+        if not os.path.exists(os.getenv("HOME") + "/globalgiving/"):
+            os.makedirs(os.getenv("HOME") + "/globalgiving/")
+        with open(os.getenv("HOME") + "/globalgiving/" + ".jwt", "wb") as f:
             f.write(user["jwt"])
             f.close()
         ctx.log(username + " is successfully logged in!")
