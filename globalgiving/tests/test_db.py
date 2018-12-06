@@ -15,7 +15,9 @@ def test_existence():
     namesList = ["Routes", "Test1", "Data", "Static"]
     routesList = [url + "/" + name.lower() for name in namesList]
     routesList[-1] += "/"  # last route is always static which has another /
-    status = send_to_db(name, url, namesList, routesList, test=True)[0] # Send to db returns as tuple
+    status = send_to_db(name, url, namesList, routesList, test=True)[
+        0
+    ]  # Send to db returns as tuple
     assert (
         status == "Registration sent to db with id: https://gg-scraper-example.now.sh"
     )
@@ -47,6 +49,5 @@ def test_update():
 
     status = send_to_db(name, url, namesList, routesList, test=True)[0]
     assert (
-        status
-        == "Registration sent to db with id: https://gg-scraper-example.now.sh"
+        status == "Registration sent to db with id: https://gg-scraper-example.now.sh"
     )
