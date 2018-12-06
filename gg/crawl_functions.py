@@ -6,14 +6,14 @@ import requests
 
 # dictionary that maps directory url to rank_info for one website
 url_rank = {}
-'''
+"""
 {
     URL: rank_info dict
 }
-'''
+"""
 # dictionary template that stores all the ranking information for one directory
 rank_info = {}
-'''
+"""
 {
     'num_links': (number of links),
     'num_subpages': (number of subpages)
@@ -24,11 +24,72 @@ rank_info = {}
     'composite_score': (composite score for website)
     'page_or_dir': (boolean to indicate whether we think URL is ngo page or ngo directory)
 }
-'''
+"""
 
-#-----------------------------------------------------------------------------------------------
-#-----------------------------------RANKING FUNCTIONS-------------------------------------------   
-#-----------------------------------------------------------------------------------------------
+address_keywords = [
+    "street",
+    "st.",
+    "st",
+    "blvd",
+    "blvd.",
+    "ln",
+    "ln.",
+    "lane",
+    "road",
+    "rd",
+    "rd.",
+    "circle",
+    "cir",
+    "cir.",
+    "highway",
+    "hwy",
+    "hwy.",
+    "court",
+    "ct",
+    "ct.",
+    "square",
+    "sq",
+    "sq.",
+    "terrace",
+    "ter.",
+    "ter",
+    "drive",
+    "dr",
+    "dr.",
+    "way",
+    "wy",
+    "wy.",
+    "crossing",
+    "cross",
+    "cross.",
+    "xing",
+    "xing.",
+    "heights",
+    "hts",
+    "hts.",
+    "landing",
+    "landng",
+    "landng.",
+    "loop",
+    "loop.",
+    "parkway",
+    "pky",
+    "pky.",
+    "pass",
+    "pass.",
+    "plaza",
+    "plaza.",
+    "promenade",
+    "prom",
+    "prom.",
+    "building",
+    "parade",
+    " hous",
+]
+# -----------------------------------------------------------------------------------------------
+# -----------------------------------RANKING FUNCTIONS-------------------------------------------
+# -----------------------------------------------------------------------------------------------
+
 
 def rank_all():
     """
@@ -38,9 +99,9 @@ def rank_all():
     BEHAVIOR: expect url_rank to now contain dictionaries of rank_info as values. These
               dictionaries store information pertinent to ranking as well as composite rank score
     """
-    for url,_ in url_rank.items():
+    for url, _ in url_rank.items():
         rank_page(url)
-    
+
 
 def rank_page(url):
     """
@@ -52,9 +113,9 @@ def rank_page(url):
     """
     page = requests.get(url)
     soup = BeautifulSoup(page.content, "html.parser")
-    
+
     all_visible_text = get_all_visible_text(url)
-    
+
     # get all subpages
     subpages = find_subpages(url)
 
@@ -63,25 +124,39 @@ def rank_page(url):
         all_visible_text += get_all_visible_text(subpage)
         # add a space to make sure text doesnt get jumbled together
         all_visible_text += " "
-    
 
     # perform webpage analysis on all_visible_text HERE, update rank_info
-    
-    # print(all_visible_text)
 
+    # print(all_visible_text)
 
     # get composite_score
     # composite_score = get_composite_score(url_rank[url])
-    #store composite_score
+    # store composite_score
     # url_rank[url]['composite_score'] = composite_score
-    
+
+
 def count_phone_numbers(visible_text):
     """
-    DESCRIPTION: counts number of phone numbers occuredd on NGO website
+    DESCRIPTION: counts number of phone numbers that occur on NGO website
     INPUT: visible_text --- all the visible text of NGO website homepage and subpages
     OUTPUT: integer number of phone numbers found in visible text
     """
     pass
+
+
+def count_addresses(visible_text):
+    """
+    DESCRIPTION: counts number of addresses that occur on NGO website
+    INPUT: visible_text --- all the visible text of NGO website homepage and subpages
+    OUTPUT: integer number of addresses found in visible text
+    """
+    visible_text = visible_text.lower()
+    num_addresses = 0
+
+    for type_ in address_keywords:
+        num_addresses += visible_text.count(type_)
+
+    return num_addresses
 
 
 def get_composite_score(rank_info):
@@ -92,21 +167,21 @@ def get_composite_score(rank_info):
     BEHAVIOR: expect url_rank to now contain dictionary of rank_info as value. This
               dictionary stores information pertinent to ranking as well as composite rank score
     """
-    #heuristic can be altered here:
+    # heuristic can be altered here:
     # composite_score = rank_info['num_phone_numbers']
 
     # return composite_score
     pass
 
 
-#-----------------------------------------------------------------------------------------------
-#-----------------------------------RANKING FUNCTIONS-------------------------------------------   
-#-----------------------------------------------------------------------------------------------
+# -----------------------------------------------------------------------------------------------
+# -----------------------------------RANKING FUNCTIONS-------------------------------------------
+# -----------------------------------------------------------------------------------------------
 
 
-#-----------------------------------------------------------------------------------------------
-#------------------------------FUNCTIONS TO GET VISIBLE TEXT-------------s----------------------   
-#-----------------------------------------------------------------------------------------------
+# -----------------------------------------------------------------------------------------------
+# ------------------------------FUNCTIONS TO GET VISIBLE TEXT-------------s----------------------
+# -----------------------------------------------------------------------------------------------
 
 
 def get_all_visible_text(url):
@@ -119,10 +194,9 @@ def get_all_visible_text(url):
     page = requests.get(url)
     soup = BeautifulSoup(page.content, "html.parser")
 
-
     texts = soup.findAll(text=True)
-    visible_texts = filter(tag_visible, texts)  
-    visible_text =  " ".join(t.strip() for t in visible_texts)
+    visible_texts = filter(tag_visible, texts)
+    visible_text = " ".join(t.strip() for t in visible_texts)
 
     # print(visible_text)
 
@@ -135,7 +209,14 @@ def tag_visible(element):
     INPUT: element --- html tag
     OUTPUT: boolean indicating whether tag is visible or not
     """
-    if element.parent.name in ['style', 'script', 'head', 'title', 'meta', '[document]']:
+    if element.parent.name in [
+        "style",
+        "script",
+        "head",
+        "title",
+        "meta",
+        "[document]",
+    ]:
         return False
     if isinstance(element, Comment):
         return False
@@ -149,9 +230,9 @@ def find_subpages(url):
     OUTPUT: list of all subpage URLs
     """
 
-    #get the domain url from homepage url
+    # get the domain url from homepage url
     parsed_uri = urlparse(url)
-    home_url = '{uri.scheme}://{uri.netloc}/'.format(uri=parsed_uri)
+    home_url = "{uri.scheme}://{uri.netloc}/".format(uri=parsed_uri)
     print("STRIPPED URL:")
     print(home_url)
 
@@ -162,9 +243,9 @@ def find_subpages(url):
     soup = BeautifulSoup(page.content, "html.parser")
 
     # get all URL links on homepage
-    anchors = soup.findAll('a', href = True)
-    links = [anchor['href'] for anchor in anchors]
-    '''
+    anchors = soup.findAll("a", href=True)
+    links = [anchor["href"] for anchor in anchors]
+    """
     Note that homepage url could be e.g. "https://care.ca/directory" due to
     google search not taking us to true homepage
     Need to remove "/directory" for true homepage url
@@ -173,19 +254,19 @@ def find_subpages(url):
     1) relative links for subpages (e.g. /about-us/mission)
     2) absolute links for subpages (e.g. https://care.ca/about-us/mission)
     3) irrevelant external absolute link (e.g. https://mcafee.com/blahblahblah)
-    '''
+    """
     home_url_length = len(home_url)
     # consider case 1) and 2) for subpage links, discard case 3)
     for link in links:
         # discard case 3)
-        if (link[:1] != '/' and link[:home_url_length] != home_url):
-            print("LINK IS NOT SUBPAGE: "+ link)
+        if link[:1] != "/" and link[:home_url_length] != home_url:
+            print("LINK IS NOT SUBPAGE: " + link)
             continue
         # case 2)
-        if (link[:home_url_length] == home_url):
+        if link[:home_url_length] == home_url:
             subpages.append(link)
         # case 1)
-        if (link[:1] == '/'):
+        if link[:1] == "/":
             subpages.append(url + link)
             subpages.append(home_url + link)
 
@@ -198,25 +279,24 @@ def find_subpages(url):
         try:
             r = requests.get(str(link))
             print(r.status_code)
-            if (r.status_code != 404):
+            if r.status_code != 404:
                 valid_subpages.append(link)
         except:
             print("exception caught!")
             continue
 
-
     print("VALID SUBPAGES: " + str(len(valid_subpages)))
     print(valid_subpages)
 
     # output all subpage links to text file for easier examination
-    f = open('subpages.txt','w')
+    f = open("subpages.txt", "w")
     for valid_subpage in valid_subpages:
         f.write(valid_subpage + "\n")
     f.close()
 
     return valid_subpages
 
-#-----------------------------------------------------------------------------------------------
-#------------------------------FUNCTIONS TO GET VISIBLE TEXT-------------s----------------------   
-#-----------------------------------------------------------------------------------------------
 
+# -----------------------------------------------------------------------------------------------
+# ------------------------------FUNCTIONS TO GET VISIBLE TEXT-------------s----------------------
+# -----------------------------------------------------------------------------------------------
