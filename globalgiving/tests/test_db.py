@@ -15,7 +15,7 @@ def test_existence():
     namesList = ["Routes", "Test1", "Data", "Static"]
     routesList = [url + "/" + name.lower() for name in namesList]
     routesList[-1] += "/"  # last route is always static which has another /
-    status = send_to_db(name, url, namesList, routesList, test=True)
+    status = send_to_db(name, url, namesList, routesList, test=True)[0] # Send to db returns as tuple
     assert (
         status == "Registration sent to db with id: https://gg-scraper-example.now.sh"
     )
@@ -40,13 +40,13 @@ def test_rejection():
     namesList = ["Routes", "Test1", "Data", "Static"]
     routesList = [url + "/" + name.lower() for name in namesList]
     routesList[-1] += "/"  # last route is always static which has another /
-    status = send_to_db(name, url, namesList, routesList, test=True)
+    status = send_to_db(name, url, namesList, routesList, test=True)[0]
     assert (
         status == "Registration sent to db with id: https://gg-scraper-example.now.sh"
     )
 
-    status = send_to_db(name, url, namesList, routesList, test=True)
+    status = send_to_db(name, url, namesList, routesList, test=True)[0]
     assert (
         status
-        == "Exception: DuplicateKeyError: Scraper with the same URL is already in the database."
+        == "Registration sent to db with id: https://gg-scraper-example.now.sh"
     )

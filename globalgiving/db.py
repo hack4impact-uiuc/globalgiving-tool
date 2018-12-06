@@ -49,7 +49,7 @@ def send_to_db(name, url, namesList, routesList, test=False):
         post_id = scrapers.insert_one(payload).inserted_id
     except Exception as e:
         if type(e).__name__ == "DuplicateKeyError":
-            delete_ngo(payload["_id"])
+            delete_ngo(payload["_id"], test)
             post_id = scrapers.insert_one(payload).inserted_id
             updated = True
     return "Registration sent to db with id: " + post_id, updated
@@ -69,8 +69,11 @@ def list_from_db(test=False):
     return document_list
 
 
-def delete_ngo(ngo_id):
-    scrapers = db_get_collection()
+def delete_ngo(ngo_id, test=False):
+    if test:
+        scrapers = db_get_collection("tests")
+    else:
+        scrapers = db_get_collection()
     return scrapers.delete_one({"_id": ngo_id})
 
 
