@@ -11,3 +11,7 @@
 
 # ENV Variables
 .env
+.jwt
+
+# cli installation file
+/click_global_giving_tool.egg-info/

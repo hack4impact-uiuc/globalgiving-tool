@@ -49,6 +49,11 @@ def scrape_brazili():
     return str(country_page_scrape("/brazili.html"))
 
 
+@app.route("/url")
+def url():
+    return "https://www.thengolist.com"
+
+
 @app.route("/routes")
 def routes_available():
     """Returns a list of available routes to hit for this scraper."""

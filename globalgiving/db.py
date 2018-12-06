@@ -49,7 +49,7 @@ def send_to_db(name, url, namesList, routesList, test=False):
         post_id = scrapers.insert_one(payload).inserted_id
     except Exception as e:
         if type(e).__name__ == "DuplicateKeyError":
-            delete_ngo(payload["_id"])
+            delete_ngo(payload["_id"], test)
             post_id = scrapers.insert_one(payload).inserted_id
             updated = True
     return "Registration sent to db with id: " + post_id, updated
@@ -69,8 +69,11 @@ def list_from_db(test=False):
     return document_list
 
 
-def delete_ngo(ngo_id):
-    scrapers = db_get_collection()
+def delete_ngo(ngo_id, test=False):
+    if test:
+        scrapers = db_get_collection("tests")
+    else:
+        scrapers = db_get_collection()
     return scrapers.delete_one({"_id": ngo_id})
 
 
@@ -80,3 +83,26 @@ def delete_all(test=False):
         scrapers.delete_many({})
     else:
         pass  # Don't do anything if called by accident!
+
+
+def upload_data(data, test=False):
+    """
+    Sends the NGO/CSO data to the database.
+    Input:
+        data: A list of dictionaries representing the NGOs.
+    Returns:
+        A confirmation that the data has been sent, otherwise an
+        exception.
+    """
+    scrapers = db_get_collection("ngo_data")
+    # bucket_name = name + "-" + str(hash(name))  # we need to figure out how
+    # logging is going to work for uploading ngo data
+    # payload[name] = bucket_name
+    # client = init_s3_credentials()
+    # client.create_bucket(Bucket=bucket_name)
+    post_ids = scrapers.insert_many(data, ordered=False).inserted_ids
+    try:
+        assert len(data) == len(post_ids)
+    except AssertionError:
+        return "Not all NGO data was uploaded."
+    return "Data for {} NGOs sent to the database.".format(len(post_ids))

@@ -1,11 +1,13 @@
 from app import app
-from app.scraper import scrape
+from app.scraper import get_page_data, get_test_data
 import json
 
 
 @app.route("/data")
 def page_data():
-    return scrape()
+    orgs = get_page_data()
+    print(orgs[0:2])
+    return str(orgs)
 
 
 @app.route("/routes")
@@ -19,9 +21,10 @@ def routes_availible():
 
 @app.route("/url")
 def url():
-    return "http://www.hati.my/"
+    return "https://www.viet.net/community/nonprofit/"
 
 
 @app.route("/test")
 def test():
-    return scrape(one=True)  # switches to getting only one scraper
+    orgs = get_test_data()
+    return str(orgs[0])

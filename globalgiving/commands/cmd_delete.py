@@ -1,12 +1,13 @@
 import click, requests
 from globalgiving.db import list_from_db, delete_ngo
-from globalgiving.cli import pass_context
+from globalgiving.cli import pass_context, authenticate
 
 
 @click.command("delete", short_help="Delete a scraper's registration.")
 @click.argument("name", required=True, type=str)
 @pass_context
 def cli(ctx, name):
+    authenticate()
     search = "Finding scraper {} from list of registered scrapers . . . "
     ctx.log(search.format(name))
     try:

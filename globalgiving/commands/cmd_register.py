@@ -1,39 +1,44 @@
+import os
 import click
-import requests
+import jwt
+import pymongo
+import dotenv
 from globalgiving.cli import pass_context
-from globalgiving.db import send_to_db
 
 
-@click.command(
-    "register", short_help="Register a new scraper or update an existing one."
-)
-@click.argument("name", required=True)
-@click.argument("routes", required=True)
+@click.command("register", short_help="Registers a new user")
+@click.option("--key", prompt=True)
+@click.option("--username", prompt=True)
+@click.option("--password", prompt=True, hide_input=True, confirmation_prompt=True)
 @pass_context
-def cli(ctx, name, routes):
-    """
-    Registers the given scraper with the database. It basically just gets all
-    possible routes from the `/routes` route then sets up appropriate inputs
-    for gg.db.send_to_db().
-    """
+def cli(ctx, key, username, password):
+    # endpoint containing db of users and whitelist keys
+    dotenv.load_dotenv(dotenv.find_dotenv())
+    uri = os.getenv("URI")
+    client = pymongo.MongoClient(uri)
+    db = client.get_database()
+
+    whitelist_key = db["whitelist_keys"].find_one({"key": key})
+    if whitelist_key is None:
+        ctx.log("Whitelist key not found.")
+        return
+
+    encoded_jwt = jwt.encode(
+        {"user": username, "password": password, "mongo_uri": whitelist_key["mongo"]},
+        "secret",
+        algorithm="HS256",
+    )
+
     try:
-        routesList = list(requests.get(routes + "/routes").json())
-    except Exception as ex:
-        # source: https://stackoverflow.com/questions/9823936/python-how-do-i-know-what-type-of-exception-occurred
-        template = "An exception of type {0} occurred. Arguments:\n{1!r}"
-        message = template.format(type(ex).__name__, ex.args)
-        ctx.log(message)
-        ctx.log("Getting information from the provided /routes failed.")
-        ctx.log("Route tried: {}".format(routes + "/routes"))
-        return "exception"
-    url = routes.replace("/routes", "")
-    namesList = [
-        name.replace("/", "").replace("<path:filename>", "").title()
-        for name in routesList
-    ]
-    routesList = [url + route.replace("<path:filename>", "") for route in routesList]
-    doc_id, updated = send_to_db(name, url, namesList, routesList)
-    if updated:
-        ctx.log("Updated scraper {}!".format(name))
-    ctx.log(doc_id)
-    return namesList, routesList
+        db["users"].insert_one(
+            {"user": username, "password": password, "jwt": encoded_jwt}
+        )
+        ctx.log("Success!")
+    except pymongo.errors.DuplicateKeyError:
+        ctx.log("Duplicate user name. Please retry with a different username")
+        return
+
+    # write jw token to a file - this is used for authentication of other commands
+    with open(".jwt", "wb") as f:
+        f.write(encoded_jwt)
+        f.close()
