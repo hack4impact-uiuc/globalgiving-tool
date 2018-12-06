@@ -30,7 +30,7 @@ def test_existence():
     assert static_route == "https://gg-scraper-example.now.sh/static/"
 
 
-def test_rejection():
+def test_update():
     # Clear the testing collection
     delete_all(test=True)
 
