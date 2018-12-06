@@ -13,6 +13,11 @@ def test():
     return json.dumps(get_one_ngo(), indent=4, separators=(",", ": "))
 
 
+@app.route("/url")
+def url():
+    return "http://www.ingoforummyanmar.org/en/members"
+
+
 @app.route("/routes")
 def routes_availible():
     return json.dumps(
