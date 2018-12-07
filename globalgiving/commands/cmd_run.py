@@ -17,7 +17,7 @@ def cli(ctx, n, a):
     client = init_s3_credentials()
 
     if a:
-        run_all()
+        run_all(ctx)
         return
 
     h = hashlib.md5()
@@ -65,7 +65,7 @@ def cli(ctx, n, a):
     ctx.log("Wrote logs to file: " + filename)
 
 
-def run_all():
+def run_all(ctx):
     authenticate()
     client = init_s3_credentials()
 
@@ -98,6 +98,7 @@ def run_all():
         f.close()
         client.upload_file(filename, bucket_name, filename)
         os.remove(filename)
+        ctx.log("Failed. See log at {} in bucket {}.".format(filename, bucket_name))
         return
 
     # Call S3 to list current buckets to prepare for logging
@@ -107,12 +108,15 @@ def run_all():
 
     for name, route, log, filename in zip(names, routes, log_files, log_filenames):
         try:
+            ctx.log("Getting information for {} . . . ".format(name))
             contents = requests.get(route)
             log.write(contents.text)
             log.write(upload_data(contents.json()))
             log.write("Upload succeeded!")
+            ctx.log("Uploading {} succeeded!".format(name))
         except Exception as e:
             log.write("Upload failed.")
+            ctx.log("Uploading {} failed.".format(name))
         finally:
             log.close()
 
@@ -120,7 +124,5 @@ def run_all():
             client.create_bucket(Bucket=bucket_name)
 
         client.upload_file(filename, bucket_name, filename)
-
-        os.remove(filename)
+        # os.remove(filename)
         ctx.log("Wrote logs to file: " + filename)
-    
