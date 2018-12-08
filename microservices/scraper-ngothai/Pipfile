@@ -3,11 +3,11 @@ url = "https://pypi.org/simple"
 verify_ssl = true
 name = "pypi"
 
-[requires]
-python_version = "3.7"
-
 [packages]
-click = "==6.7"
-python-dotenv = "==0.9.1"
+Flask = "==1.0.2"
 
 [dev-packages]
+pylint = "*"
+
+[requires]
+python_version = "3.6"

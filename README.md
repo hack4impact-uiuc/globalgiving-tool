@@ -32,38 +32,39 @@ Global Giving's focus of this project is to scrape as many directories of nonpro
 
 Every microservice is a scraper for a specific url that will give us as much information as possible. 
 
+## List of currently deployed scrapers
+
+If you navigate to "/routes" you can see all the routes they support. This will include "/test" which will scrape one nonprofit from the page as an example, and "/data" which will run the entire scraper.
+
+https://gg-scraper-australia.now.sh
+
+https://gg-scraper-haiti-malaysia.now.sh
+
+https://gg-scraper-ingo-forum-myanmar.now.sh
+
+https://gg-scraper-ngothai.now.sh
+
+https://gg-scraper-ngouganda.now.sh
+
+https://gg-scraper-ngolist.now.sh
 
 ## Contributing Guidelines
 
 ### Adding a new microservice for scraping a new website
 
-Step 1: Make a new folder with called "scraper-```<name of what your scraping>```
+Step 1: Navigate into the microservices folder and run ```cookiecutter .```
 
-Step 2: Add a file called ```app.py``` and copy paste this boilerplate code in. This starts up a flask server and sets up a basic route. 
+Step 2: Specify the name of the directory/scraper to create.
 
-```Python
-from flask import Flask
-app = Flask(__name__)
+Step 3: Navigate into the new created directory.
 
-@app.route('/')
-def my_first_route():
-	return "Hello World!"
+Step 4: Run ```pip3 install pipenv```
 
-if __name__ == '__main__':
-	app.run(debug=True)
-```
+Step 5: Run ```pipenv shell```
 
-Step 3: Run ```pip3 install pipreqs```
+Step 6: Run ```pip3 install -r requirements.txt``` to install everything from requirements.txt
 
-Step 4: Navigate to inside the folder, and run ``` pipreqs . ```. This should generate a ```requirements.txt``` file.
-
-Step 6: Run ```pip3 install pipenv```
-
-Step 7: Run ```pipenv shell```
-
-Step 8: Run ```pip3 install -r requirements.txt``` to install everython from requirements.txt
-
-Step 9: Run ```python3 app.py``` from command line, it will start up the server. 
+Step 7: Run ```python3 app.py``` from command line, it will start up the server. 
 
 If you navigate to ```http://127.0.0.1:5000/``` it will say Hello World. 
 
