@@ -125,4 +125,4 @@ def run_all(ctx):
 
         client.upload_file(filename, bucket_name, filename)
         # os.remove(filename)
-        ctx.log("Wrote logs to file: " + filename)
+        ctx.log("Wrote logs for {} to file: ".format(name) + filename)
