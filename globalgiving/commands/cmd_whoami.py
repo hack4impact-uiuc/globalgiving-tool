@@ -8,7 +8,7 @@ from globalgiving.cli import pass_context
 @pass_context
 def cli(ctx):
     try:
-        with open(".jwt", "rb") as f:
+        with open(os.getenv("HOME") + "/globalgiving/" + ".jwt", "rb") as f:
             byte = f.read()
             decoded = jwt.decode(byte, "secret", algorithms=["HS256"])
             print("You are logged in as " + decoded["user"])

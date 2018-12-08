@@ -9,11 +9,16 @@ from globalgiving.s3_interface import init_s3_credentials
 
 
 @click.command("run", short_help="Run a scraper")
-@click.argument("n", required=True)
+@click.argument("n", required=False)
+@click.option("-a", is_flag=True)
 @pass_context
-def cli(ctx, n):
+def cli(ctx, n, a):
     authenticate()
     client = init_s3_credentials()
+
+    if a:
+        run_all(ctx)
+        return
 
     h = hashlib.md5()
     h.update(n.encode("utf-8"))
@@ -51,10 +56,73 @@ def cli(ctx, n):
     # Get a list of all bucket names from the response
     buckets = [bucket["Name"] for bucket in response["Buckets"]]
 
-    if not (bucket_name in buckets):
+    if bucket_name not in buckets:
         client.create_bucket(Bucket=bucket_name)
 
     client.upload_file(filename, bucket_name, filename)
 
     os.remove(filename)
     ctx.log("Wrote logs to file: " + filename)
+
+
+def run_all(ctx):
+    authenticate()
+    client = init_s3_credentials()
+
+    h = hashlib.md5()
+    names = []
+    routes = []
+    log_files = []
+    log_filenames = []
+
+    try:
+        scrapers = list_from_db()
+        for scraper in scrapers:
+            n = scraper["name"]
+            names.append(n)
+            routes.append(scraper["routes"]["Data"])
+            h.update(n.encode("utf-8"))
+            bucket_name = n + "-" + h.hexdigest()
+            filename = str(uuid.uuid4()) + ".txt"
+            log_filenames.append(filename)
+            log_files.append(open(filename, "w+"))
+    except Exception as e:
+        n = "all"  # the name in this case is effectively all, then we can just
+        # use the code from the single case
+        h.update(n.encode("utf-8"))
+        bucket_name = n + "-" + h.hexdigest()
+        filename = str(uuid.uuid4()) + ".txt"
+        f = open(filename, "w+")
+        f.write("Scraper not found!" + "\n")
+        f.write(str(e) + "\nFAILED")
+        f.close()
+        client.upload_file(filename, bucket_name, filename)
+        os.remove(filename)
+        ctx.log("Failed. See log at {} in bucket {}.".format(filename, bucket_name))
+        return
+
+    # Call S3 to list current buckets to prepare for logging
+    response = client.list_buckets()
+    # Get a list of all bucket names from the response
+    buckets = [bucket["Name"] for bucket in response["Buckets"]]
+
+    for name, route, log, filename in zip(names, routes, log_files, log_filenames):
+        try:
+            ctx.log("Getting information for {} . . . ".format(name))
+            contents = requests.get(route)
+            log.write(contents.text)
+            log.write(upload_data(contents.json()))
+            log.write("Upload succeeded!")
+            ctx.log("Uploading {} succeeded!".format(name))
+        except Exception as e:
+            log.write("Upload failed.")
+            ctx.log("Uploading {} failed.".format(name))
+        finally:
+            log.close()
+
+        if bucket_name not in buckets:
+            client.create_bucket(Bucket=bucket_name)
+
+        client.upload_file(filename, bucket_name, filename)
+        # os.remove(filename)
+        ctx.log("Wrote logs to file: " + filename)

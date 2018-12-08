@@ -68,7 +68,7 @@ def authenticate():
     db = client.get_database()
 
     try:
-        with open(".jwt", "rb") as jwt_file:
+        with open(os.getenv("HOME") + "/globalgiving/" + ".jwt", "rb") as jwt_file:
             encoded_jwt = jwt_file.read()
     except FileNotFoundError:
         print("No JW token found")
