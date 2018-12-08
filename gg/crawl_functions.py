@@ -92,7 +92,8 @@ def count_external_links(url):
     """
     page = requests.get(url)
     soup = BeautifulSoup(page.content, "html.parser")
-    pass  # this isn't done
+    links = soup.find_all('a')
+    
 
 
 def get_composite_score(rank_info):
