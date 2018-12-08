@@ -1,6 +1,6 @@
 import click
 from globalgiving.cli import pass_context, authenticate
-from globalgiving.db import list_from_db
+from globalgiving.db import list_scrapers_from_db
 
 
 @click.command("list", short_help="List all available scrapers.")
@@ -12,7 +12,7 @@ def cli(ctx):
     name and all routes associated with that scraper.
     """
     ctx.log("Listing all registered scrapers!")
-    all_docs = list_from_db()
+    all_docs = list_scrapers_from_db()
     for doc in all_docs:
         ctx.log("  {}".format(doc["name"]))
     return all_docs  # for testing

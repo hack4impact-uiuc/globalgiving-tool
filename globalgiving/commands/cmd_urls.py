@@ -1,5 +1,5 @@
 import click, requests
-from globalgiving.db import list_from_db
+from globalgiving.db import list_scrapers_from_db
 from globalgiving.cli import pass_context, authenticate
 
 
@@ -8,7 +8,7 @@ from globalgiving.cli import pass_context, authenticate
 def cli(ctx):
     authenticate()
     search = "Finding scraper {} from list of registered scrapers..."
-    scrapers = list_from_db()
+    scrapers = list_scrapers_from_db()
     for scraper in scrapers:
         print("Scraper: " + scraper["name"])
         contents = requests.get(scraper["routes"]["Test"][0:-4] + "url").text

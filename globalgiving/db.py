@@ -18,7 +18,7 @@ def db_get_collection(collectionName="scrapers"):
     return collection
 
 
-def send_to_db(name, url, namesList, routesList, test=False):
+def send_scraper_to_db(name, url, namesList, routesList, test=False):
     """
     Sends the name and routes to the database.
     Input:
@@ -49,13 +49,13 @@ def send_to_db(name, url, namesList, routesList, test=False):
         post_id = scrapers.insert_one(payload).inserted_id
     except Exception as e:
         if type(e).__name__ == "DuplicateKeyError":
-            delete_ngo(payload["_id"], test)
+            delete_scraper(payload["_id"], test)
             post_id = scrapers.insert_one(payload).inserted_id
             updated = True
     return "Registration sent to db with id: " + post_id, updated
 
 
-def list_from_db(test=False):
+def list_scrapers_from_db(test=False):
     """
     Gets all scrapers listed in the database. This function merely returns the
     scrapers as a list. Printing and whatnot happens later.
@@ -69,15 +69,15 @@ def list_from_db(test=False):
     return document_list
 
 
-def delete_ngo(ngo_id, test=False):
+def delete_scraper(scraper_id, test=False):
     if test:
         scrapers = db_get_collection("tests")
     else:
         scrapers = db_get_collection()
-    return scrapers.delete_one({"_id": ngo_id})
+    return scrapers.delete_one({"_id": scraper_id})
 
 
-def delete_all(test=False):
+def delete_all_scrapers(test=False):
     if test:
         scrapers = db_get_collection("tests")
         scrapers.delete_many({})

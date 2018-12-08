@@ -1,7 +1,7 @@
 import click
 import requests
 from globalgiving.cli import pass_context, authenticate
-from globalgiving.db import send_to_db
+from globalgiving.db import send_scraper_to_db
 
 
 @click.command("add", short_help="Add a new scraper or update an existing one.")
@@ -12,7 +12,7 @@ def cli(ctx, name, routes):
     """
     Registers the given scraper with the database. It basically just gets all
     possible routes from the `/routes` route then sets up appropriate inputs
-    for gg.db.send_to_db().
+    for gg.db.send_scraper_to_db().
     """
     authenticate()
     try:
@@ -31,7 +31,7 @@ def cli(ctx, name, routes):
         for name in routesList
     ]
     routesList = [url + route.replace("<path:filename>", "") for route in routesList]
-    doc_id, updated = send_to_db(name, url, namesList, routesList)
+    doc_id, updated = send_scraper_to_db(name, url, namesList, routesList)
     if updated:
         ctx.log("Updated scraper {}!".format(name))
     ctx.log(doc_id)
