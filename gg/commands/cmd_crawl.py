@@ -13,4 +13,4 @@ def cli(ctx, country, ngo_type):
     for url in search("ngo directory" + country + ngo_type, lang="es", num=1, stop=1):
         print(url)
         url_rank[url] = []
-        rank_all()
+        rank_all(country,ngo_type)
