@@ -94,7 +94,15 @@ def count_external_links(url):
     soup = BeautifulSoup(page.content, "html.parser")
     links = soup.find_all('a')
     
-
+def count_ngos_and_directory(visible_text):
+    """
+    DESCRIPTION: counts number of instances of 'ngo' and 'directory'
+    INPUT: visible_text --- all the visible text of NGO website homepage and subpages
+    OUTPUT: integer number of instances of 'ngo' and 'directory'
+    """
+    visible_text = visible_text.lower()
+    print([visible_text.count('ngo'), visible_text.count('directory')])
+    return visible_text.count('ngo'), visible_text.count('directory')
 
 def get_composite_score(rank_info):
     """
