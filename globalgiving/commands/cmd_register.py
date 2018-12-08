@@ -39,6 +39,8 @@ def cli(ctx, key, username, password):
         return
 
     # write jw token to a file - this is used for authentication of other commands
-    with open(".jwt", "wb") as f:
+    if not os.path.exists(os.getenv("HOME") + "/globalgiving/"):
+        os.makedirs(os.getenv("HOME") + "/globalgiving/")
+    with open(os.getenv("HOME") + "/globalgiving/" + ".jwt", "wb") as f:
         f.write(encoded_jwt)
         f.close()

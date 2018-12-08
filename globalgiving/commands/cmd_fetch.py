@@ -21,7 +21,7 @@ def cli(ctx, user, password):
         return
 
     # write jw token to a file
-    with open(".jwt", "wb") as f:
+    with open(os.getenv("HOME") + "/globalgiving/" + ".jwt", "wb") as f:
         f.write(jwtoken)
         f.close()
 
