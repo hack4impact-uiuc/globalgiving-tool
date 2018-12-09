@@ -69,7 +69,7 @@ def rank_page(url):
         all_visible_text += " "
 
     # perform webpage analysis on all_visible_text HERE, update rank_info
-    rank_info["url"] = url
+    # rank_info["url"] = url
     rank_info["num_phone_numbers"] = count_phone_numbers(country_name, all_visible_text)
     rank_info["num_addresses"] = count_addresses(all_visible_text)
     rank_info["num_subpages"] = str(len(subpages))
@@ -88,8 +88,9 @@ def rank_page(url):
     )
     print("     Composite Score " + rank_info["composite_score"])
 
-    # print("    Composite Score " +  str(get_composite_score(rank_info)))
-    url_rank[url] = rank_info
+    url_rank[url] = rank_info.copy()
+    print(url)
+    print(url_rank[url])
 
 
 def get_all_visible_text(url):

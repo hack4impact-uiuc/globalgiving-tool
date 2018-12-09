@@ -58,11 +58,4 @@ def get_composite_score(rank_info):
     BEHAVIOR: expect url_rank to now contain dictionary of rank_info as value. This
               dictionary stores information pertinent to ranking as well as composite rank score
     """
-    # heuristic can be altered here:
-    # composite_score = rank_info['num_phone_numbers']
-    composite_score = rank_info["num_phone_numbers"] + rank_info["num_addresses"]
-    rank_info["composite_score"] = composite_score
-    # url = rank_info["url"]
-    # url_rank[url] = rank_info
-    # return composite_score
-    return rank_info["composite_score"]
+    return rank_info["num_phone_numbers"] + rank_info["num_addresses"]

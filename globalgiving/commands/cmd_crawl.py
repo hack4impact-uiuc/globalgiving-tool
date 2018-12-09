@@ -8,10 +8,13 @@ from urllib.parse import urlparse
 
 @click.command("crawl", short_help="Crawl for new directories and NGOs")
 @click.argument("country", required=True)
+@click.argument("number_urls", required=False)
 @pass_context
-def cli(ctx, country):
+def cli(ctx, country, number_urls):
+    if (not number_urls):
+        number_urls = 3
     urls = []
-    for url in search("ngo directory" + country, lang="es", num=5, stop=1):
+    for url in search("ngo directory" + country, lang="es", num=number_urls, stop=1):
         parsed_uri = urlparse(url)
         home_url = "{uri.scheme}://{uri.netloc}/".format(uri=parsed_uri)
         if str(home_url) not in url_rank:
