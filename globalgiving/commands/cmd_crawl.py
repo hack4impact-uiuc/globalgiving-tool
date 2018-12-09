@@ -2,7 +2,7 @@ import click
 import requests
 from googlesearch import search
 from globalgiving.cli import pass_context
-from globalgiving.crawl_functions import rank_all, url_rank
+from globalgiving.crawler.crawl_functions import rank_all, url_rank
 from urllib.parse import urlparse
 
 

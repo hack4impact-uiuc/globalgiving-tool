@@ -3,9 +3,9 @@ from bs4 import BeautifulSoup
 from bs4.element import Comment
 from urllib.parse import urlparse
 import requests
-from globalgiving.resources.address_keywords import address_keywords
-from globalgiving.resources.country_codes import country_codes
-from globalgiving.rank import (
+from globalgiving.crawler.resources.address_keywords import address_keywords
+from globalgiving.crawler.resources.country_codes import country_codes
+from globalgiving.crawler.rank import (
     count_phone_numbers,
     count_addresses,
     count_ngo_related_words,
