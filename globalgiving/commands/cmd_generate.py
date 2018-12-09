@@ -1,6 +1,5 @@
 import click
 import os
-import os
 from cookiecutter.main import cookiecutter
 
 from globalgiving.cli import pass_context

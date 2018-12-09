@@ -1,4 +1,4 @@
-import click, requests
+import click
 from globalgiving.db import list_scrapers_from_db, delete_scraper
 from globalgiving.cli import pass_context, authenticate
 

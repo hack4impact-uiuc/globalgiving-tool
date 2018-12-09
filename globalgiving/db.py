@@ -58,7 +58,7 @@ def send_scraper_to_db(name, url, namesList, routesList, test=False):
 def list_scrapers_from_db(test=False):
     """
     Gets all scrapers listed in the database. This function merely returns the
-    scrapers as a list. Printing and whatnot happens later.
+    scrapers as a list.
     """
     if test:
         scrapers = db_get_collection("tests")
@@ -106,3 +106,14 @@ def upload_data(data, test=False):
     except AssertionError:
         return "Not all NGO data was uploaded."
     return "Data for {} NGOs sent to the database.".format(len(post_ids))
+
+
+def list_ngos_from_db():
+    """
+    STUB FUNCTION
+    Get all NGOs currently in the database.
+    """
+    ngos = db_get_collection("ngo_data")
+    cursor = ngos.find({})
+    ngo_list = [doc for doc in cursor]
+    return ngo_list

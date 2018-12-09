@@ -1,6 +1,5 @@
 import os
 import click
-import jwt
 import pymongo
 import dotenv
 from globalgiving.cli import pass_context

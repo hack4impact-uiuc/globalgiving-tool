@@ -3,7 +3,11 @@ import os
 import dotenv
 import requests
 import pytest
-from globalgiving.db import send_scraper_to_db, list_scrapers_from_db, delete_all_scrapers
+from globalgiving.db import (
+    send_scraper_to_db,
+    list_scrapers_from_db,
+    delete_all_scrapers,
+)
 
 
 def test_existence():
