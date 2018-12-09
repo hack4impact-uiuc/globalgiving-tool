@@ -1,3 +1,0 @@
-click==6.7
-google==2.0.1
-phonenumbers
