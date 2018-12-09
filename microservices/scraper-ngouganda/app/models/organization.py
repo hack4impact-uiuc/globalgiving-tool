@@ -20,6 +20,7 @@ class Org:
         facebook=None,
         country=None,
         description=None,
+        submitted=False,
     ):
         self.name = name
         self.phone = phone
@@ -31,6 +32,7 @@ class Org:
         self.facebook = facebook
         self.country = country
         self.description = description
+        self.submitted = submitted
 
     def to_json(self):
         org = {
@@ -44,6 +46,7 @@ class Org:
             "facebook": self.facebook,
             "country": self.country,
             "description": self.description,
+            "submitted to db": self.submitted,
         }
         return org
 
