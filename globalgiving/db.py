@@ -116,4 +116,6 @@ def list_ngos_from_db():
     ngos = db_get_collection("ngo_data")
     cursor = ngos.find({})
     ngo_list = [doc for doc in cursor]
+    for ngo in ngo_list:
+        ngo["_id"] = str(ngo["_id"])
     return ngo_list
