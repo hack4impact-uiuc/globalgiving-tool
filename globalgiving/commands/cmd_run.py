@@ -43,7 +43,7 @@ def cli(ctx, n, a):
         return
     try:
         contents = requests.get(route)
-        upload_data(contents.json())
+        f.write(upload_data(contents.json()))
     except Exception as e:
         contents = str(e) + "\nFAILED"
 
@@ -124,5 +124,5 @@ def run_all(ctx):
             client.create_bucket(Bucket=bucket_name)
 
         client.upload_file(filename, bucket_name, filename)
-        # os.remove(filename)
+        os.remove(filename)
         ctx.log("Wrote logs for {} to file: ".format(name) + filename)

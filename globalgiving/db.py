@@ -100,17 +100,24 @@ def upload_data(data, test=False):
     # payload[name] = bucket_name
     # client = init_s3_credentials()
     # client.create_bucket(Bucket=bucket_name)
+
+    # purge duplicates
+    data = purge_update_duplicates(data)
+    if len(data) == 0:
+        return "No new NGOs were found.\n\n"
+
     post_ids = scrapers.insert_many(data, ordered=False).inserted_ids
     try:
         assert len(data) == len(post_ids)
     except AssertionError:
-        return "Not all NGO data was uploaded."
-    return "Data for {} NGOs sent to the database.".format(len(post_ids))
+        return "{} NGOs were duplicates or failed to upload. {} were successfully sent to the database.\n\n".format(
+            len(data) - len(post_ids), len(post_ids)
+        )
+    return "Data for all {} NGOs sent to the database.\n\n".format(len(post_ids))
 
 
 def list_ngos_from_db():
     """
-    STUB FUNCTION
     Get all NGOs currently in the database.
     """
     ngos = db_get_collection("ngo_data")
@@ -119,3 +126,25 @@ def list_ngos_from_db():
     for ngo in ngo_list:
         ngo["_id"] = str(ngo["_id"])
     return ngo_list
+
+
+def purge_update_duplicates(ngos_to_upload):
+    """
+    Description:
+        This function purges duplicate NGOs from a list of NGOs which need to
+        be uploaded to a db, but it also should be able to detect when an NGO
+        needs to be updated.
+    Input:
+        The list of NGOs to be uploaded
+    Output:
+        1) A list of NGOs which has been purged of duplicates
+    """
+    extant_ngos = str(list_ngos_from_db())
+
+    new_ngos = []
+    # use find to see if the name is already in the db
+    # if it is, then check the url just to make sure
+    for candidate_ngo in ngos_to_upload:
+        if extant_ngos.find(candidate_ngo["name"]) == -1:
+            new_ngos.append(candidate_ngo)
+    return new_ngos
