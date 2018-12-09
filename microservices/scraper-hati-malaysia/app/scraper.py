@@ -1,6 +1,7 @@
 from bs4 import BeautifulSoup
 import requests
 import json
+from app.models.organization import Org
 
 # import pymongo
 
@@ -12,7 +13,7 @@ import json
 # db.nonprofits.distinct( "Name" )
 
 
-def get_cat_links():
+def get_cat_links(test=False):
     """
     Find the links for the subpages of each category by starting from the homepage
     of the website.
@@ -26,11 +27,13 @@ def get_cat_links():
         if linkText is not None:
             if "category" in linkText:  # only take links containing "category"
                 catLinks.append(linkText)  # get the link for the category
+                if test:
+                    break
     print("retreived category page links")
     return catLinks
 
 
-def get_ngo_links(catLinks):
+def get_ngo_links(catLinks, test=False):
     """
     Go to each category link and find all websites inside each.
     """
@@ -51,10 +54,13 @@ def get_ngo_links(catLinks):
             ngoLinks.append(ngoLink.get("href"))
             if categoryName in ngoLink:
                 ngoLinks.append(ngoLink)
+            if test:
+                break
     print("retreived NGO page links")
     # get rid of duplicate links
     ngoLinks = list(set(ngoLinks))
     print("purged duplicate links")
+    print(len(ngoLinks))
     return ngoLinks
 
 
@@ -95,14 +101,50 @@ def get_ngo_information(ngoLinks):
         print(json.dumps(ngoDict, indent=4, separators=(",", ": ")))
         # adds the nonprofit to the database
         # nonprofits.insert(ngoDict)
-        ngoInformation.append(ngoDict)
+        name = None
+        email = None
+        url = None
+        phone = None
+        registration = None
+        address = None
+        contact = None
+        for key in ngoDict.keys():
+            if key == "Name":
+                name = ngoDict[key]
+            if key == "Email address":
+                email = ngoDict[key]
+            if key == "Website":
+                url = ngoDict[key]
+            if key == "Phone number":
+                phone = ngoDict[key]
+            if key == "Registration number":
+                registration = ngoDict[key]
+            if key == "Address":
+                address = ngoDict[key]
+            if key == "Contact person":
+                contact = ngoDict[key]
+        ngoInformation.append(
+            Org(
+                name=name,
+                phone=phone,
+                email=email,
+                address=address,
+                contact=contact,
+                registration=registration,
+                url=url,
+                description=description,
+                country="Malaysia",
+            ).to_json()
+        )
 
     return ngoInformation
 
 
-def scrape():
+def scrape(one=False):
     """
     Put everything together.
     """
-    ngoInformation = get_ngo_information(get_ngo_links(get_cat_links()))
+    ngoInformation = get_ngo_information(
+        get_ngo_links(get_cat_links(test=one), test=one)
+    )
     return json.dumps(ngoInformation, indent=4, separators=(",", ": "))

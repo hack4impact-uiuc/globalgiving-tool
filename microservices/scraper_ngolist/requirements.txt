@@ -1,0 +1,4 @@
+flask==0.12.3
+requests==2.20.0
+beautifulsoup4==4.6.3
+gunicorn==19.9.0

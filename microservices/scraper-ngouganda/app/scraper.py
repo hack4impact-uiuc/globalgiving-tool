@@ -1,32 +1,49 @@
 from bs4 import BeautifulSoup
+from app.models.organization import Org
 import requests
 import json
 
 website = "https://informationcradle.com/africa/list-of-ngos-in-uganda/"
 
 
-def scrape_page(ngo, d):
+def scrape_page(ngo):
+    name = None
+    url = None
+    address = None
+    phone = None
+    email = None
+    contact = None
+    description = None
     for line in ngo:
         if line[-4:] == "</p>":
             line = line[:-4]
         if line[:3] == "<p>":
-            d["Name"] = line[11:-9]
+            name = line[11:-9]
         elif line[:7] == "P.O.Box":
-            d["P.O. Box"] = line[8:]
+            _ = line[8:]  # don't have a spot for P.O. box
         elif line[:4] == "www.":
-            d["Website"] = line
+            url = line
         elif line[:8] == "Category":
-            d["Category"] = line[10:]
+            _ = line[10:]  # don't currently have category entry spot
         elif line[:16] == "Physical Address":
-            d["Physical Address"] = line[16:]
+            address = line[16:]
         elif line[:9] == "Telephone":
-            d["Telephone"] = line[11:]
+            phone = line[11:]
         elif line[:6] == "E-mail":
-            d["E-mail"] = line[8:]
+            email = line[8:]
         elif line[:14] == "Contact Person":
-            d["Contact Person"] = line[16:]
+            contact = line[16:]
         else:
-            d["Description"] = line
+            description = line
+    return Org(
+        name=name,
+        url=url,
+        address=address,
+        phone=phone,
+        email=email,
+        contact=contact,
+        description=description,
+    ).to_json()
 
 
 def get_page_data():
@@ -37,8 +54,20 @@ def get_page_data():
     contents = page_data.find("div", {"class": "entry-content"})
     contents = contents.find_all("p")
     for ngo in contents:
-        d = {}
         ngo = str(ngo).split("<br/>\n")
-        scrape_page(ngo, d)
-        ret.append(d)
-    return json.dumps(ret)
+        ngo_json = scrape_page(ngo)
+        ret.append(ngo_json)
+    return json.dumps(ret, indent=4, separators=(",", ": "))
+
+
+def get_one():
+    # Specify url to scrape from
+    ret = []
+    target_url = requests.get(website)
+    page_data = BeautifulSoup(target_url.content, "html.parser")
+    contents = page_data.find("div", {"class": "entry-content"})
+    contents = contents.find_all("p")
+    # for ngo in contents:
+    ngo = str(contents[0]).split("<br/>\n")
+    ret.append(scrape_page(ngo))
+    return json.dumps(ret, indent=4, separators=(",", ": "))

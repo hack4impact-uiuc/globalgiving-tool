@@ -1,11 +1,21 @@
 from app import app
-from app.scraper import get_page_data
+from app.scraper import get_page_data, get_one_ngo
 import json
 
 
 @app.route("/data")
 def page_data():
-    return str(get_page_data())
+    return json.dumps(get_page_data(), indent=4, separators=(",", ": "))
+
+
+@app.route("/test")
+def test():
+    return json.dumps(get_one_ngo(), indent=4, separators=(",", ": "))
+
+
+@app.route("/url")
+def url():
+    return "http://www.ingoforummyanmar.org/en/members"
 
 
 @app.route("/routes")

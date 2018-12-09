@@ -1,8 +1,0 @@
-{
-    "public": true,
-    "type": "docker",
-    "alias":"gg-scraper-example",
-    "features": {
-      "cloud": "v2"
-    }
-  }
