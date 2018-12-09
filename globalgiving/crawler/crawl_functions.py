@@ -138,7 +138,7 @@ def find_subpages(url):
     INPUT: url --- absolute URL denoting ngo website homepage
     OUTPUT: list of all subpage URLs
     """
-    print("Fecthing subpages for " + url)
+    print("Fetching subpages for " + url)
 
     subpages = []
     valid_subpages = []
