@@ -90,10 +90,48 @@ def count_external_links(url):
     INPUT: url --- URL to NGO website
     OUTPUT: integer number of external links
     """
+    # page = requests.get(url)
+    # soup = BeautifulSoup(page.content, "html.parser")
+    # links = soup.find_all("a")
+    parsed_uri = urlparse(url)
+    home_url = "{uri.scheme}://{uri.netloc}/".format(uri=parsed_uri)
+    # print("STRIPPED URL:")
+    # print(home_url)
+
+    external_links = []
+    valid_links = []
+
     page = requests.get(url)
     soup = BeautifulSoup(page.content, "html.parser")
-    links = soup.find_all("a")
 
+    # get all URL links on homepage
+    anchors = soup.findAll("a", href=True)
+    links = [anchor["href"] for anchor in anchors]
+
+    home_url_length = len(home_url)
+    # consider case 1) and 2) for subpage links, discard case 3)
+    for link in links:
+        # discard case 3)
+        if link[:1] != "/" and link[:home_url_length] != home_url:
+            external_links.append(link)
+
+    # remove duplicates in valid_subpages
+    external_links = list(set(external_links))
+
+    # remove faulty subpage links
+    for link in external_links:
+        # try to access subpage link
+        try:
+            r = requests.get(str(link))
+            print(r.status_code)
+            if r.status_code != 404:
+                valid_links.append(link)
+        except:
+            print("exception caught!")
+            continue
+
+    return len(valid_links)
+    
 
 def count_ngos_and_directory(visible_text):
     """
