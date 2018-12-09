@@ -10,7 +10,15 @@ from globalgiving.crawl_functions import rank_all, url_rank
 @click.argument("ngo_type", required=True)
 @pass_context
 def cli(ctx, country, ngo_type):
-    for url in search("ngo directory" + country + ngo_type, lang="es", num=1, stop=1):
-        print("Currently searching: {}".format(url))
+    urls = []
+    for url in search("ngo directory" + country + ngo_type, lang="es", num=5, stop=1):
+        # print(url)
         url_rank[url] = []
-        rank_all(country, ngo_type)
+    rank_all(country, ngo_type)
+#     for url in search("ngo directory" + country + ngo_type, lang="es", num=5, stop=1):
+#         print(url)
+#         url_rank[url] = []
+#         rank_all(country, ngo_type)
+   
+    
+    print(url_rank)
