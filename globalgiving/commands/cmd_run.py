@@ -61,7 +61,7 @@ def cli(ctx, n, a):
 
     client.upload_file(filename, bucket_name, filename)
 
-    #os.remove(filename)
+    os.remove(filename)
     ctx.log("Wrote logs to file: " + filename)
 
 
