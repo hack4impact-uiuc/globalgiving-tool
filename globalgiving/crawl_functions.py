@@ -5,7 +5,12 @@ from urllib.parse import urlparse
 import requests
 from globalgiving.resources.address_keywords import address_keywords
 from globalgiving.resources.country_codes import country_codes
-from globalgiving.rank import count_phone_numbers,count_addresses,count_ngo_related_words,get_composite_score
+from globalgiving.rank import (
+    count_phone_numbers,
+    count_addresses,
+    count_ngo_related_words,
+    get_composite_score,
+)
 
 # dictionary that maps directory url to rank_info for one website
 url_rank = {}
@@ -72,15 +77,20 @@ def rank_page(url):
     rank_info["composite_score"] = str(get_composite_score(rank_info))
 
     # count_ngos
-    
-    print("     Has " +  str(rank_info["num_phone_numbers"]) + " phone numbers")
-    print("     Has " +  str(rank_info["num_addresses"]) + " addresses")
-    print("     Has " +  str(rank_info["num_subpages"]) + " subpages")
-    print("     Has " +  str(rank_info["num_word_ngo"]) + " appearances of ngo directory related words")
-    print("     Composite Score " +  rank_info["composite_score"])
+
+    print("     Has " + str(rank_info["num_phone_numbers"]) + " phone numbers")
+    print("     Has " + str(rank_info["num_addresses"]) + " addresses")
+    print("     Has " + str(rank_info["num_subpages"]) + " subpages")
+    print(
+        "     Has "
+        + str(rank_info["num_word_ngo"])
+        + " appearances of ngo directory related words"
+    )
+    print("     Composite Score " + rank_info["composite_score"])
 
     # print("    Composite Score " +  str(get_composite_score(rank_info)))
     url_rank[url] = rank_info
+
 
 def get_all_visible_text(url):
     """
@@ -152,11 +162,11 @@ def find_subpages(url):
     # consider case 1) and 2) for subpage links, discard case 3)
     for link in links:
         # discard case 3)
-        if link[:1] != "/" and link[:len(url)] != url:
+        if link[:1] != "/" and link[: len(url)] != url:
             # print("LINK IS NOT SUBPAGE: " + link)
             continue
         # case 2)
-        if link[:len(url)] == url:
+        if link[: len(url)] == url:
             subpages.append(link)
         # case 1)
         if link[:1] == "/":
@@ -178,4 +188,3 @@ def find_subpages(url):
         except:
             continue
     return valid_subpages
-

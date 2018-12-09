@@ -2,6 +2,7 @@ from globalgiving.resources.country_codes import country_codes
 from globalgiving.resources.address_keywords import address_keywords
 import phonenumbers
 
+
 def count_phone_numbers(country_name, visible_text):
     """
     DESCRIPTION: counts number of phone numbers that occur on NGO website
@@ -49,7 +50,6 @@ def count_ngo_related_words(visible_text):
     return ngo_related_words_count
 
 
-
 def get_composite_score(rank_info):
     """
     DESCRIPTION: ranks the NGO website specified by url
@@ -60,8 +60,7 @@ def get_composite_score(rank_info):
     """
     # heuristic can be altered here:
     # composite_score = rank_info['num_phone_numbers']
-    composite_score = rank_info["num_phone_numbers"] + \
-        rank_info["num_addresses"]
+    composite_score = rank_info["num_phone_numbers"] + rank_info["num_addresses"]
     rank_info["composite_score"] = composite_score
     # url = rank_info["url"]
     # url_rank[url] = rank_info
