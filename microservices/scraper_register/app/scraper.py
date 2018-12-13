@@ -21,12 +21,16 @@ def get_registration_site(country):
 
     param country: specify the country in which to list registration office websites
     """
+    # Specify search query string parameters
     payload = {
         'structure': 'all',
-        'coverage': country.title(),
+        'coverage': get_country_code(country.title()),
         'sector': 'all'
     }
+
+    # Inject search into website and get list of registration sites
     query_data = requests.get(URL, params=payload)
+    print(query_data.text)
 
 
 def get_country_code(country):
@@ -45,4 +49,9 @@ def get_country_code(country):
         country_code = countries[country]
     else:
         # Find keys that contain the country parameter within it
+        for code in countries.keys():
+            if country in code:
+                country_code = code
+    
+    return country_code
         
