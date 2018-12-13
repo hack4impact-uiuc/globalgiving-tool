@@ -18,7 +18,7 @@ def db_get_collection(collectionName="scrapers"):
     return collection
 
 
-def send_to_db(name, url, namesList, routesList, test=False):
+def send_scraper_to_db(name, url, namesList, routesList, test=False):
     """
     Sends the name and routes to the database.
     Input:
@@ -49,16 +49,16 @@ def send_to_db(name, url, namesList, routesList, test=False):
         post_id = scrapers.insert_one(payload).inserted_id
     except Exception as e:
         if type(e).__name__ == "DuplicateKeyError":
-            delete_ngo(payload["_id"], test)
+            delete_scraper(payload["_id"], test)
             post_id = scrapers.insert_one(payload).inserted_id
             updated = True
     return "Registration sent to db with id: " + post_id, updated
 
 
-def list_from_db(test=False):
+def list_scrapers_from_db(test=False):
     """
     Gets all scrapers listed in the database. This function merely returns the
-    scrapers as a list. Printing and whatnot happens later.
+    scrapers as a list.
     """
     if test:
         scrapers = db_get_collection("tests")
@@ -69,15 +69,15 @@ def list_from_db(test=False):
     return document_list
 
 
-def delete_ngo(ngo_id, test=False):
+def delete_scraper(scraper_id, test=False):
     if test:
         scrapers = db_get_collection("tests")
     else:
         scrapers = db_get_collection()
-    return scrapers.delete_one({"_id": ngo_id})
+    return scrapers.delete_one({"_id": scraper_id})
 
 
-def delete_all(test=False):
+def delete_all_scrapers(test=False):
     if test:
         scrapers = db_get_collection("tests")
         scrapers.delete_many({})
@@ -100,9 +100,51 @@ def upload_data(data, test=False):
     # payload[name] = bucket_name
     # client = init_s3_credentials()
     # client.create_bucket(Bucket=bucket_name)
+
+    # purge duplicates
+    data = purge_update_duplicates(data)
+    if len(data) == 0:
+        return "No new NGOs were found.\n\n"
+
     post_ids = scrapers.insert_many(data, ordered=False).inserted_ids
     try:
         assert len(data) == len(post_ids)
     except AssertionError:
-        return "Not all NGO data was uploaded."
-    return "Data for {} NGOs sent to the database.".format(len(post_ids))
+        return "{} NGOs were duplicates or failed to upload. {} were successfully sent to the database.\n\n".format(
+            len(data) - len(post_ids), len(post_ids)
+        )
+    return "Data for all {} NGOs sent to the database.\n\n".format(len(post_ids))
+
+
+def list_ngos_from_db():
+    """
+    Get all NGOs currently in the database.
+    """
+    ngos = db_get_collection("ngo_data")
+    cursor = ngos.find({})
+    ngo_list = [doc for doc in cursor]
+    for ngo in ngo_list:
+        ngo["_id"] = str(ngo["_id"])
+    return ngo_list
+
+
+def purge_update_duplicates(ngos_to_upload):
+    """
+    Description:
+        This function purges duplicate NGOs from a list of NGOs which need to
+        be uploaded to a db, but it also should be able to detect when an NGO
+        needs to be updated.
+    Input:
+        The list of NGOs to be uploaded
+    Output:
+        1) A list of NGOs which has been purged of duplicates
+    """
+    extant_ngos = str(list_ngos_from_db())
+
+    new_ngos = []
+    # use find to see if the name is already in the db
+    # if it is, then check the url just to make sure
+    for candidate_ngo in ngos_to_upload:
+        if extant_ngos.find(candidate_ngo["name"]) == -1:
+            new_ngos.append(candidate_ngo)
+    return new_ngos

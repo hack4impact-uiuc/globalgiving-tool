@@ -1,12 +1,11 @@
 import os
 import click
-import jwt
 import pymongo
 import dotenv
 from globalgiving.cli import pass_context
 
 
-@click.command("register-user", short_help="Registers a new user")
+@click.command("register-user", short_help="Login a returning user")
 @click.option("--username", prompt=True)
 @click.option("--password", prompt=True, hide_input=True)
 @pass_context

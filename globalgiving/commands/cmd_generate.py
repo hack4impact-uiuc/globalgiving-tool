@@ -1,10 +1,9 @@
 import click
 import os
-import os
 from cookiecutter.main import cookiecutter
 
 from globalgiving.cli import pass_context
-from globalgiving.db import list_from_db
+from globalgiving.db import list_scrapers_from_db
 
 
 @click.command("generate", short_help="Generate a new scraper template")

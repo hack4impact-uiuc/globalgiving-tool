@@ -3,7 +3,7 @@ import click, requests
 import hashlib
 import os
 import uuid
-from globalgiving.db import list_from_db, upload_data
+from globalgiving.db import list_scrapers_from_db, upload_data
 from globalgiving.cli import pass_context, authenticate
 from globalgiving.s3_interface import init_s3_credentials
 
@@ -30,7 +30,7 @@ def cli(ctx, n, a):
     search = "Finding scraper {} from list of registered scrapers..."
     f.write(search.format(n) + "\n")
     try:
-        scrapers = list_from_db()
+        scrapers = list_scrapers_from_db()
         route = list(filter(lambda scraper: scraper["name"] == str(n), scrapers))[0][
             "routes"
         ]["Data"]
@@ -43,7 +43,7 @@ def cli(ctx, n, a):
         return
     try:
         contents = requests.get(route)
-        upload_data(contents.json())
+        f.write(upload_data(contents.json()))
     except Exception as e:
         contents = str(e) + "\nFAILED"
 
@@ -76,7 +76,7 @@ def run_all(ctx):
     log_filenames = []
 
     try:
-        scrapers = list_from_db()
+        scrapers = list_scrapers_from_db()
         for scraper in scrapers:
             n = scraper["name"]
             names.append(n)
@@ -124,5 +124,5 @@ def run_all(ctx):
             client.create_bucket(Bucket=bucket_name)
 
         client.upload_file(filename, bucket_name, filename)
-        # os.remove(filename)
-        ctx.log("Wrote logs to file: " + filename)
+        os.remove(filename)
+        ctx.log("Wrote logs for {} to file: ".format(name) + filename)

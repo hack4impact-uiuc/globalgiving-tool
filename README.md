@@ -96,6 +96,7 @@ In order for unittest to recognize and run tests, each method in the class shoul
 - [ ] Handle updates, dont replicate same nonprofit
 - [ ] Tests
 - [ ] Deployment
+- [ ] Add more workers for gunicorn
 
 - [ ] Kill jobs
 - [ ] Submit Funcionality

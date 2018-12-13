@@ -4,7 +4,7 @@ import jwt
 from globalgiving.cli import pass_context
 
 
-@click.command("whoami", short_help="Registers a new user")
+@click.command("whoami", short_help="Display the current active user")
 @pass_context
 def cli(ctx):
     try:
