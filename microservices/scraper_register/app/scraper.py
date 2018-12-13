@@ -6,8 +6,8 @@ import json
 """Scripts and functions to scrape relevant data from a website."""
 
 # http://org-id.guide/results?structure=all&coverage=all&sector=humantiarian_relief
-URL = 'http://org-id.guide/results'
-COUNTRY_FILE = 'countries.json'
+URL = "http://org-id.guide/results"
+COUNTRY_FILE = "countries.json"
 
 
 def scrape():
@@ -23,9 +23,9 @@ def get_registration_site(country):
     """
     # Specify search query string parameters
     payload = {
-        'structure': 'all',
-        'coverage': get_country_code(country.title()),
-        'sector': 'all'
+        "structure": "all",
+        "coverage": get_country_code(country.title()),
+        "sector": "all",
     }
 
     # Inject search into website and get list of registration sites
@@ -40,11 +40,11 @@ def get_country_code(country):
     param country: specific country to find the country code for
     """
     # Find correct country and country code within lookup JSON
-    with open(COUNTRY_FILE, 'r') as f:
+    with open(COUNTRY_FILE, "r") as f:
         countries = json.loads(f.read())
-    
+
     # Get correct country code by either having a direct match or find the closest match for the given country
-    country_code = ''
+    country_code = ""
     if country in countries.keys():
         country_code = countries[country]
     else:
@@ -52,6 +52,5 @@ def get_country_code(country):
         for code in countries.keys():
             if country in code:
                 country_code = code
-    
+
     return country_code
-        
