@@ -16,6 +16,8 @@ import pymongo
 def cli(ctx, country, number_urls):
     if not number_urls:
         number_urls = 3
+    else:
+        number_urls = int(number_urls)
 
     dotenv.load_dotenv(dotenv.find_dotenv())
     uri = os.getenv("URI")
@@ -26,7 +28,7 @@ def cli(ctx, country, number_urls):
     for url in search("ngo directory" + country, lang="es", num=number_urls, stop=1):
         parsed_uri = urlparse(url)
         home_url = "{uri.scheme}://{uri.netloc}/".format(uri=parsed_uri)
-        print(home_url)
+        print("Crawling --- ", home_url)
         if str(home_url) not in url_rank:
             #     for url in url_rank:
             cursor = ranked_link.find({"url": home_url})
