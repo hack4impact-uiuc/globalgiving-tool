@@ -136,7 +136,6 @@ def find_subpages(url):
     parsed_uri = urlparse(url)
     home_url = "{uri.scheme}://{uri.netloc}/".format(uri=parsed_uri)
 
-
     subpages = []
     valid_subpages = []
 
@@ -169,7 +168,7 @@ def find_subpages(url):
         if link[:1] == "/":
             subpages.append(url + link)
             subpages.append(home_url + link)
-            
+
     # remove duplicates in valid_subpages
     subpages = list(set(subpages))
 
@@ -190,5 +189,5 @@ def find_subpages(url):
             break
         except:
             continue
-    
+
     return valid_subpages, all_visible_text
