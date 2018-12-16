@@ -11,12 +11,12 @@ import pymongo
 
 @click.command("crawl", short_help="Crawl for new directories and NGOs")
 @click.argument("country", required=True)
-@click.argument("number_urls", required=False)
+@click.argument("number_urls", required=False, type=int)
 @pass_context
 def cli(ctx, country, number_urls):
     if not number_urls:
         number_urls = 3
-
+    number_urls = int(number_urls)
     dotenv.load_dotenv(dotenv.find_dotenv())
     uri = os.getenv("URI")
     client = pymongo.MongoClient(uri)
