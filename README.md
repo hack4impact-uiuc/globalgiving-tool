@@ -73,7 +73,17 @@ Downloads the log file locally with the name specified as the output file.
 
 ## Authentication
 
+* **globalgiving register** 
+Prompts you for your aws keys and mongo uri. It returns you a token with all the relevant information.
 
+* **globalgiving login** 
+Prompts you for your mongo uri and token, and fetches the rest of the information for you.
+
+* **globalgiving logout** 
+Logs you out and clears your information
+
+* **globalgiving whoami** 
+Tells you what your token and mongo uri currently are. 
 
 ## Web Crawing
 * **globalgiving crawl country=<country_name>**
@@ -83,7 +93,6 @@ of NGO and directory.
 
 * **globalgiving crawled**
 Every time that the crawl command is utilized, the command line tool will store the links that it ranked as well as the resulting composite store in a database. Using the crawled command will retrieve the ranked pages and display them in descending order of rank.
-
 
 ## Adding a new microservice
 
