@@ -7,6 +7,7 @@ from urllib.parse import urlparse
 import dotenv
 import os
 import pymongo
+import json
 
 
 @click.command("crawl", short_help="Crawl for new directories and NGOs")
@@ -16,9 +17,9 @@ import pymongo
 def cli(ctx, country, number_urls):
     if not number_urls:
         number_urls = 3
-
-    dotenv.load_dotenv(dotenv.find_dotenv())
-    uri = os.getenv("URI")
+    with open(os.getenv("HOME") + "/globalgiving/credentials.json") as f:
+        data = json.load(f)
+    uri = data["mongo_uri"]
     client = pymongo.MongoClient(uri)
     db = client.get_database()
     ranked_link = db["ranked_links"]
