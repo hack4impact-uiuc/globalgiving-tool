@@ -32,12 +32,12 @@ def get_registration_site(country):
     # Inject search into website and get list of registration sites
     query_data = requests.get(URL, params=payload)
     soup = BeautifulSoup(query_data.content, "html.parser")
-    found_sites = soup.find_all('footer', class_='card__controls')
+    found_sites = soup.find_all("footer", class_="card__controls")
 
     # Loop through resulting links and return the first office site, which is the most relevant
     # Each footer has nested elements, the first of which is a newline escaped character
     # The second is the link that we want that has the site of the registration office
-    url = found_sites[0].contents[1]['href']
+    url = found_sites[0].contents[1]["href"]
     return url
 
 

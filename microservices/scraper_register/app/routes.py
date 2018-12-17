@@ -8,10 +8,11 @@ def page_data():
     """Gets the relevant data from the page"""
     return scrape()
 
+
 @app.route("/registration/<country>")
 def registration_site(country):
     return get_registration_site(country)
-    
+
 
 @app.route("/routes")
 def routes_available():
