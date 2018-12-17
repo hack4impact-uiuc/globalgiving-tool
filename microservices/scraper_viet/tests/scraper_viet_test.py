@@ -2,7 +2,7 @@ import pytest
 import sys
 import os
 
-sys.path.append(os.path.abspath(os.path.join('..', 'microservices', 'scraper_viet')))
+sys.path.append(os.path.abspath(os.path.join("..", "microservices", "scraper_viet")))
 from app import scraper
 
 
