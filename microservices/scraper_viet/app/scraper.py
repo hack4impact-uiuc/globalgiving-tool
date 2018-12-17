@@ -1,7 +1,7 @@
 from bs4 import BeautifulSoup
 from requests import get
 import json
-from scraper_viet.app.models.organization import Org
+from app.models.organization import Org
 
 url = "https://www.viet.net/community/nonprofit/"
 
@@ -75,7 +75,7 @@ def get_page_data():
     orgs = []
     for link in soup.findAll("p"):
         orgs += parse_data(link.text)
-    return orgs
+    return json.dumps(orgs)
 
 
 def get_test_data():

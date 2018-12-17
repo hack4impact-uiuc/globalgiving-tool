@@ -2,6 +2,7 @@ import pymongo
 import dotenv
 import os
 from globalgiving.s3_interface import init_s3_credentials
+import json
 
 
 def db_get_collection(collectionName="scrapers"):
@@ -10,10 +11,10 @@ def db_get_collection(collectionName="scrapers"):
     stored in an environment file. The purpose is simply to pass on the
     collection to other functions so they can do with it what they must.
     """
-    dotenv.load_dotenv(dotenv.find_dotenv())
-    uri = os.getenv("URI")
-    client = pymongo.MongoClient(uri)
-    db = client["ggdb-dev"]
+    with open(os.getenv("HOME") + "/globalgiving/credentials.json") as f:
+        data = json.load(f)
+    client = pymongo.MongoClient(data["mongo_uri"])
+    db = client.get_database()
     collection = db[collectionName]
     return collection
 
@@ -94,6 +95,7 @@ def upload_data(data, test=False):
         A confirmation that the data has been sent, otherwise an
         exception.
     """
+    print(data)
     scrapers = db_get_collection("ngo_data")
     # bucket_name = name + "-" + str(hash(name))  # we need to figure out how
     # logging is going to work for uploading ngo data

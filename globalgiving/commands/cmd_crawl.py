@@ -7,6 +7,7 @@ from urllib.parse import urlparse
 import dotenv
 import os
 import pymongo
+import json
 
 
 @click.command("crawl", short_help="Crawl for new directories and NGOs")
