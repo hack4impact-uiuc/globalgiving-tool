@@ -32,7 +32,7 @@ def cli(ctx, mongo_uri, access_key, secret_key):
     if not os.path.exists(os.getenv("HOME") + "/globalgiving/"):
         os.makedirs(os.getenv("HOME") + "/globalgiving/")
     with open(os.getenv("HOME") + "/globalgiving/credentials.json", "w") as f:
-        json.dump(user_information, f)
+        json.dump({"mongo_uri": mongo_uri, "token": user_information["token"]}, f)
         f.close()
 
     ctx.log(

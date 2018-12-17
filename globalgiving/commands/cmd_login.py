@@ -24,6 +24,6 @@ def cli(ctx, mongo_uri, token):
     if not os.path.exists(os.getenv("HOME") + "/globalgiving/"):
         os.makedirs(os.getenv("HOME") + "/globalgiving/")
     with open(os.getenv("HOME") + "/globalgiving/credentials.json", "w") as f:
-        json.dump(user_information, f)
+        json.dump({"mongo_uri": mongo_uri, "token": token}, f)
         f.close()
     print("You have succesfully logged in")
