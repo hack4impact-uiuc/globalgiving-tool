@@ -1,5 +1,5 @@
 import pytest
-from scraper_ngothai.app import scraper
+from microservices.scraper_ngothai.app import scraper
 
 
 def test_basic():

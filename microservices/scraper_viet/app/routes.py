@@ -1,5 +1,5 @@
 from app import app
-from scraper import get_page_data, get_test_data
+from app.scraper import get_page_data, get_test_data
 import json
 
 

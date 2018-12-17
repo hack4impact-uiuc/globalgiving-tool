@@ -1,5 +1,5 @@
 from app import app
-from scraper import basepage_scrape, get_one_ngo
+from app.scraper import basepage_scrape, get_one_ngo
 import json
 
 

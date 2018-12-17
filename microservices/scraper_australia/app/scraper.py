@@ -1,5 +1,5 @@
 from bs4 import BeautifulSoup
-from scraper_australia.app.models.organization import Org
+from app.models.organization import Org
 import requests
 import json
 
