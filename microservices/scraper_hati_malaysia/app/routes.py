@@ -8,7 +8,7 @@ def page_data():
     return scrape()
 
 
-@app.rou
+@app.route("/routes")
 def routes_availible():
     return json.dumps(
         ["%s" % rule for rule in app.url_map.iter_rules()],
