@@ -1,5 +1,5 @@
 from bs4 import BeautifulSoup
-from scraper_ingo_forum_myanmar.app.models.organization import Org
+from models.organization import Org
 
 
 def create_org_ingo_forum_myanmar(name, address, phone, email, org_url):

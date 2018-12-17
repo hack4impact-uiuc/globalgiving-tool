@@ -1,5 +1,5 @@
 import pytest
-from scraper_india.app import scraper
+from microservices.scraper_india.app import scraper
 
 
 def test_basic():

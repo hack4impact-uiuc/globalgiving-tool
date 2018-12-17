@@ -1,7 +1,7 @@
 from bs4 import BeautifulSoup
 from requests import get
-from scraper_ingo_forum_myanmar.app.org import create_org_ingo_forum_myanmar
-from scraper_ingo_forum_myanmar.app.models.organization import Org
+from app.org import create_org_ingo_forum_myanmar
+from app.models.organization import Org
 
 url = "http://www.ingoforummyanmar.org/en/members"
 

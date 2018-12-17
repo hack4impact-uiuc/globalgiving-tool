@@ -1,6 +1,6 @@
 from app import app
-from scraper import basepage_scrape
-from scraper import country_page_scrape
+from app.scraper import basepage_scrape
+from app.scraper import country_page_scrape
 import json
 
 
