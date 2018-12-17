@@ -95,6 +95,7 @@ def upload_data(data, test=False):
         A confirmation that the data has been sent, otherwise an
         exception.
     """
+    print(data)
     scrapers = db_get_collection("ngo_data")
     # bucket_name = name + "-" + str(hash(name))  # we need to figure out how
     # logging is going to work for uploading ngo data

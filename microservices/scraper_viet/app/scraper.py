@@ -75,7 +75,7 @@ def get_page_data():
     orgs = []
     for link in soup.findAll("p"):
         orgs += parse_data(link.text)
-    return orgs
+    return json.dumps(orgs)
 
 
 def get_test_data():
