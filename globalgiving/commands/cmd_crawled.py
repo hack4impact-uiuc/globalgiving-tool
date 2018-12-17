@@ -30,7 +30,6 @@ def cli(ctx, number_urls):
     for directory in directories:
         ranked_ngo_directories += [(directory["url"], directory["composite_score"])]
 
-    ranked_ngo_directories = sorted(ranked_ngo_directories, key=itemgetter(1))[::-1]
     print("Ranked Set of NGO's gathered")
     for ngo_directory in ranked_ngo_directories:
-        print("   " + ngo_directory[0] + "  " + ngo_directory[1])
+        print("   " + str(ngo_directory[0]) + "  " + str(ngo_directory[1]))

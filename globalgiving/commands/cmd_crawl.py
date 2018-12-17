@@ -20,10 +20,9 @@ def cli(ctx, country, number_urls):
         number_urls = 3
     else:
         number_urls = int(number_urls)
-
-    dotenv.load_dotenv(dotenv.find_dotenv())
-    uri = os.getenv("URI")
-    client = pymongo.MongoClient(uri)
+    with open(os.getenv("HOME") + "/globalgiving/credentials.json") as f:
+        data = json.load(f)
+    client = pymongo.MongoClient(data["mongo_uri"])
     db = client.get_database()
     ranked_link = db["ranked_links"]
 
