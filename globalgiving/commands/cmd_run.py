@@ -6,6 +6,7 @@ import uuid
 from globalgiving.db import list_scrapers_from_db, upload_data
 from globalgiving.cli import pass_context, authenticate
 from globalgiving.s3_interface import init_s3_credentials
+import json
 
 
 @click.command("run", short_help="Run a scraper")
@@ -46,8 +47,8 @@ def cli(ctx, n, a):
         f.write(upload_data(contents.json()))
     except Exception as e:
         contents = str(e) + "\nFAILED"
+        f.write(contents)
 
-    f.write(contents.text)
     f.close()
 
     # Call S3 to list current buckets
@@ -111,7 +112,7 @@ def run_all(ctx):
             ctx.log("Getting information for {} . . . ".format(name))
             contents = requests.get(route)
             log.write(contents.text)
-            log.write(upload_data(contents.json()))
+            log.write(upload_data(json.loads(contents.text)))
             log.write("Upload succeeded!")
             ctx.log("Uploading {} succeeded!".format(name))
         except Exception as e:

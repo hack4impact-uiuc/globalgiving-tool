@@ -1,7 +1,8 @@
 {
     "public": true,
     "type": "docker",
-    "alias":"gg-scraper-ngolist",
+    "version":1,
+    "alias":"gg-scraper-ngo-list",
     "features": {
       "cloud": "v2"
     }

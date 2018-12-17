@@ -8,6 +8,7 @@ import dotenv
 import os
 import pymongo
 from operator import itemgetter
+import json
 
 
 @click.command("crawled", short_help="Crawl for new directories and NGOs")
@@ -15,8 +16,9 @@ from operator import itemgetter
 @pass_context
 def cli(ctx, number_urls):
 
-    dotenv.load_dotenv(dotenv.find_dotenv())
-    uri = os.getenv("URI")
+    with open(os.getenv("HOME") + "/globalgiving/credentials.json") as f:
+        data = json.load(f)
+    uri = data["mongo_uri"]
     client = pymongo.MongoClient(uri)
     db = client.get_database()
     ranked_link = db["ranked_links"]

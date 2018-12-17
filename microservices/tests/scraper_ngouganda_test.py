@@ -1,5 +1,5 @@
 import pytest
-from scraper_ngouganda.app import scraper
+from microservices.scraper_ngouganda.app import scraper
 
 
 def test_basic():

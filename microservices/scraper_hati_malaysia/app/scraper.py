@@ -1,7 +1,7 @@
 from bs4 import BeautifulSoup
 import requests
 import json
-from scraper_hati_malaysia.app.models.organization import Org
+from app.models.organization import Org
 
 # import pymongo
 

@@ -1,5 +1,5 @@
 from app import app
-from scraper import scrape
+from app.scraper import scrape
 import json
 
 
@@ -8,7 +8,7 @@ def page_data():
     return scrape()
 
 
-@app.route("/routes")
+@app.rou
 def routes_availible():
     return json.dumps(
         ["%s" % rule for rule in app.url_map.iter_rules()],
