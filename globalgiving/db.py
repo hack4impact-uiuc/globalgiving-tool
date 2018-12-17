@@ -11,7 +11,7 @@ def db_get_collection(collectionName="scrapers"):
     stored in an environment file. The purpose is simply to pass on the
     collection to other functions so they can do with it what they must.
     """
-    if (os.path.isfile(os.getenv("HOME") + "/globalgiving/credentials.json"):
+    if os.path.isfile(os.getenv("HOME") + "/globalgiving/credentials.json"):
         with open(os.getenv("HOME") + "/globalgiving/credentials.json") as f:
             data = json.load(f)
         client = pymongo.MongoClient(data["mongo_uri"])
