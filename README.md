@@ -109,7 +109,7 @@ Over the course of the 3 months that we had to build out the tool, we accumulate
 * Scrapers
     * Initially, the web scrapers were written really quickly and could retrieve a large amount of data from each nonprofit directory that was found. However, as time continued, these websites underwent updates that ultimately caused some web scrapers to fail. These scrapers are still included, but may not upload any data to the database or completely fail.
 * Registration IDs
-    * Registration IDs were not found until very late into the development cycle and as such, could not be fully incorporated into the product. Currently, each nonprofit organization that is discovered and pushed to the database will be enriched with an appropriate website that represents the nonprofit organization's country's registration office.
+    * Registration IDs were not found until very late into the development cycle and as such, could not be fully incorporated into the product. Currently, registration offices can be discovered given a country.
     * Some queries will be unreliable, however, as the country codes that are being used to search for registration office websites are determined based on the country name provided. Some countries, like Korea, may have very similar names. This makes retrieving the correct country code more difficult and inaccurate in some cases.
 * Submitting
     * Due to the lack of registration IDs that were found, the submit functionality could not be fully fleshed out. As a result, the submit command is present within the CLI, but is an empty placeholder command that does not perform any actions nor modify any fields.
