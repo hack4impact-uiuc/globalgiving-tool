@@ -1,4 +1,5 @@
 from bs4 import BeautifulSoup
+from app.models.countries import countries
 import requests
 import json
 
@@ -7,7 +8,7 @@ import json
 
 # http://org-id.guide/results?structure=all&coverage=all&sector=humantiarian_relief
 URL = "http://org-id.guide/results"
-COUNTRY_FILE = "countries.json"
+COUNTRY_PATH = "models/countries.json"
 
 
 def scrape():
@@ -30,7 +31,14 @@ def get_registration_site(country):
 
     # Inject search into website and get list of registration sites
     query_data = requests.get(URL, params=payload)
-    print(query_data.text)
+    soup = BeautifulSoup(query_data.content, "html.parser")
+    found_sites = soup.find_all('footer', class_='card__controls')
+
+    # Loop through resulting links and return the first office site, which is the most relevant
+    # Each footer has nested elements, the first of which is a newline escaped character
+    # The second is the link that we want that has the site of the registration office
+    url = found_sites[0].contents[1]['href']
+    return url
 
 
 def get_country_code(country):
@@ -39,18 +47,16 @@ def get_country_code(country):
 
     param country: specific country to find the country code for
     """
-    # Find correct country and country code within lookup JSON
-    with open(COUNTRY_FILE, "r") as f:
-        countries = json.loads(f.read())
 
     # Get correct country code by either having a direct match or find the closest match for the given country
     country_code = ""
     if country in countries.keys():
         country_code = countries[country]
     else:
-        # Find keys that contain the country parameter within it
+        # Find keys that contain the country parameter within it and select the first one
         for code in countries.keys():
             if country in code:
                 country_code = code
+                break
 
     return country_code

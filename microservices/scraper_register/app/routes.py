@@ -1,5 +1,5 @@
 from app import app
-from scraper import scrape
+from app.scraper import scrape, get_registration_site
 import json
 
 
@@ -11,6 +11,7 @@ def page_data():
 # WIP: should be able to take a country name and pass that to scraper function
 @app.route("/registration")
 def registration_site():
+    return get_registration_site("australia")
     
 
 @app.route("/routes")
