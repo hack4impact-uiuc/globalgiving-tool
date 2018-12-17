@@ -8,10 +8,9 @@ def page_data():
     """Gets the relevant data from the page"""
     return scrape()
 
-# WIP: should be able to take a country name and pass that to scraper function
-@app.route("/registration")
-def registration_site():
-    return get_registration_site("australia")
+@app.route("/registration/<country>")
+def registration_site(country):
+    return get_registration_site(country)
     
 
 @app.route("/routes")
