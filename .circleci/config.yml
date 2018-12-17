@@ -10,7 +10,7 @@ jobs:
             cd microservices
             pip install -r requirements.txt --user
             pip install -r requirements-dev.txt --user
-            python3 -m pytest tests
+            /home/circleci/.local/bin/pytest
   microservice_lint:
     docker:
       - image: circleci/python:3.7

@@ -4,6 +4,7 @@ import click
 import jwt
 import dotenv
 import pymongo
+import json
 
 CONTEXT_SETTINGS = dict(auto_envvar_prefix="GlobalGiving")
 
@@ -61,24 +62,17 @@ def authenticate():
     This is done by using the jw token stored locally and performing a lookup
     of user/password pairs with the database.
     """
-    dotenv.load_dotenv(dotenv.find_dotenv())
-    uri = os.getenv("URI")
-
-    client = pymongo.MongoClient(uri)
-    db = client.get_database()
-
+    with open(os.getenv("HOME") + "/globalgiving/credentials.json") as f:
+        data = json.load(f)
     try:
-        with open(os.getenv("HOME") + "/globalgiving/" + ".jwt", "rb") as jwt_file:
-            encoded_jwt = jwt_file.read()
-    except FileNotFoundError:
-        print("No JW token found")
-        exit(0)
-
-    auth_info = jwt.decode(encoded_jwt, "secret", algorithms=["HS256"])
-    user_match = db["users"].find_one(
-        {"user": auth_info["user"], "password": auth_info["password"]}
-    )
-
-    if user_match is None:
+        client = pymongo.MongoClient(data["mongo_uri"])
+        db = client.get_database()
+        user_information = db["credentials"].find_one(
+            {"mongo_uri": data["mongo_uri"], "token": data["token"]}
+        )
+        if user_information is None:
+            print("Authentication failed")
+            exit(0)
+    except:
         print("Authentication failed")
         exit(0)

@@ -25,7 +25,6 @@ rank_info = {}
     'num_addresses': (number of addresses)
     'num_phone_numbers': (number of phone numbers)
     'num_word_ngo' : (number of times word "ngo", "directory", or "nonprofit" appears on website)
-    'num_word_directory': (number of times word "directory appears on website)
     'composite_score': (composite score for website)
     'page_or_dir': (boolean to indicate whether we think URL is ngo page or ngo directory)
 }
@@ -56,28 +55,24 @@ def rank_page(url):
     page = requests.get(url)
     soup = BeautifulSoup(page.content, "html.parser")
 
-    all_visible_text = get_all_visible_text(url)
+    all_visible_text = get_all_visible_text(page)
 
     # get all subpages
-    subpages = find_subpages(url)
-    # print(subpages)
+    subpages, subpage_visible_texts = find_subpages(url)
 
     # get all visible text from all subpages
-    for subpage in subpages:
-        all_visible_text += get_all_visible_text(subpage)
-        # add a space to make sure text doesnt get jumbled together
-        all_visible_text += " "
+    all_visible_text += " "
+    all_visible_text += subpage_visible_texts
 
     # perform webpage analysis on all_visible_text HERE, update rank_info
     rank_info["url"] = url
     rank_info["num_phone_numbers"] = count_phone_numbers(country_name, all_visible_text)
     rank_info["num_addresses"] = count_addresses(all_visible_text)
-    rank_info["num_subpages"] = str(len(subpages))
-    rank_info["num_word_ngo"] = str(count_ngo_related_words(all_visible_text))
-    rank_info["composite_score"] = str(get_composite_score(rank_info))
+    rank_info["num_subpages"] = len(subpages)
+    rank_info["num_word_ngo"] = count_ngo_related_words(all_visible_text)
+    rank_info["composite_score"] = get_composite_score(rank_info)
 
-    # count_ngos
-
+    # output ranking information
     print("     Has " + str(rank_info["num_phone_numbers"]) + " phone numbers")
     print("     Has " + str(rank_info["num_addresses"]) + " addresses")
     print("     Has " + str(rank_info["num_subpages"]) + " subpages")
@@ -86,28 +81,25 @@ def rank_page(url):
         + str(rank_info["num_word_ngo"])
         + " appearances of ngo directory related words"
     )
-    print("     Composite Score " + rank_info["composite_score"])
+    print("     Composite Score " + str(rank_info["composite_score"]))
 
     url_rank[url] = rank_info.copy()
-    print(url)
-    print(url_rank[url])
+    # print(url_rank[url])
 
 
-def get_all_visible_text(url):
+def get_all_visible_text(page):
     """
     DESCRIPTION: gets all the visible text of homepage and subpages one-level deep for NGO website
-    INPUT: url --- absolute URL to NGO website
+    INPUT: page --- requests object of url
     OUTPUT: string of all visible text on NGO website
     """
 
-    page = requests.get(url)
+    # page = requests.get(url)
     soup = BeautifulSoup(page.content, "html.parser")
 
     texts = soup.findAll(text=True)
     visible_texts = filter(tag_visible, texts)
     visible_text = " ".join(t.strip() for t in visible_texts)
-
-    # print(visible_text)
 
     return visible_text
 
@@ -136,9 +128,13 @@ def find_subpages(url):
     """
     DESCRIPTION: scrapes website homepage for all subpages
     INPUT: url --- absolute URL denoting ngo website homepage
-    OUTPUT: list of all subpage URLs
+    OUTPUT: list of all subpage URLs, all visible text of subpages
     """
     print("Fetching subpages for " + url)
+
+    # get the domain url from homepage url
+    parsed_uri = urlparse(url)
+    home_url = "{uri.scheme}://{uri.netloc}/".format(uri=parsed_uri)
 
     subpages = []
     valid_subpages = []
@@ -159,33 +155,39 @@ def find_subpages(url):
     2) absolute links for subpages (e.g. https://care.ca/about-us/mission)
     3) irrevelant external absolute link (e.g. https://mcafee.com/blahblahblah)
     """
-    # home_url_length = len(home_url)
-    # consider case 1) and 2) for subpage links, discard case 3)
+    home_url_length = len(home_url)
+
     for link in links:
         # discard case 3)
-        if link[:1] != "/" and link[: len(url)] != url:
-            # print("LINK IS NOT SUBPAGE: " + link)
+        if link[:1] != "/" and link[:home_url_length] != home_url:
             continue
         # case 2)
-        if link[: len(url)] == url:
+        if link[:home_url_length] == home_url:
             subpages.append(link)
         # case 1)
         if link[:1] == "/":
             subpages.append(url + link)
-            subpages.append(url + link)
+            subpages.append(home_url + link)
 
     # remove duplicates in valid_subpages
     subpages = list(set(subpages))
 
-    # remove faulty subpage links
+    all_visible_text = ""
+    # remove faulty subpage links & acquire subapge visible text
     for link in subpages:
         # try to access subpage link
         try:
-            r = requests.get(str(link))
-            if r.status_code != 404:
+            page = requests.get(str(link))
+            if page.status_code != 404:
                 valid_subpages.append(link)
+
+                visible_text = get_all_visible_text(page)
+                all_visible_text += visible_text
+                all_visible_text += " "
+
         except KeyboardInterrupt:
             break
         except:
             continue
-    return valid_subpages
+
+    return valid_subpages, all_visible_text

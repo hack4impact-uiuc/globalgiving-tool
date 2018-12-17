@@ -1,5 +1,5 @@
 from app import app
-from scraper import get_page_data, get_one_nonprofit
+from app.scraper import get_page_data, get_one_nonprofit
 import json
 
 
@@ -19,6 +19,7 @@ def url():
 
 @app.route("/test")
 def test():
+    print(get_one_nonprofit())
     return json.dumps(get_one_nonprofit(), indent=4, separators=(",", ": "))
 
 
