@@ -7,7 +7,7 @@ website = "http://www.findouter.com/Oceania/Australia/Society-and-Culture/Non-Go
 
 
 def get_one_nonprofit():
-    return parse_page(website + "1")[0]
+    return parse_page(website + "1")[1]
 
 
 def parse_page(webpage):

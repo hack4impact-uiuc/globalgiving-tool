@@ -2,6 +2,7 @@
     "public": true,
     "type": "docker",
     "alias":"gg-scraper-australia",
+    "version":1,
     "features": {
       "cloud": "v2"
     }

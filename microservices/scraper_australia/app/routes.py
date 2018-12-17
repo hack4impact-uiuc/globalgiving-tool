@@ -19,6 +19,7 @@ def url():
 
 @app.route("/test")
 def test():
+    print(get_one_nonprofit())
     return json.dumps(get_one_nonprofit(), indent=4, separators=(",", ": "))
 
 
