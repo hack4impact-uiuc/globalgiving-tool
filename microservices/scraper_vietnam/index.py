@@ -1,8 +1,10 @@
 from flask import Flask
 from flask_restplus import Resource, Api, fields
+from werkzeug.contrib.fixers import ProxyFix
 from scraper import get_test_data, get_page_data
 
 app = Flask(__name__)
+app.wsgi_app = ProxyFix(app.wsgi_app)
 api = Api(app, version="0.1", title="Vietnam Scraper")
 
 
