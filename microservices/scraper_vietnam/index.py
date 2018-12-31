@@ -11,7 +11,7 @@ api = Api(app, version="0.1", title="Vietnam Scraper")
 @api.route("/url")
 class ScraperVietnam(Resource):
     def get(self):
-        return {"url": "https://www.viet.net/community/nonprofit/"}
+        return "https://www.viet.net/community/nonprofit/"
 
 
 @api.route("/data")
