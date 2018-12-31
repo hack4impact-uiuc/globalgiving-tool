@@ -1,4 +1,4 @@
-from src.scraper import get_page_data
+from scraper import get_page_data
 
 
 def test():

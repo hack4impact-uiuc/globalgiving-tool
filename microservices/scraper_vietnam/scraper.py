@@ -1,7 +1,7 @@
 from bs4 import BeautifulSoup
 from requests import get
 import json
-from .models.organization import Org
+from models.organization import Org
 
 url = "https://www.viet.net/community/nonprofit/"
 
