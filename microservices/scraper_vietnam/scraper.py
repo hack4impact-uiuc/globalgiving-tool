@@ -1,10 +1,9 @@
 from bs4 import BeautifulSoup
 from requests import get
 import json
-from .models.organization import Org
+from models.organization import Org
 
 url = "https://www.viet.net/community/nonprofit/"
-
 
 def create_org(line):
     """
@@ -57,26 +56,25 @@ def create_org(line):
         return org
     return None
 
-
 def parse_data(link):
     orgs = []
     if link != None:
         for line in link.split("\n\n"):
             org = create_org(line.strip().split("\n"))
             if org is not None:
-                print(org)
                 orgs += [org]
     return orgs
-
 
 def get_page_data():
     response = get(url)
     soup = BeautifulSoup(response.text, "html.parser")
+    print(len(soup.findAll("p")))
+    print(soup.findAll("p")[0])
     orgs = []
-    for link in soup.findAll("p"):
+    for link in soup.findAll("p")[:]:
         orgs += parse_data(link.text)
-    return json.dumps(orgs)
-
+    print(len(orgs))
+    return orgs
 
 def get_test_data():
     response = get(url)
