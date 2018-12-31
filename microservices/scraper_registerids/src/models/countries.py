@@ -234,7 +234,7 @@ countries = {
     "Uzbekistan": "UZ",
     "Vanuatu": "VU",
     "Venezuela": "VE",
-    "Viet Nam": "VN",
+    "Vietnam": "VN",
     "British Virgin Islands": "VG",
     "U.S. Virgin Islands": "VI",
     "Wallis and Futuna": "WF",
