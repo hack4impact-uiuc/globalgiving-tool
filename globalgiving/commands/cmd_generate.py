@@ -8,8 +8,8 @@ from globalgiving.db import list_scrapers_from_db
 
 MS_DIR = "/microservices"
 TEMP_DIR = "/cookiecutter-scraper"
-MS_DELIM = "_" # Delimeter to split on to check microservice existence
-TEMP_NAME_PARAM = "project_slug" # Slug placeholder to be replaced by inputted name
+MS_DELIM = "_"  # Delimeter to split on to check microservice existence
+TEMP_NAME_PARAM = "project_slug"  # Slug placeholder to be replaced by inputted name
 
 
 @click.command("generate", short_help="Generate a new scraper template")

@@ -23,7 +23,7 @@ def get_first_scraper():
             # Split directory to get the name without extra scraper_
             # ASSUMES that microservices start with tag (scraper, etc.) followed by underscore
             dir_split = directory.split(DELIM, 1)
-            return dir_split[1]
+            return dir_split[len(dir_split) - 1]
 
 
 def get_num_scrapers():
@@ -33,7 +33,7 @@ def get_num_scrapers():
     subdir_list = next(os.walk(rootdir))[1]
 
     # Return the number of scrapers
-    scraper_list = list(filter(lambda x:SCRAPER_DELIM in x, subdir_list))
+    scraper_list = list(filter(lambda x: SCRAPER_DELIM in x, subdir_list))
     return len(scraper_list)
 
 
@@ -48,4 +48,3 @@ def test_generate_existing():
 
     # Check that the number of scrapers hasn't changed (successfully found existing scraper)
     assert prev_num_scrapers == get_num_scrapers()
-
