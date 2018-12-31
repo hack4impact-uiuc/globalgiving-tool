@@ -1,4 +1,5 @@
 #loops through all the folders and deploys everything (takes 1-2 min per scraper)
+
 for d in */ ; do
     if [[ "$d" == "scraper"* ]];
     then
