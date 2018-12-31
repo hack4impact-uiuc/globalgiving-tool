@@ -11,15 +11,16 @@ from globalgiving.db import list_scrapers_from_db
 @pass_context
 def cli(ctx, name):
     """
-    GG generate creates a new template scraper
+    GG generate creates a new template scraper from the template in the microservices directory
+    and using the cookiecutter module.
     """
-    # Get root directory set start of scraper search to the root microservices directory
+    # Get root directory and set start of existing scraper search to the root microservices directory
     rootdir = os.getcwd() + "/microservices"
     subdir_list = next(os.walk(rootdir))[1]
 
     # Check if scraper already exists in list of subdirectories
     for scraper in subdir_list:
-        name_start_idx = scraper.find("-")
+        name_start_idx = scraper.find("_")
         if name == scraper[name_start_idx + 1 :]:
             ctx.log("Scraper {} already exists!".format(name))
             return
