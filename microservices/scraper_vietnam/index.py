@@ -5,27 +5,28 @@ from scraper import get_test_data, get_page_data
 
 app = Flask(__name__)
 app.wsgi_app = ProxyFix(app.wsgi_app)
-api = Api(app,
-          version='0.1',
-          title='Vietnam Scraper'
-          )
+api = Api(app, version="0.1", title="Vietnam Scraper")
 
-@api.route('/url')
+
+@api.route("/url")
 class ScraperVietnam(Resource):
     def get(self):
-        return {"url" : "https://www.viet.net/community/nonprofit/"}
+        return {"url": "https://www.viet.net/community/nonprofit/"}
+
 
 @api.route("/data")
 class ScraperVietnam2(Resource):
     def get(self):
         orgs = get_page_data()
-        return { "data" : orgs }
-        
+        return {"data": orgs}
+
+
 @api.route("/test")
 class ScraperVietnam3(Resource):
     def get(self):
         orgs = get_test_data()
-        return { "test" : str(orgs[0])}
+        return {"test": str(orgs[0])}
 
-if __name__ == '__main__':
+
+if __name__ == "__main__":
     app.run(debug=True)

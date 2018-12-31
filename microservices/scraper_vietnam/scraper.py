@@ -5,6 +5,7 @@ from models.organization import Org
 
 url = "https://www.viet.net/community/nonprofit/"
 
+
 def create_org(line):
     """
     Attempts to parse a line of data into the Org class.
@@ -56,6 +57,7 @@ def create_org(line):
         return org
     return None
 
+
 def parse_data(link):
     orgs = []
     if link != None:
@@ -64,6 +66,7 @@ def parse_data(link):
             if org is not None:
                 orgs += [org]
     return orgs
+
 
 def get_page_data():
     response = get(url)
@@ -75,6 +78,7 @@ def get_page_data():
         orgs += parse_data(link.text)
     print(len(orgs))
     return orgs
+
 
 def get_test_data():
     response = get(url)
