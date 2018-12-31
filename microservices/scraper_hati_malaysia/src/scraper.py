@@ -1,7 +1,7 @@
 from bs4 import BeautifulSoup
 import requests
 import json
-from models.organization import Org
+from .models.organization import Org
 
 
 def get_cat_links(test=False):
