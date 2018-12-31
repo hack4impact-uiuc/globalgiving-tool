@@ -13,7 +13,6 @@ def cli(ctx):
     name and all routes associated with that scraper.
     """
     ctx.log("Listing all registered scrapers!")
-    ctx.log(os.path.realpath(os.path.dirname(__file__)+"/.."))
     all_docs = list_scrapers_from_db()
     for doc in all_docs:
         ctx.log("  {}".format(doc["name"]))
