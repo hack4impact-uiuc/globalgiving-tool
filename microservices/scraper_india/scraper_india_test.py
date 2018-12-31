@@ -1,5 +1,5 @@
 import pytest
-from scraper_india.src import scraper
+from src import scraper
 
 
 def test_basic():
