@@ -1,16 +1,7 @@
 from bs4 import BeautifulSoup
 import requests
 import json
-from models.organization import Org
-
-# import pymongo
-
-# sets up database connection
-# uri = "mongodb://aria:malkani28@ds139243.mlab.com:39243/gg-db"
-# client = pymongo.MongoClient(uri)
-# db = client.get_default_database()
-# nonprofits = db['nonprofits']
-# db.nonprofits.distinct( "Name" )
+from .models.organization import Org
 
 
 def get_cat_links(test=False):
