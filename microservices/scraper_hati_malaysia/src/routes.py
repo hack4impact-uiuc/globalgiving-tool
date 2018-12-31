@@ -1,5 +1,5 @@
 from . import app
-from scraper import scrape
+from .scraper import scrape
 import json
 
 
