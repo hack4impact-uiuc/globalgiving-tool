@@ -1,5 +1,5 @@
-from app import app
-from app.scraper import scrape, get_registration_site
+from . import app
+from .scraper import scrape, get_registration_site
 import json
 
 

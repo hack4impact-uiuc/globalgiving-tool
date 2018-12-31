@@ -1,5 +1,5 @@
 from bs4 import BeautifulSoup
-from app.models.countries import countries
+from models.countries import countries
 import requests
 import json
 
