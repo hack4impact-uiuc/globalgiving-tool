@@ -15,24 +15,7 @@ def cli(ctx, name, url):
     for gg.db.send_scraper_to_db().
     """
     authenticate()
-    # try:
-    #     routesList = list(requests.get(routes + "/routes").json())
-    # except Exception as ex:
-    #     # source: https://stackoverflow.com/questions/9823936/python-how-do-i-know-what-type-of-exception-occurred
-    #     template = "An exception of type {0} occurred. Arguments:\n{1!r}"
-    #     message = template.format(type(ex).__name__, ex.args)
-    #     ctx.log(message)
-    #     ctx.log("Getting information from the provided /routes failed.")
-    #     ctx.log("Route tried: {}".format(routes + "/routes"))
-    #     return "exception"
-    # url = routes.replace("/routes", "")
-    # # namesList = [
-    #     name.replace("/", "").replace("<path:filename>", "").title()
-    #     for name in routesList
-    # ]
-    # routesList = [url + route.replace("<path:filename>", "") for route in routesList]
     doc_id, updated = send_scraper_to_db(name, url)
     if updated:
         ctx.log("Updated scraper {}!".format(name))
     ctx.log(doc_id)
-    # return namesList, routesList

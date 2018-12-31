@@ -26,7 +26,6 @@ def cli(ctx, scraper_name):
 
     for scraper in scrapers:
         print("Scraper: " + scraper["name"])
-        # contents = requests.get(scraper["routes"]["Test"][0:-4] + "url").text
         contents = requests.get("http://" + scraper["_id"] + "/url").text
         if "http" in contents:
             print("       " + contents)
