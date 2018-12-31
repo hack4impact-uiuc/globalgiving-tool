@@ -5,10 +5,12 @@ from scraper import get_test_data, get_page_data
 app = Flask(__name__)
 api = Api(app, version="0.1", title="Vietnam Scraper")
 
+
 @api.route("/url")
 class ScraperVietnam(Resource):
     def get(self):
         return {"url": "https://www.viet.net/community/nonprofit/"}
+
 
 @api.route("/data")
 class ScraperVietnam(Resource):
@@ -16,11 +18,13 @@ class ScraperVietnam(Resource):
         orgs = get_page_data()
         return {"data": orgs}
 
+
 @api.route("/test")
 class ScraperVietnam(Resource):
     def get(self):
         orgs = get_test_data()
         return {"test": str(orgs[0])}
+
 
 if __name__ == "__main__":
     app.run(debug=True)
