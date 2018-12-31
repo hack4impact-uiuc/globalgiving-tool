@@ -8,6 +8,7 @@ jobs:
       - run:
           command: |
             cd microservices
+            find . -name "*.pyc" -exec rm -f {} \;
             pip install -r requirements.txt --user
             pip install -r requirements-dev.txt --user
             /home/circleci/.local/bin/pytest
