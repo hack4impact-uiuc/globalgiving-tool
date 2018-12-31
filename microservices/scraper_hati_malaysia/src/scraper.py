@@ -3,6 +3,7 @@ import requests
 import json
 from models.organization import Org
 
+
 def get_cat_links(test=False):
     """
     Find the links for the subpages of each category by starting from the homepage
