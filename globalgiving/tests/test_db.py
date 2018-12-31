@@ -30,6 +30,7 @@ def test_existence():
     assert len(docs) == 1
 
     name = docs[0]["name"]
+    print(name)
     assert name == "TEST"
 
     static_route = docs[0]["routes"]["Static"]
