@@ -1,5 +1,10 @@
 import pytest
-from scraper_registerids.src.scraper import get_country_code
+from scraper_registerids.src.scraper import get_country_code, get_registration_site
+
+
+def test_current_tags_and_scraping_is_valid():
+    # Uses australia to ensure that the current scraping tags, classes, and parsing still produces results
+    assert get_registration_site("australia") is not None
 
 
 def test_country_one_match_case_sensitive():
