@@ -8,11 +8,7 @@ jobs:
       - run:
           command: |
             cd microservices
-<<<<<<< HEAD
             find . | grep -E "(__pycache__)" | xargs rm -rf
-=======
-            find . -name "*.pyc" -exec rm -f {} \;
->>>>>>> 75071e18cb681699db65f06c05de80de218cd484
             pip install -r requirements.txt --user
             pip install -r requirements-dev.txt --user
             /home/circleci/.local/bin/pytest
