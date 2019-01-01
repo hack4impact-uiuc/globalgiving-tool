@@ -5,22 +5,29 @@ from globalgiving.s3_interface import init_s3_credentials
 import json
 
 
+CREDENTIALS_PATH = "/globalgiving/credentials.json"
+BUCKET_DELIM = "-"
+NGO_COLLECTION = "ngo_data"
+CRED_URI_FIELD = "mongo_uri"
+ENV_URI_FIELD = "URI"
+
+
 def db_get_collection(collectionName="scrapers"):
     """
     Gets the scapers collection from the database. This function pulls the URI
     stored in an environment file. The purpose is simply to pass on the
     collection to other functions so they can do with it what they must.
     """
-    if os.path.isfile(os.getenv("HOME") + "/globalgiving/credentials.json"):
-        with open(os.getenv("HOME") + "/globalgiving/credentials.json") as f:
+    if os.path.isfile(os.getenv("HOME") + CREDENTIALS_PATH):
+        with open(os.getenv("HOME") + CREDENTIALS_PATH) as f:
             data = json.load(f)
-        client = pymongo.MongoClient(data["mongo_uri"])
+        client = pymongo.MongoClient(data[CRED_URI_FIELD])
         db = client.get_database()
         collection = db[collectionName]
         return collection
     else:
         dotenv.load_dotenv(dotenv.find_dotenv())
-        uri = os.getenv("URI")
+        uri = os.getenv(ENV_URI_FIELD)
         client = pymongo.MongoClient(uri)
         db = client.get_database()
         collection = db[collectionName]
@@ -45,7 +52,7 @@ def send_scraper_to_db(name, url, namesList, routesList, test=False):
         scrapers = db_get_collection("tests")
     else:
         scrapers = db_get_collection()
-        bucket_name = name + "-" + str(hash(name))
+        bucket_name = name + BUCKET_DELIM + str(hash(name))
         payload[name] = bucket_name
         client = init_s3_credentials()
         client.create_bucket(Bucket=bucket_name)
@@ -104,7 +111,7 @@ def upload_data(data, test=False):
         exception.
     """
     print(data)
-    scrapers = db_get_collection("ngo_data")
+    scrapers = db_get_collection(NGO_COLLECTION)
     # bucket_name = name + "-" + str(hash(name))  # we need to figure out how
     # logging is going to work for uploading ngo data
     # payload[name] = bucket_name
@@ -126,12 +133,12 @@ def upload_data(data, test=False):
     return "Data for all {} NGOs sent to the database.\n\n".format(len(post_ids))
 
 
-def list_ngos_from_db():
+def list_ngos_from_db(**kwargs):
     """
-    Get all NGOs currently in the database.
+    Get all NGOs currently in the database with the option of passing in query parameters.
     """
-    ngos = db_get_collection("ngo_data")
-    cursor = ngos.find({})
+    ngos = db_get_collection(NGO_COLLECTION)
+    cursor = ngos.find(kwargs)
     ngo_list = [doc for doc in cursor]
     for ngo in ngo_list:
         ngo["_id"] = str(ngo["_id"])
