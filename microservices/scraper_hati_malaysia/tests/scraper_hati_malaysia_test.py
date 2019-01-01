@@ -1,10 +1,5 @@
 import pytest
-from scraper_hati_malaysia.app import (
-    scraper,
-    get_cat_links,
-    get_ngo_links,
-    get_ngo_information,
-)
+from .app import scraper, get_cat_links, get_ngo_links, get_ngo_information
 
 
 def test_basic():
