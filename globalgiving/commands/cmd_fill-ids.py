@@ -45,11 +45,9 @@ def cli(ctx):
             # Scrape for country code and add to dictionary
             registration_url = get_registration_site(org[COUNTRY_FIELD])
             prev_countries[org[COUNTRY_FIELD].title()] = registration_url
-            org[REGISTRATION_FIELD] = [
-                registration_url
-            ]
+            org[REGISTRATION_FIELD] = [registration_url]
             updated_list.append(org)
-    
+
     # Check list of updated NGOs and only delete/insert NGOs that now have registration office sites
     for updated_org in updated_list:
         if updated_org[REGISTRATION_FIELD][0] != "":
