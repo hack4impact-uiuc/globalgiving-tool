@@ -1,6 +1,7 @@
 import click
 from globalgiving.cli import pass_context, authenticate
 from globalgiving.db import list_scrapers_from_db
+import os
 
 
 @click.command("list", short_help="List all available scrapers.")

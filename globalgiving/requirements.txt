@@ -7,3 +7,4 @@ requests==2.20.0
 PyJWT==1.6.4
 google==2.0.1
 phonenumbers
+cookiecutter==1.6.0
