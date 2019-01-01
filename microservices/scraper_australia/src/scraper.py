@@ -49,8 +49,8 @@ def parse_page(webpage):
 
 
 def get_page_data():
-    ret = []
+    nonprofits = []
     for i in range(1, 7):
         webpage = website + str(i)
-        ret.extend(parse_page(webpage))
-    return json.dumps(ret)
+        nonprofits.extend(parse_page(webpage))
+    return nonprofits

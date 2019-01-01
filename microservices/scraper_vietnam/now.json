@@ -1,7 +1,7 @@
 {
     "version": 2,
-    "name": "scraper-vietnam",
-    "alias": "scraper-vietnam",
+    "name": "gg-scraper-vietnam",
+    "alias": "gg-scraper-vietnam",
     "builds": [
         { "src": "*.py", "use": "@liudonghua123/now-flask" , "config": { "maxLambdaSize": "1000mb" } }
     ],

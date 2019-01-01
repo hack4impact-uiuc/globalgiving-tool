@@ -27,7 +27,7 @@ def db_get_collection(collectionName="scrapers"):
         return collection
 
 
-def send_scraper_to_db(name, url, namesList, routesList, test=False):
+def send_scraper_to_db(name, url, test=False):
     """
     Sends the name and routes to the database.
     Input:
@@ -49,10 +49,10 @@ def send_scraper_to_db(name, url, namesList, routesList, test=False):
         payload[name] = bucket_name
         client = init_s3_credentials()
         client.create_bucket(Bucket=bucket_name)
-    routes = {}
-    for routeName, routeURL in zip(namesList, routesList):
-        routes[routeName] = routeURL
-    payload["routes"] = routes
+    # routes = {}
+    # for routeName, routeURL in zip(namesList, routesList):
+    #     routes[routeName] = routeURL
+    # payload["routes"] = routes
     updated = False
     try:
         post_id = scrapers.insert_one(payload).inserted_id

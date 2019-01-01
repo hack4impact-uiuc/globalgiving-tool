@@ -138,4 +138,4 @@ def scrape(one=False):
     ngoInformation = get_ngo_information(
         get_ngo_links(get_cat_links(test=one), test=one)
     )
-    return json.dumps(ngoInformation, indent=4, separators=(",", ": "))
+    return ngoInformation
