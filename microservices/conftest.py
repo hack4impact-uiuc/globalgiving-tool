@@ -14,4 +14,4 @@ def pytest_sessionstart(session):
 
 def pytest_sessionfinish(session, exitstatus):
     # Cleanup, return sys.path to original state
-    sys.path.append(os.path.realpath(os.path.dirname(__file__)))
+    sys.path.remove(os.path.realpath(os.path.dirname(__file__)))
