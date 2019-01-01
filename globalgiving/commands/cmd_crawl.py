@@ -2,7 +2,6 @@ import click
 import requests
 from googlesearch import search
 from globalgiving.cli import pass_context
-from globalgiving.crawler.crawl_functions import rank_all, url_rank
 from urllib.parse import urlparse
 import dotenv
 import pymongo
@@ -10,6 +9,11 @@ import json
 import os
 import sys
 
+SCRAPER_REG_PATH = "../../../microservices"  # Sibling package path
+
+# Bring microservices directory into import path
+sys.path.append(os.path.realpath(os.path.dirname(__file__) + SCRAPER_REG_PATH))
+from scraper_crawler.crawl_functions import rank_all, url_rank
 
 @click.command("crawl", short_help="Crawl for new directories and NGOs")
 @click.argument("country", required=True)
