@@ -4,7 +4,7 @@ import os, sys
 from globalgiving.cli import pass_context
 from globalgiving.db import list_ngos_from_db, upload_data
 
-SCRAPER_REG_PATH = "../../../microservices" # Sibling package path
+SCRAPER_REG_PATH = "../../../microservices"  # Sibling package path
 COUNTRY_FIELD = "country"
 
 # Bring microservices directory into import path
@@ -12,7 +12,10 @@ sys.path.append(os.path.realpath(os.path.dirname(__file__) + SCRAPER_REG_PATH))
 from scraper_registerids.src.scraper import get_registration_site
 
 
-@click.command("fill-ids", short_help="Enrich the database by finding and inserting an appropriate registration office url to documents without registration IDs")
+@click.command(
+    "fill-ids",
+    short_help="Enrich the database by finding and inserting an appropriate registration office url to documents without registration IDs",
+)
 @pass_context
 def cli(ctx):
     """
@@ -28,7 +31,9 @@ def cli(ctx):
     for org in ngo_list:
         if org[COUNTRY_FIELD] is not None:
             registration_url = get_registration_site(org[COUNTRY_FIELD])
-            org[COUNTRY_FIELD] = [registration_url] # Creates a list to easily add more registration IDs/fields
-    
+            org[COUNTRY_FIELD] = [
+                registration_url
+            ]  # Creates a list to easily add more registration IDs/fields
+
     # Push updated documents to database
     upload_data(ngo_list)
