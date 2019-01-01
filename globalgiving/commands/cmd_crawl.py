@@ -15,6 +15,7 @@ SCRAPER_REG_PATH = "../../../microservices"  # Sibling package path
 sys.path.append(os.path.realpath(os.path.dirname(__file__) + SCRAPER_REG_PATH))
 from scraper_crawler.crawl_functions import rank_all, url_rank
 
+
 @click.command("crawl", short_help="Crawl for new directories and NGOs")
 @click.argument("country", required=True)
 @click.argument("number_urls", required=False)
