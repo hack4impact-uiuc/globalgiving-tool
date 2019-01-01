@@ -145,6 +145,14 @@ def list_ngos_from_db(**kwargs):
     return ngo_list
 
 
+def delete_one_ngo_from_db(**kwargs):
+    """
+    Delete ngos in the database with the option of passing in query parameters
+    """
+    ngos = db_get_collection(NGO_COLLECTION)
+    ngos.delete_one(kwargs)
+
+
 def purge_update_duplicates(ngos_to_upload):
     """
     Description:

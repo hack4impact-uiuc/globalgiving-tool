@@ -2,7 +2,7 @@ import click
 import os, sys
 
 from globalgiving.cli import pass_context
-from globalgiving.db import list_ngos_from_db, upload_data
+from globalgiving.db import list_ngos_from_db, upload_data, delete_one_ngo_from_db
 
 SCRAPER_REG_PATH = "../../../microservices"  # Sibling package path
 COUNTRY_FIELD = "country"
@@ -24,8 +24,9 @@ def cli(ctx):
     """
     ctx.log("Finding and inserting registration office sites into the database...")
 
-    # Get all ngos from the database that don't have a registration ID/site
-    ngo_list = list_ngos_from_db(registration=None)
+    # Get all ngos from the database that don't have a registration ID/site and have a country
+    # to get registration office site
+    ngo_list = list_ngos_from_db(registration=None, country={"$ne": None})
     updated_list = []
 
     # Keep track of all countries seen so far to reduce amount of scraping
@@ -34,21 +35,25 @@ def cli(ctx):
     # Update the document to have a registration site, check edge case of no country, which can't be assigned
     # a registration site
     for org in ngo_list:
-        if org[COUNTRY_FIELD] is not None:
-            # Check if country has been previously scraped already
-            if org[COUNTRY_FIELD] in prev_countries.keys():
-                org[REGISTRATION_FIELD] = [
-                    prev_countries[org[COUNTRY_FIELD]]
-                ]  # Creates a list to easily add more registration IDs/fields
-                updated_list.append(org)
-            else:
-                # Scrape for country code and add to dictionary
-                registration_url = get_registration_site(org[COUNTRY_FIELD])
-                prev_countries[org[COUNTRY_FIELD]] = registration_url
-                org[REGISTRATION_FIELD] = [
-                    registration_url
-                ]
-                updated_list.append(org)
+        # Check if country has been previously scraped already
+        if org[COUNTRY_FIELD].title() in prev_countries.keys():
+            org[REGISTRATION_FIELD] = [
+                prev_countries[org[COUNTRY_FIELD]]
+            ]  # Creates a list to easily add more registration IDs/fields
+            updated_list.append(org)
+        else:
+            # Scrape for country code and add to dictionary
+            registration_url = get_registration_site(org[COUNTRY_FIELD])
+            prev_countries[org[COUNTRY_FIELD].title()] = registration_url
+            org[REGISTRATION_FIELD] = [
+                registration_url
+            ]
+            updated_list.append(org)
+    
+    # Check list of updated NGOs and only delete/insert NGOs that now have registration office sites
+    for updated_org in updated_list:
+        if updated_org[REGISTRATION_FIELD][0] != "":
+            delete_one_ngo_from_db(_id=updated_org["_id"])
 
     # Push updated documents to database
-    upload_data(updated_list)
+    ctx.log(upload_data(updated_list))
