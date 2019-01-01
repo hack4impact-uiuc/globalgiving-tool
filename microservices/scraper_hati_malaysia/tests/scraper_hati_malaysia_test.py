@@ -8,7 +8,7 @@ from scraper_hati_malaysia.src.scraper import (
 
 
 def test_basic():
-    assert scraper.scrape(one=True) is not None
+    assert scrape(one=True) is not None
 
 
 def test_sections():
