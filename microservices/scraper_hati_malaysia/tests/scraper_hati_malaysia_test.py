@@ -14,7 +14,7 @@ def test_basic():
 def test_sections():
     # get the categories
     categories = get_cat_links()
-    number_of_categories = 18  # from hati.my
+    number_of_categories = 39  # from hati.my
     # if this test fails, then either the scraper has failed or the source
     # website has changed.
     assert len(categories) == number_of_categories
