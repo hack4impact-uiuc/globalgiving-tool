@@ -21,7 +21,7 @@ We wanted to create a crawler in which you can search for potential directories 
 
 ![GitHub Logo](/resources/architecture.png)
 
-#### Scrapers: Severless Microservices
+#### Scrapers
 Every scraper is it's own serverless microservice. The initial idea was that we wanted every scraper to be indepedent and have a familiar API such that the cli tool could handle adding and running new scrapers or transformations (such as adding registration ids) to the data. 
 
 To do this, every scraper has a route four ```/url``` that tells you what site is being scraped, a ```\test``` endpoint for an example of what the scraped data looks like, and a ```\run``` endpoint that actually scrapes the entire website, populates the database with the nonprofits, and sends the logs to s3. 
@@ -30,7 +30,7 @@ In concept this makes it cleaner, but we wanted to remove all the pains of deplo
 
 There was one last concern, which was for how long some of the scrapers take to run, since these deployments do timeout. To handle this, if the ```\data``` endpoint returns a number of pages, it hits every one of the pages ```\page\<number>```, scraping a portion of the website and adding to to the database. This pagination allows us to get the rest of the data even if one of the pages fails, allows us to have better logging, and splits up the logic effectively.
 
-#### Scrapers: Crawler
+#### Crawler
 
 The crawler can be accessed through the cli tool such that you can crawl based on a search term. By default this scrapes the first 3 links, but you can add an argument to scrape more sites. It gather's basic information from the site to give you an indicator if it is a potential directory for nonprofit organizations. It ranks currently on the number of subpages, the number of phone numbers and addresses, the number of "ngo" related words. This is information that is a lot quicker to gather and a decent indicator of websites should be scraped. 
 
