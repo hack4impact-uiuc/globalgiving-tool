@@ -18,6 +18,7 @@ ngos_store_keys = [
     "year_established",
     "description",
 ]
+ngo_names = {}
 
 
 def get_one_ngo():
@@ -40,7 +41,6 @@ def basepage_scrape():
     for row in ngo_tr_tags:
         ngo_row_scrape(row)
 
-    # write_to_csv()
     return ngos
 
 
@@ -67,15 +67,12 @@ def ngo_row_scrape(row):
         # read email from website if possible
         email = format_ngo_email(ngo_email.text)
         # append ngo dictionary to list of ngos
-        ngos.append(
-            Org(
-                name=name,
-                description=description,
-                url=url,
-                email=email,
-                country="Thailand",
-            ).to_json()
-        )
+        org = Org(
+            name=name, description=description, url=url, email=email, country="Thailand"
+        ).to_json()
+        if name not in ngo_names:
+            ngos.append(org)
+            ngo_names[name] = org
 
 
 def format_ngo_email(email):
@@ -85,18 +82,8 @@ def format_ngo_email(email):
     INPUT: string email read from website
     OUTPUT: properly formatted email string to store
     """
+    print(email)
     if "requested" not in email:
         ngo_email = email.lstrip().replace(" at ", "@")
+        print(ngo_email)
         return ngo_email
-
-
-def write_to_csv():
-    """
-    DESCRIPTION: Writes everything stored in ngos list into a csv file
-    """
-    # write to csv to check output
-    keys = ["name", "description", "URL", "email"]
-    with open("thai_ngos.csv", "w") as w:
-        dict_writer = csv.DictWriter(w, keys)
-        dict_writer.writeheader()
-        dict_writer.writerows(ngos)

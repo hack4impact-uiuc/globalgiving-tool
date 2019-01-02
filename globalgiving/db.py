@@ -64,7 +64,7 @@ def send_scraper_to_db(name, url, test=False):
             delete_scraper(payload["_id"], test)
             post_id = scrapers.insert_one(payload).inserted_id
             updated = True
-        else: 
+        else:
             print(e)
             return
     return "Registration sent to db with id: " + post_id, updated
