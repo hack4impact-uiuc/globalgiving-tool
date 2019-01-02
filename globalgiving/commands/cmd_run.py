@@ -32,9 +32,8 @@ def cli(ctx, n, a):
     f.write(search.format(n) + "\n")
     try:
         scrapers = list_scrapers_from_db()
-        route = list(filter(lambda scraper: scraper["name"] == str(n), scrapers))[0][
-            "routes"
-        ]["Data"]
+        route = list(filter(lambda scraper: scraper["name"] == str(n), scrapers))[0]
+        route = "http://" + route["_id"] + "/data"
         f.write("Scraper {} found!".format(n) + "\n")
     except StopIteration:
         f.write("Scraper {} not found!".format(n) + "\n")

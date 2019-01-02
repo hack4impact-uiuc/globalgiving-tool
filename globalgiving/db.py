@@ -110,19 +110,12 @@ def upload_data(data, test=False):
         A confirmation that the data has been sent, otherwise an
         exception.
     """
-    print(data)
     scrapers = db_get_collection(NGO_COLLECTION)
-    # bucket_name = name + "-" + str(hash(name))  # we need to figure out how
-    # logging is going to work for uploading ngo data
-    # payload[name] = bucket_name
-    # client = init_s3_credentials()
-    # client.create_bucket(Bucket=bucket_name)
-
     # purge duplicates
-    data = purge_update_duplicates(data)
+    data = data["data"]
+    # data = purge_update_duplicates(data)
     if len(data) == 0:
         return "No new NGOs were found.\n\n"
-
     post_ids = scrapers.insert_many(data, ordered=False).inserted_ids
     try:
         assert len(data) == len(post_ids)
