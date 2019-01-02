@@ -9,11 +9,11 @@ import json
 import os
 import sys
 
-SCRAPER_REG_PATH = "../../../microservices"  # Sibling package path
+# SCRAPER_REG_PATH = "../../../"  # Sibling package path
 
 # Bring microservices directory into import path
-sys.path.append(os.path.realpath(os.path.dirname(__file__) + SCRAPER_REG_PATH))
-from scraper_crawler.crawl_functions import rank_all, url_rank
+# sys.path.append(os.path.realpath(os.path.dirname(__file__) + SCRAPER_REG_PATH))
+from crawler.crawl_functions import rank_all, url_rank
 
 
 @click.command("crawl", short_help="Crawl for new directories and NGOs")
@@ -32,7 +32,9 @@ def cli(ctx, country, number_urls):
     db = client.get_database()
     ranked_link = db["ranked_links"]
 
-    for url in search("ngo directory" + country, lang="es", num=number_urls, stop=1):
+    for url in search(
+        "nonprofit directory" + country, lang="es", num=number_urls, stop=1
+    ):
         parsed_uri = urlparse(url)
         home_url = "{uri.scheme}://{uri.netloc}/".format(uri=parsed_uri)
         print("Crawling --- ", home_url)

@@ -8,26 +8,10 @@ from globalgiving.cli import pass_context, authenticate
 @click.command(
     "log", short_help="Gives all runs for the scraper with associated s3-names"
 )
-@click.option(
-    "--scraper_name",
-    help="The name of the scraper that logs will be outputted from",
-    required=True,
-    default=None,
-)
-@click.option(
-    "--filename",
-    help="The s3 name of the log that will be outputted",
-    required=False,
-    default=None,
-)
-@click.option(
-    "--output_filename",
-    help="The name of the file it will be downloaded to",
-    required=False,
-    default=None,
-)
+@click.argument("scraper_name", required=False)
+@click.argument("filename", required=False)
 @pass_context
-def cli(ctx, scraper_name, filename, output_filename):
+def cli(ctx, scraper_name, filename):
     authenticate()
     client = init_s3_credentials()
 
@@ -47,8 +31,6 @@ def cli(ctx, scraper_name, filename, output_filename):
             print(table)
             return
     else:
-        if not output_filename:
-            output_filename = filename
-        client.download_file(Bucket=bucket_name, Key=filename, Filename=output_filename)
-        ctx.log("Downloaded file to: %s", click.format_filename(output_filename))
+        client.download_file(Bucket=bucket_name, Key=filename, Filename=filename)
+        ctx.log("Downloaded file to: %s", click.format_filename(filename))
         return

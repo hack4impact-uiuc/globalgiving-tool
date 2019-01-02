@@ -1,11 +1,12 @@
 from bs4 import BeautifulSoup
-import requests
+from requests import get
 import json
+from .models.organization import Org
 
 
-"""Scripts and functions to scrape relevant data from a website."""
+def get_page_data():
+    return []
 
 
-def scrape():
-    """Put everything together and scrape relevant data from the webpage."""
-    return "No Data"
+def get_test_data():
+    return []

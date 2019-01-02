@@ -1,31 +1,29 @@
 from flask import Flask
 from flask_restplus import Resource, Api, fields
 from werkzeug.contrib.fixers import ProxyFix
-from src.scraper import get_page_data, get_one
+from src.scraper import get_page_data, get_test_data
 
 app = Flask(__name__)
 app.wsgi_app = ProxyFix(app.wsgi_app)
-api = Api(app, version="0.1", title="Uganda Scraper")
+api = Api(app)
 
 
 @api.route("/url")
-class ScraperVietnam(Resource):
+class Scraper(Resource):
     def get(self):
         return "https://informationcradle.com/africa/list-of-ngos-in-uganda/"
 
 
 @api.route("/data")
-class ScraperVietnam(Resource):
+class Scraper(Resource):
     def get(self):
-        orgs = get_page_data()
-        return {"data": orgs}
+        return {"data": get_page_data()}
 
 
 @api.route("/test")
-class ScraperVietnam(Resource):
+class Scraper(Resource):
     def get(self):
-        org = get_one()
-        return {"test": org}
+        return {"test": get_test_data()}
 
 
 if __name__ == "__main__":

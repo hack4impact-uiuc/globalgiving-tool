@@ -61,7 +61,7 @@ def get_page_data():
     return ret
 
 
-def get_one():
+def get_test_data():
     # Specify url to scrape from
     ret = []
     target_url = requests.get(website)

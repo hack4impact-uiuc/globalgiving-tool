@@ -21,7 +21,7 @@ ngos_store_keys = [
 ngo_names = {}
 
 
-def get_one_ngo():
+def get_test_data():
     page = get(baseurl)
     soup = BeautifulSoup(page.content, "html.parser")
     ngo_tr_tags = soup.find_all("tr")
@@ -29,7 +29,7 @@ def get_one_ngo():
     return ngos[0]
 
 
-def basepage_scrape():
+def get_page_data():
     """
     DESCRIPTION: scrapes the homepage, processes each row for ngo data
     """

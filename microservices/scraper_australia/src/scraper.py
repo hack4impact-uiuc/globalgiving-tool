@@ -6,7 +6,7 @@ import json
 website = "http://www.findouter.com/Oceania/Australia/Society-and-Culture/Non-Governmental-Organisations/"
 
 
-def get_one_nonprofit():
+def get_test_data():
     return parse_page(website + "1")[1]
 
 

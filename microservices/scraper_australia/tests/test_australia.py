@@ -1,4 +1,4 @@
-from scraper_australia.src.scraper import get_page_data, parse_page, get_one_nonprofit
+from scraper_australia.src.scraper import get_page_data, parse_page, get_test_data
 
 
 def testGetPageData():
@@ -6,9 +6,9 @@ def testGetPageData():
 
 
 def testgetOne():
-    get_one_nonprofit()
-    assert (get_one_nonprofit())["country"] == "Australia"
-    assert (get_one_nonprofit())["name"] == "CARE Australia"
+    nonprofit = get_test_data()
+    assert nonprofit["country"] == "Australia"
+    assert nonprofit["name"] == "CARE Australia"
 
 
 def testParsePage():

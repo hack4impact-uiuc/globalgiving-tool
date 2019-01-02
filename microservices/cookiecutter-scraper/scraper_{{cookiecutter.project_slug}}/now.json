@@ -1,8 +1,11 @@
 {
-    "public": true,
-    "type": "docker",
-    "alias":"gg-scraper-{{cookiecutter.project_slug}}",
-    "features": {
-      "cloud": "v2"
-    }
-  }
+    "version": 2,
+    "name": "gg-scraper-{{cookiecutter.project_slug}}",
+    "alias": "gg-scraper-{{cookiecutter.project_slug}}",
+    "builds": [
+        { "src": "*.py", "use": "@liudonghua123/now-flask" , "config": { "maxLambdaSize": "1000mb" } }
+    ],
+    "routes": [
+        { "src": "/.*", "dest": "/"}
+    ]
+}

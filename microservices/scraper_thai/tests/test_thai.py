@@ -1,8 +1,8 @@
-from scraper_thai.src.scraper import basepage_scrape, format_ngo_email, get_one_ngo
+from scraper_thai.src.scraper import get_page_data, format_ngo_email, get_test_data
 
 
 def test():
-    assert len(basepage_scrape()) >= 1
+    assert len(get_page_data()) >= 1
 
 
 def test_formatting_email():
@@ -10,5 +10,6 @@ def test_formatting_email():
 
 
 def test_getting_one_ngo():
-    assert get_one_ngo()["name"] == "Animal Sanctuary "
-    assert get_one_ngo()["country"] == "Thailand"
+    ngo = get_test_data()
+    assert ngo["name"] == "Animal Sanctuary "
+    assert ngo["country"] == "Thailand"
