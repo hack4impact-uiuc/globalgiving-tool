@@ -78,7 +78,7 @@ def get_page_data():
         new_orgs = parse_data(link.text)
         for org in new_orgs:
             orgs[org["name"]] = org
-    return orgs
+    return list(orgs.values())
 
 
 def get_test_data():

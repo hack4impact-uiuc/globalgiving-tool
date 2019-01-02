@@ -21,6 +21,22 @@ We wanted to create a crawler in which you can search for potential directories 
 
 ![GitHub Logo](/resources/architecture.png)
 
+#### Motivation 
+
+#### Scrapers: Severless Microservices
+Every scraper is it's own serverless microservice. The initial idea was that we wanted every scraper to be indepedent and have a familiar API such that the cli tool could handle adding and running new scrapers or transformations (such as adding registration ids) to the data. 
+
+To do this, every scraper has a route four ```/url``` that tells you what site is being scraped, a ```\test``` endpoint for an example of what the scraped data looks like, and a ```\run``` endpoint that actually scrapes the entire website, populates the database with the nonprofits, and sends the logs to s3. 
+
+In concept this makes it cleaner, but we wanted to remove all the pains of deploying each flask microservices, so we adopted a tool called how that allow's use to make serverless lambda deployments. It treats every flask endpoint as a lambda function and deploys it. If you are in any of the microservices folders, you simply run ```now && now alias``` to update. This reads the ```now.json``` file that tells it how to build it and what the routes should be. This allows us not to have to worry about the configurations for deployment and allows it to automatically scale.
+
+There was one last concern, which was for how long some of the scrapers take to run, since these deployments do timeout. To handle this, if the ```\data``` endpoint returns a number of pages, it hits every one of the pages ```\page\<number>```, scraping a portion of the website and adding to to the database. This pagination allows us to get the rest of the data even if one of the pages fails, allows us to have better logging, and splits up the logic effectively.
+
+#### Scrapers: Crawler
+
+The crawler can be accessed through the cli tool such that you can crawl based on a search term. By default this scrapes the first 3 links, but you can add an argument to scrape more sites. It gather's basic information from the site to give you an indicator if it is a potential directory for nonprofit organizations. It ranks currently on the number of subpages, the number of phone numbers and addresses, the number of "ngo" related words. This is information that is a lot quicker to gather and a decent indicator of websites should be scraped. 
+
+In the microservices folder, there is the logic for the crawler. To improve this function, add a new function to ```rank.py```.
 
 # Setup
 
@@ -42,9 +58,8 @@ Lists all the scrapers availible
 * **globalgiving urls**
 Lists all of the base urls that the scrapers are gathering information from
 
-* **globalgiving routes <scrape_name>** 
-Lists all the routes available for that scraper
-    * Example: globalgiving routes vietnam
+* **globalgiving url <name>**
+Get the url being scraped for that scraper
 
 * **globalgiving add <scrape_name> <scrape_url>** 
 Register that scraper url with a given name, or will update that scraper

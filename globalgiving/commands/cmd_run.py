@@ -35,7 +35,7 @@ def cli(ctx, n, a):
         route_data = list(filter(lambda scraper: scraper["name"] == str(n), scrapers))[
             0
         ]
-        route = "http://" + route_data["_id"] + "/data"
+        route = route_data["_id"] + "/data"
         f.write("Scraper {} found!".format(n) + "\n")
     except StopIteration:
         f.write("Scraper {} not found!".format(n) + "\n")
@@ -52,7 +52,7 @@ def cli(ctx, n, a):
             print("Fetching all " + str(contents["pages"]) + " pages")
             f.write("Fetching all " + str(contents["pages"]) + " pages")
             for i in range(int(contents["pages"])):
-                route = "http://" + str(route_data["_id"]) + "/page/" + str(i)
+                route = str(route_data["_id"]) + "/page/" + str(i)
                 print("Fetching " + route)
                 f.write("Fetching " + route)
                 contents = requests.get(route).json()

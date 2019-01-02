@@ -112,7 +112,7 @@ def upload_data(data, test=False):
     scrapers = db_get_collection(NGO_COLLECTION)
     # purge duplicates
     data = data["data"]
-    # data = purge_update_duplicates(data)
+    data = purge_update_duplicates(data)
     if len(data) == 0:
         return "No new NGOs were found.\n\n"
     post_ids = scrapers.insert_many(data, ordered=False).inserted_ids

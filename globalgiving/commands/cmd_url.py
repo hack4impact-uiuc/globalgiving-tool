@@ -16,16 +16,17 @@ def cli(ctx, scraper_name):
     if scraper_name:
         for scraper in scrapers:
             if scraper["name"] == scraper_name:
-                url = requests.get("http://" + scraper["_id"] + "/url").text
+                url = requests.get(scraper["_id"] + "/url").text
                 if "http" in url:
                     print(url)
                     return
 
     # Otherwise list the names of all sites being scraped
-    for scraper in scrapers:
-        print("Scraper: " + scraper["name"])
-        contents = requests.get("http://" + scraper["_id"] + "/url").text
-        if "http" in contents:
-            print("       " + contents)
-        else:
-            print("       ERROR: Scraper not available")
+    else:
+        for scraper in scrapers:
+            print("Scraper: " + scraper["name"])
+            contents = requests.get(scraper["_id"] + "/url").text
+            if "http" in contents:
+                print("       " + contents)
+            else:
+                print("       ERROR: Scraper not available")
