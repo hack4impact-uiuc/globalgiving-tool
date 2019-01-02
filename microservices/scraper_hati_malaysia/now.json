@@ -3,7 +3,7 @@
     "name": "gg-scraper-hati-malaysia",
     "alias": "gg-scraper-hati-malaysia",
     "builds": [
-        { "src": "*.py", "use": "@liudonghua123/now-flask" , "config": { "maxLambdaSize": "1000mb", "timeout":"600000ms" } }
+        { "src": "*.py", "use": "@liudonghua123/now-flask" , "config": { "maxLambdaSize": "1000mb" } }
     ],
     "routes": [
         { "src": "/.*", "dest": "/"}

@@ -20,7 +20,9 @@ class ScraperVietnam(Resource):
         orgs = scrape()
         return {"pages": orgs["pages"]}
 
+
 # http://www.hati.my/education/kaseh-class/
+
 
 @api.route("/page/<number>")
 class ScraperVietnam(Resource):
@@ -28,6 +30,7 @@ class ScraperVietnam(Resource):
         links = scrape()
         orgs = scrape_page(links["urls"][int(number)])
         return {"data": orgs}
+
 
 @api.route("/test")
 class ScraperVietnam(Resource):

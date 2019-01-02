@@ -153,14 +153,15 @@ def scrape(one=False):
     """
     Put everything together.
     """
-    if (one):
+    if one:
         ngoInformation = get_ngo_information(
             get_ngo_links(get_cat_links(test=one), test=one)
         )
         return ngoInformation
 
     ngo_links = get_ngo_links(get_cat_links(test=one), test=one)
-    return {"pages": len(ngo_links), "urls": ngo_links }
+    return {"pages": len(ngo_links), "urls": ngo_links}
+
 
 def scrape_page(url):
     """

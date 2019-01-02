@@ -32,7 +32,9 @@ def cli(ctx, n, a):
     f.write(search.format(n) + "\n")
     try:
         scrapers = list_scrapers_from_db()
-        route_data = list(filter(lambda scraper: scraper["name"] == str(n), scrapers))[0]
+        route_data = list(filter(lambda scraper: scraper["name"] == str(n), scrapers))[
+            0
+        ]
         route = "http://" + route_data["_id"] + "/data"
         f.write("Scraper {} found!".format(n) + "\n")
     except StopIteration:
@@ -43,15 +45,15 @@ def cli(ctx, n, a):
         return
     try:
         contents = requests.get(route).json()
-        if ("data" in contents):
+        if "data" in contents:
             print("data")
             f.write(upload_data(contents))
-        elif ("pages" in contents):
+        elif "pages" in contents:
             print("Fetching all " + str(contents["pages"]) + " pages")
             f.write("Fetching all " + str(contents["pages"]) + " pages")
             print(int(contents["pages"]))
             for i in range(int(contents["pages"])):
-                route = "http://" + str(route_data["_id"]) + "/page/"+str(i)
+                route = "http://" + str(route_data["_id"]) + "/page/" + str(i)
                 f.write("Fetching " + route)
                 contents = requests.get(route).json()
                 f.write(upload_data(contents))
