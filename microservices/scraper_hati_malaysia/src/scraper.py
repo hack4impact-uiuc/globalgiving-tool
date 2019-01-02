@@ -58,6 +58,7 @@ def get_ngo_links(catLinks, test=False):
             ngoLinks.append(ngoLink.get("href"))
             if categoryName in ngoLink:
                 ngoLinks.append(ngoLink)
+                print(ngoLink)
             if test:
                 break
     print("retreived NGO page links")
@@ -152,7 +153,24 @@ def scrape(one=False):
     """
     Put everything together.
     """
-    ngoInformation = get_ngo_information(
-        get_ngo_links(get_cat_links(test=one), test=one)
-    )
-    return ngoInformation
+    if (one):
+        ngoInformation = get_ngo_information(
+            get_ngo_links(get_cat_links(test=one), test=one)
+        )
+        return ngoInformation
+
+    ngo_links = get_ngo_links(get_cat_links(test=one), test=one)
+    return {"pages": len(ngo_links), "urls": ngo_links }
+
+def scrape_page(url):
+    """
+    Put everything together.
+    """
+    # if (one):
+    #     ngoInformation = get_ngo_information(
+    #         get_ngo_links(get_cat_links(test=one), test=one)
+    #     )
+    #     return ngoInformation
+
+    # ngo_links = get_ngo_links(get_cat_links(test=one), test=one)
+    return get_ngo_information([url])

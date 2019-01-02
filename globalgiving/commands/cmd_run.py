@@ -32,8 +32,8 @@ def cli(ctx, n, a):
     f.write(search.format(n) + "\n")
     try:
         scrapers = list_scrapers_from_db()
-        route = list(filter(lambda scraper: scraper["name"] == str(n), scrapers))[0]
-        route = "http://" + route["_id"] + "/data"
+        route_data = list(filter(lambda scraper: scraper["name"] == str(n), scrapers))[0]
+        route = "http://" + route_data["_id"] + "/data"
         f.write("Scraper {} found!".format(n) + "\n")
     except StopIteration:
         f.write("Scraper {} not found!".format(n) + "\n")
@@ -42,9 +42,25 @@ def cli(ctx, n, a):
         os.remove(filename)
         return
     try:
-        contents = requests.get(route)
-        f.write(upload_data(contents.json()))
+        contents = requests.get(route).json()
+        if ("data" in contents):
+            print("data")
+            f.write(upload_data(contents))
+        elif ("pages" in contents):
+            print("Fetching all " + str(contents["pages"]) + " pages")
+            f.write("Fetching all " + str(contents["pages"]) + " pages")
+            print(int(contents["pages"]))
+            for i in range(int(contents["pages"])):
+                route = "http://" + str(route_data["_id"]) + "/page/"+str(i)
+                f.write("Fetching " + route)
+                contents = requests.get(route).json()
+                f.write(upload_data(contents))
+        else:
+            print("none")
+            f.write("The data recieved is not structured correctly")
     except Exception as e:
+        print("exception")
+        print(e)
         contents = str(e) + "\nFAILED"
         f.write(contents)
 
