@@ -1,5 +1,5 @@
 import pytest
-from scraper_hati_malaysia.src.scraper import (
+from scraper_malaysia.src.scraper import (
     scrape,
     get_cat_links,
     get_ngo_links,
