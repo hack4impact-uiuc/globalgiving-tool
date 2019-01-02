@@ -145,7 +145,6 @@ def get_ngo_information(ngoLinks):
                 country="Malaysia",
             ).to_json()
         )
-
     return ngoInformation
 
 
@@ -158,20 +157,20 @@ def scrape(one=False):
             get_ngo_links(get_cat_links(test=one), test=one)
         )
         return ngoInformation
-
     ngo_links = get_ngo_links(get_cat_links(test=one), test=one)
     return {"pages": len(ngo_links), "urls": ngo_links}
+
+
+def srape_page_urls(number):
+    """
+    Put everything together.
+    """
+    ngo_links = get_ngo_links([get_cat_links(test=False)[number]], test=False)
+    return {"urls": ngo_links}
 
 
 def scrape_page(url):
     """
     Put everything together.
     """
-    # if (one):
-    #     ngoInformation = get_ngo_information(
-    #         get_ngo_links(get_cat_links(test=one), test=one)
-    #     )
-    #     return ngoInformation
-
-    # ngo_links = get_ngo_links(get_cat_links(test=one), test=one)
     return get_ngo_information([url])

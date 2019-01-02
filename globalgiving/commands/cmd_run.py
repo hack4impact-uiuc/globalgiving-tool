@@ -46,19 +46,20 @@ def cli(ctx, n, a):
     try:
         contents = requests.get(route).json()
         if "data" in contents:
-            print("data")
+            print("The data is uploaded")
             f.write(upload_data(contents))
         elif "pages" in contents:
             print("Fetching all " + str(contents["pages"]) + " pages")
             f.write("Fetching all " + str(contents["pages"]) + " pages")
-            print(int(contents["pages"]))
             for i in range(int(contents["pages"])):
                 route = "http://" + str(route_data["_id"]) + "/page/" + str(i)
+                print("Fetching " + route)
                 f.write("Fetching " + route)
                 contents = requests.get(route).json()
                 f.write(upload_data(contents))
+                print("The data is uploaded")
         else:
-            print("none")
+            print("The data recieved is not structured correctly")
             f.write("The data recieved is not structured correctly")
     except Exception as e:
         print("exception")
