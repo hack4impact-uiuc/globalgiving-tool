@@ -7,19 +7,27 @@ from .models.organization import Org
 def get_cat_links(test=False):
     """
     Find the links for the subpages of each category by starting from the homepage
-    of the website.
+    of the website. The homepage contains each category as a button with a link
+    and an image.
+    Arguments:
+        test: By default, this is false. When enabled, it only retrieves one
+              category.
+    Returns: A list of links (URLs) to the webpages containing more information
+             about the specific categories.
     """
     # Specify url to scrape from
     target_url = requests.get("http://www.hati.my/")
     page_data = BeautifulSoup(target_url.content, "html.parser")
     catLinks = []  # set up list accumulator for categories
+    # find any and all links, we can sort them out later
     for link in page_data.find_all("a"):
         linkText = link.get("href")
-        if linkText is not None:
-            if "category" in linkText:  # only take links containing "category"
-                catLinks.append(linkText)  # get the link for the category
-                if test:
-                    break
+        if (
+            linkText is not None and "category" in linkText
+        ):  # only take links containing "category"
+            catLinks.append(linkText)  # get the link for the category
+            if test:
+                break  # we only need one in this case.
     print("retreived category page links")
     return catLinks
 
@@ -27,6 +35,11 @@ def get_cat_links(test=False):
 def get_ngo_links(catLinks, test=False):
     """
     Go to each category link and find all websites inside each.
+    Arguments:
+        catLinks: A list of links output by get_cat_links()
+        test: Indicator of testing, stops early
+    Returns:
+        ngoLinks: a list of links indiviual NGOs
     """
     ngoLinks = []  # build list of links for NGOs
     for link in catLinks:
@@ -58,6 +71,10 @@ def get_ngo_links(catLinks, test=False):
 def get_ngo_information(ngoLinks):
     """
     Visit each NGO's website and pull information.
+    Arguments:
+        ngoLinks: list of NGO links
+    Returns:
+        ngoInformation: a list of dictionaries containing organizations' info
     """
     # now scrape relevant information from the individual NGOs
     ngoInformation = []  # a list which hold the dictionaries for all NGOs
