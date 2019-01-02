@@ -1,6 +1,6 @@
 import click
 import requests
-from globalgiving.db import list_scrapers_from_db
+from globalgiving.db import db_get_collection, list_scrapers_from_db
 from globalgiving.cli import pass_context, authenticate
 
 
@@ -9,10 +9,11 @@ from globalgiving.cli import pass_context, authenticate
 @pass_context
 def cli(ctx, n):
     authenticate()
+    collection = db_get_collection()
     search = "Finding scraper {} from list of registered scrapers..."
     ctx.log(search.format(n))
     try:
-        scrapers = list_scrapers_from_db()
+        scrapers = list_scrapers_from_db(collection)
         route = list(filter(lambda scraper: scraper["name"] == str(n), scrapers))[0][
             "routes"
         ]["Test"]

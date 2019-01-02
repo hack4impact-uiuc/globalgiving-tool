@@ -1,7 +1,7 @@
 import click
 import requests
 from globalgiving.cli import pass_context, authenticate
-from globalgiving.db import send_scraper_to_db
+from globalgiving.db import db_get_collection, send_scraper_to_db
 
 
 @click.command("add", short_help="Add a new scraper or update an existing one.")
@@ -15,7 +15,8 @@ def cli(ctx, name, url):
     for gg.db.send_scraper_to_db().
     """
     authenticate()
-    doc_id, updated = send_scraper_to_db(name, url)
+    collection = db_get_collection()
+    doc_id, updated = send_scraper_to_db(collection, name, url)
     if updated:
         ctx.log("Updated scraper {}!".format(name))
     ctx.log(doc_id)

@@ -3,7 +3,7 @@ import click, requests
 import hashlib
 import os
 import uuid
-from globalgiving.db import list_scrapers_from_db, upload_data
+from globalgiving.db import NGO_COLLECTION, db_get_collection, list_scrapers_from_db, upload_data
 from globalgiving.cli import pass_context, authenticate
 from globalgiving.s3_interface import init_s3_credentials
 import json
@@ -15,6 +15,8 @@ import json
 @pass_context
 def cli(ctx, n, a):
     authenticate()
+    collection = db_get_collection()
+    ngo_collection = db_get_collection(NGO_COLLECTION)
     client = init_s3_credentials()
 
     if a:
@@ -31,7 +33,7 @@ def cli(ctx, n, a):
     search = "Finding scraper {} from list of registered scrapers..."
     f.write(search.format(n) + "\n")
     try:
-        scrapers = list_scrapers_from_db()
+        scrapers = list_scrapers_from_db(collection)
         route = list(filter(lambda scraper: scraper["name"] == str(n), scrapers))[0][
             "routes"
         ]["Data"]
@@ -44,7 +46,7 @@ def cli(ctx, n, a):
         return
     try:
         contents = requests.get(route)
-        f.write(upload_data(contents.json()))
+        f.write(upload_data(ngo_collection, contents.json()))
     except Exception as e:
         contents = str(e) + "\nFAILED"
         f.write(contents)
@@ -68,6 +70,8 @@ def cli(ctx, n, a):
 
 def run_all(ctx):
     authenticate()
+    collection = db_get_collection()
+    ngo_collection = db_get_collection(NGO_COLLECTION)
     client = init_s3_credentials()
 
     h = hashlib.md5()
@@ -77,7 +81,7 @@ def run_all(ctx):
     log_filenames = []
 
     try:
-        scrapers = list_scrapers_from_db()
+        scrapers = list_scrapers_from_db(collection)
         for scraper in scrapers:
             n = scraper["name"]
             names.append(n)
@@ -112,7 +116,7 @@ def run_all(ctx):
             ctx.log("Getting information for {} . . . ".format(name))
             contents = requests.get(route)
             log.write(contents.text)
-            log.write(upload_data(json.loads(contents.text)))
+            log.write(upload_data(ngo_collection, json.loads(contents.text)))
             log.write("Upload succeeded!")
             ctx.log("Uploading {} succeeded!".format(name))
         except Exception as e:

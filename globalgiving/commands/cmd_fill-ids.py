@@ -2,7 +2,7 @@ import click
 import os, sys
 
 from globalgiving.cli import pass_context
-from globalgiving.db import list_ngos_from_db, upload_data, delete_one_ngo_from_db
+from globalgiving.db import NGO_COLLECTION, db_get_collection, list_ngos_from_db, upload_data, delete_one_ngo_from_db
 
 SCRAPER_REG_PATH = "../../../microservices"  # Sibling package path
 COUNTRY_FIELD = "country"
@@ -22,11 +22,13 @@ def cli(ctx):
     """
     GG fill-ids enriches the database by inserting the site of the registration office for that specific country
     """
+    # Specify collection to perform operations to
+    collection = db_get_collection(NGO_COLLECTION)
     ctx.log("Finding and inserting registration office sites into the database...")
 
     # Get all ngos from the database that don't have a registration ID/site and have a country
     # to get registration office site
-    ngo_list = list_ngos_from_db(registration=None, country={"$ne": None})
+    ngo_list = list_ngos_from_db(collection, registration=None, country={"$ne": None})
     updated_list = []
 
     # Keep track of all countries seen so far to reduce amount of scraping
@@ -51,7 +53,7 @@ def cli(ctx):
     # Check list of updated NGOs and only delete/insert NGOs that now have registration office sites
     for updated_org in updated_list:
         if updated_org[REGISTRATION_FIELD][0] != "":
-            delete_one_ngo_from_db(_id=updated_org["_id"])
+            delete_one_ngo_from_db(collection, _id=updated_org["_id"])
 
     # Push updated documents to database
-    ctx.log(upload_data(updated_list))
+    ctx.log(upload_data(collection, updated_list))
