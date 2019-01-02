@@ -56,10 +56,6 @@ def send_scraper_to_db(name, url, test=False):
         payload[name] = bucket_name
         client = init_s3_credentials()
         client.create_bucket(Bucket=bucket_name)
-    # routes = {}
-    # for routeName, routeURL in zip(namesList, routesList):
-    #     routes[routeName] = routeURL
-    # payload["routes"] = routes
     updated = False
     try:
         post_id = scrapers.insert_one(payload).inserted_id
@@ -68,6 +64,9 @@ def send_scraper_to_db(name, url, test=False):
             delete_scraper(payload["_id"], test)
             post_id = scrapers.insert_one(payload).inserted_id
             updated = True
+        else: 
+            print(e)
+            return
     return "Registration sent to db with id: " + post_id, updated
 
 
