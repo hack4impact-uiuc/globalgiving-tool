@@ -11,7 +11,7 @@ api = Api(app)
 @api.route("/url")
 class Scraper(Resource):
     def get(self):
-        return "https://www.viet.net/community/nonprofit/"
+        return "replace with url of website being scraped"
 
 
 @api.route("/data")

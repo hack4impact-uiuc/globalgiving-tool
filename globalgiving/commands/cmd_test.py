@@ -13,9 +13,8 @@ def cli(ctx, n):
     ctx.log(search.format(n))
     try:
         scrapers = list_scrapers_from_db()
-        route = list(filter(lambda scraper: scraper["name"] == str(n), scrapers))[0][
-            "routes"
-        ]["Test"]
+        scraper = list(filter(lambda scraper: scraper["name"] == n, scrapers))
+        route = "http://" + scraper[0]["_id"] + "/test"
         ctx.log("Scraper {} found!".format(n))
     except StopIteration:
         ctx.log("Scraper {} not found.".format(n))

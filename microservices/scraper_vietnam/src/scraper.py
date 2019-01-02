@@ -84,4 +84,4 @@ def get_page_data():
 def get_test_data():
     response = get(url)
     soup = BeautifulSoup(response.text, "html.parser")
-    return parse_data((soup.findAll("p")[0]).text)
+    return parse_data((soup.findAll("p")[0]).text)[0]
