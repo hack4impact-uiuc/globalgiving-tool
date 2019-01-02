@@ -7,6 +7,7 @@ url = "https://www.viet.net/community/nonprofit/"
 
 
 def create_org(line):
+
     """
     Attempts to parse a line of data into the Org class.
      Input:
@@ -54,6 +55,7 @@ def create_org(line):
             url=url,
             country="Vietnam",
         ).to_json()
+        # print(line)
         return org
     return None
 
@@ -71,12 +73,11 @@ def parse_data(link):
 def get_page_data():
     response = get(url)
     soup = BeautifulSoup(response.text, "html.parser")
-    print(len(soup.findAll("p")))
-    print(soup.findAll("p")[0])
-    orgs = []
+    orgs = {}
     for link in soup.findAll("p")[:]:
-        orgs += parse_data(link.text)
-    print(len(orgs))
+        new_orgs = parse_data(link.text)
+        for org in new_orgs:
+            orgs[org["name"]] = org
     return orgs
 
 

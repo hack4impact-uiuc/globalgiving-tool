@@ -1,5 +1,5 @@
-from globalgiving.crawler.resources.country_codes import country_codes
-from globalgiving.crawler.resources.address_keywords import address_keywords
+from .resources.country_codes import country_codes
+from .resources.address_keywords import address_keywords
 import phonenumbers
 
 
