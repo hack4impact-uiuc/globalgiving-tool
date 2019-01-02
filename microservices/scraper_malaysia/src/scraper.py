@@ -165,7 +165,7 @@ def srape_page_urls(number):
     """
     Put everything together.
     """
-    ngo_links = get_ngo_links([get_cat_links(test=False)[number]], test=False)
+    ngo_links = get_ngo_links(get_cat_links(test=False), test=False)
     return {"urls": ngo_links}
 
 

@@ -21,8 +21,6 @@ We wanted to create a crawler in which you can search for potential directories 
 
 ![GitHub Logo](/resources/architecture.png)
 
-#### Motivation 
-
 #### Scrapers: Severless Microservices
 Every scraper is it's own serverless microservice. The initial idea was that we wanted every scraper to be indepedent and have a familiar API such that the cli tool could handle adding and running new scrapers or transformations (such as adding registration ids) to the data. 
 
@@ -36,7 +34,7 @@ There was one last concern, which was for how long some of the scrapers take to 
 
 The crawler can be accessed through the cli tool such that you can crawl based on a search term. By default this scrapes the first 3 links, but you can add an argument to scrape more sites. It gather's basic information from the site to give you an indicator if it is a potential directory for nonprofit organizations. It ranks currently on the number of subpages, the number of phone numbers and addresses, the number of "ngo" related words. This is information that is a lot quicker to gather and a decent indicator of websites should be scraped. 
 
-In the microservices folder, there is the logic for the crawler. To improve this function, add a new function to ```rank.py```.
+In the microservices folder, there is the logic for the crawler. To improve this function, add a new function to ```rank.py``` and call in in ```crawl_functions.py```
 
 # Setup
 
@@ -52,40 +50,6 @@ globalgiving -h
 
 ## Command Line Tool
 
-* **globalgiving list** 
-Lists all the scrapers availible
-
-* **globalgiving urls**
-Lists all of the base urls that the scrapers are gathering information from
-
-* **globalgiving url <name>**
-Get the url being scraped for that scraper
-
-* **globalgiving add <scrape_name> <scrape_url>** 
-Register that scraper url with a given name, or will update that scraper
-    * Example: globalgiving add vietnam https://gg-scraper-viet.now.sh
-
-* **globalgiving delete <scrape_name>** 
-Removes that scraper from the list of scrapers in the database
-    * Example: globalgiving delete vietnam 
-
-* **globalgiving test <scrape_name>** 
-Uses the test endpoint to give you an example of what the data looks like
-    * Example: globalgiving delete vietnam 
-
-* **globalgiving run <scrape_name> -a** 
-Runs the scraper on the entire directory and adds all the nonprofits to the database. This command can be called without a scraper name and just with the -a flag, which signifies to run all of the available scrapers.
-    * Example: globalgiving run australia
-
-* **globalgiving log --scraper_name <scrape_name>** 
-Gets a list of all uploaded logs from every run of the scraper
-    * Example: globalgiving run australia
-
-* **globalgiving log --scraper_name <scraper_name > --filename <file name> --output_filename <output file name>** 
-Downloads the log file locally with the name specified as the output file. 
-    * Example: globalgiving log --scraper_name australia --filename
-008deece-bcf7-4bff-90eb-9566e401e84e.txt --output_filename out_log.txt
-
 ## Authentication
 
 * **globalgiving register** 
@@ -100,7 +64,51 @@ Logs you out and clears your information
 * **globalgiving whoami** 
 Tells you what your token and mongo uri currently are. 
 
+## Registering and deleting scrapers
+
+* **globalgiving add <scrape_name> <scrape_url>** 
+Register that scraper url with a given name, or will update that scraper
+    * Example: globalgiving add vietnam https://gg-scraper-viet.now.sh
+
+* **globalgiving delete <scrape_name>** 
+Removes that scraper from the list of scrapers in the database
+    * Example: globalgiving delete vietnam 
+
+
+## Getting metadata from scrapers 
+
+* **globalgiving list** 
+Lists all the scrapers availible
+
+* **globalgiving urls**
+Lists all of the base urls that the scrapers are gathering information from
+
+* **globalgiving url <name>**
+Get the url being scraped for that scraper
+
+* **globalgiving test <scrape_name>** 
+Uses the test endpoint to give you an example of what the data looks like
+    * Example: globalgiving delete vietnam 
+
+
+
+## Running scrapers 
+
+* **globalgiving run <scrape_name> -a** 
+Runs the scraper on the entire directory and adds all the nonprofits to the database. This command can be called without a scraper name and just with the -a flag, which signifies to run all of the available scrapers.
+    * Example: globalgiving run australia
+
+* **globalgiving log <scrape_name>** 
+Gets a list of all uploaded logs from every run of the scraper
+    * Example: globalgiving run australia
+
+* **globalgiving log  <scraper_name> <file_name>** 
+Downloads the log file locally for that scraper run
+    * Example: globalgiving log australia 008deece-bcf7-4bff-90eb-9566e401e84e.txt
+
+
 ## Web Crawing
+
 * **globalgiving crawl country=<country_name>**
 This command will search for the specified country name using the Google Search API and rank each resulting link based
 on the presence of certain characteristics, including the number of external links as well as the number of occurrences 
@@ -115,19 +123,10 @@ Every time that the crawl command is utilized, the command line tool will store 
 This will generate the scraper in the microservices folder with everything autogenerated. Then navigate to ```microservices/scraper-<scraper_name>/app/scraper.py``` and modify it to scrape the website you specified. 
 
 
-## Workarounds
-Over the course of the 3 months that we had to build out the tool, we accumulated some technical debt which, with some additional resources and time, can be re-implemented with better practices:
+## Handoff: Integrating it into globalgivings pipeline
 
-* Imports and Testing
-    * With the current directory structure and the fact that each scraper is its own independently deployed microservice, we initially wanted to keep all of the tests separate from the other web scrapers. This concept also applied to many different aspects of the microservices, including the models directory that defines any additional resources or framework objects that may be needed by the scraper. 
-    * As a result of this layout, testing became extremely difficult, specifically with managing import statements, ensuring that Python would recognize modules and subpackages, and attempting to keep imports unique. Currently very minimal test cases are implemented as a result of working around these imports.
-* Scrapers
-    * Initially, the web scrapers were written really quickly and could retrieve a large amount of data from each nonprofit directory that was found. However, as time continued, these websites underwent updates that ultimately caused some web scrapers to fail. These scrapers are still included, but may not upload any data to the database or completely fail.
-* Registration IDs
-    * Registration IDs were not found until very late into the development cycle and as such, could not be fully incorporated into the product. Currently, registration offices can be discovered given a country.
-    * Some queries will be unreliable, however, as the country codes that are being used to search for registration office websites are determined based on the country name provided. Some countries, like Korea, may have very similar names. This makes retrieving the correct country code more difficult and inaccurate in some cases.
-* Submitting
-    * Due to the lack of registration IDs that were found, the submit functionality could not be fully fleshed out. As a result, the submit command is present within the CLI, but is an empty placeholder command that does not perform any actions nor modify any fields.
+* **globalgiving submit** 
+This currently writes all the scraped ngos to ````~/globalgiving/ngo_data.json````, but in reality should be talking to globalgivings central database of nonprofits. 
 
 
 
