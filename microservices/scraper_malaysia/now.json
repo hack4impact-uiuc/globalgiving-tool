@@ -1,7 +1,7 @@
 {
     "version": 2,
-    "name": "gg-scraper-hati-malaysia",
-    "alias": "gg-scraper-hati-malaysia",
+    "name": "gg-scraper-malaysia",
+    "alias": "gg-scraper-malaysia",
     "builds": [
         { "src": "*.py", "use": "@liudonghua123/now-flask" , "config": { "maxLambdaSize": "1000mb" } }
     ],
