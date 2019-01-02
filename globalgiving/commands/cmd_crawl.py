@@ -5,9 +5,10 @@ from globalgiving.cli import pass_context
 from globalgiving.crawler.crawl_functions import rank_all, url_rank
 from urllib.parse import urlparse
 import dotenv
-import os
 import pymongo
 import json
+import os
+import sys
 
 
 @click.command("crawl", short_help="Crawl for new directories and NGOs")

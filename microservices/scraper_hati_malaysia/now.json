@@ -1,9 +1,11 @@
 {
-    "public": true,
-    "type": "docker",
-    "alias":"gg-scraper-haiti-malaysia",
-    "version":1,
-    "features": {
-      "cloud": "v2"
-    }
-  }
+    "version": 2,
+    "name": "gg-scraper-hati-malaysia",
+    "alias": "gg-scraper-hati-malaysia",
+    "builds": [
+        { "src": "*.py", "use": "@liudonghua123/now-flask" , "config": { "maxLambdaSize": "1000mb" } }
+    ],
+    "routes": [
+        { "src": "/.*", "dest": "/"}
+    ]
+}
