@@ -55,9 +55,11 @@ def cli(ctx, n, a):
     try:
         # Run scraper by getting the correct route and requesting it
         contents = requests.get(route).json()
+        print("data" in contents)
         if "data" in contents:
             print("The data is uploaded")
-            f.write(upload_data(contents))
+            ngo_collection = db_get_collection(NGO_COLLECTION)
+            f.write(upload_data(ngo_collection, contents))
         elif "pages" in contents:
             print("Fetching all " + str(contents["pages"]) + " pages")
             f.write("Fetching all " + str(contents["pages"]) + " pages")
@@ -74,7 +76,8 @@ def cli(ctx, n, a):
                     print(payload)
                     data = requests.post(url, json=json.dumps(payload))
                     print(data.json())
-                    f.write(upload_data(data.json()))
+                    ngo_collection = db_get_collection(NGO_COLLECTION)
+                    f.write(upload_data(ngo_collection, data.json()))
                     print("The data is uploaded")
                 except Exception as e:
                     print(e)

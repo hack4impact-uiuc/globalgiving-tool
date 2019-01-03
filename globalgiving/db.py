@@ -2,15 +2,13 @@ import pymongo
 import dotenv
 import os
 from globalgiving.s3_interface import init_s3_credentials
-from globalgiving.config import (
-    CREDENTIALS_PATH,
-    CRED_URI_FIELD,
-    NGO_COLLECTION,
-    SCRAPER_COLL_NAME_FIELD,
-)
 import json
 
 
+CREDENTIALS_PATH = "/globalgiving/credentials.json"
+BUCKET_DELIM = "-"
+NGO_COLLECTION = "ngo_data"
+CRED_URI_FIELD = "mongo_uri"
 ENV_URI_FIELD = "URI"
 
 
@@ -36,11 +34,10 @@ def db_get_collection(collectionName="scrapers"):
         return collection
 
 
-def send_scraper_to_db(collection, name, url, test=False):
+def send_scraper_to_db(name, url, test=False):
     """
     Sends the name and routes to the database.
     Input:
-        collection: collection to send the scraper to
         name: the name of the scraper
         url: the base url of the scaper
         namesList: a list of the names of the various routes
@@ -49,43 +46,61 @@ def send_scraper_to_db(collection, name, url, test=False):
         A confirmation that the scraper has been registered, otherwise an
         exception.
     """
-    payload = {SCRAPER_COLL_NAME_FIELD: name}
+    payload = {"name": name}
     payload["_id"] = url
-
-    if not test:
-        # only run code if not testing to prevent continuous creation of s3 buckets
-        bucket_name = name + "-" + str(hash(name))
+    if test:
+        scrapers = db_get_collection("tests")
+    else:
+        scrapers = db_get_collection()
+        bucket_name = name + BUCKET_DELIM + str(hash(name))
         payload[name] = bucket_name
         client = init_s3_credentials()
         client.create_bucket(Bucket=bucket_name)
-
+    updated = False
     try:
-        post_id = collection.insert_one(payload).inserted_id
+        post_id = scrapers.insert_one(payload).inserted_id
     except Exception as e:
         if type(e).__name__ == "DuplicateKeyError":
-            delete_scraper(collection, payload["_id"])
-            post_id = collection.insert_one(payload).inserted_id
+            delete_scraper(payload["_id"], test)
+            post_id = scrapers.insert_one(payload).inserted_id
+            updated = True
         else:
             print(e)
             return
-    return "Registration sent to db with id: " + post_id
+    return "Registration sent to db with id: " + post_id, updated
 
 
-def list_scrapers_from_db(collection):
+def list_scrapers_from_db(test=False):
     """
-    Gets all scrapers listed in the database in the specified collection. This function merely returns the
+    Gets all scrapers listed in the database. This function merely returns the
     scrapers as a list.
     """
-    cursor = collection.find({})
+    if test:
+        scrapers = db_get_collection("tests")
+    else:
+        scrapers = db_get_collection()
+    cursor = scrapers.find({})
     document_list = [doc for doc in cursor]
     return document_list
 
 
-def delete_scraper(collection, scraper_id):
-    return collection.delete_one({"_id": scraper_id})
+def delete_scraper(scraper_id, test=False):
+    if test:
+        scrapers = db_get_collection("tests")
+    else:
+        scrapers = db_get_collection()
+    return scrapers.delete_one({"_id": scraper_id})
 
 
-def upload_data(collection, data):
+def delete_all_scrapers(test=False):
+    if test:
+        scrapers = db_get_collection("tests")
+        scrapers.delete_many({})
+    else:
+        pass  # Don't do anything if called by accident!
+
+
+def upload_data(data, test=False):
     """
     Sends the NGO/CSO data to the database.
     Input:
@@ -94,12 +109,13 @@ def upload_data(collection, data):
         A confirmation that the data has been sent, otherwise an
         exception.
     """
+    scrapers = db_get_collection(NGO_COLLECTION)
     # purge duplicates
     data = data["data"]
-    data = purge_update_duplicates(collection, data)
+    # data = purge_update_duplicates(data)
     if len(data) == 0:
         return "No new NGOs were found.\n\n"
-    post_ids = collection.insert_many(data, ordered=False).inserted_ids
+    post_ids = scrapers.insert_many(data, ordered=False).inserted_ids
     try:
         assert len(data) == len(post_ids)
     except AssertionError:
@@ -109,45 +125,38 @@ def upload_data(collection, data):
     return "Data for all {} NGOs sent to the database.\n\n".format(len(post_ids))
 
 
-def list_ngos_from_db(collection, **kwargs):
+def list_ngos_from_db(**kwargs):
     """
     Get all NGOs currently in the database with the option of passing in query parameters.
-
-    Input:
-        collection: collection to get NGO data from
-        kwargs: used to specify query parameters
     """
-    cursor = collection.find(kwargs)
+    ngos = db_get_collection(NGO_COLLECTION)
+    cursor = ngos.find(kwargs)
     ngo_list = [doc for doc in cursor]
     for ngo in ngo_list:
         ngo["_id"] = str(ngo["_id"])
     return ngo_list
 
 
-def delete_one_ngo_from_db(collection, **kwargs):
+def delete_one_ngo_from_db(**kwargs):
     """
     Delete ngos in the database with the option of passing in query parameters
-
-    Input:
-        collection: collection to get NGO data from
-        kwargs: used to specify query parameters
     """
-    collection.delete_one(kwargs)
+    ngos = db_get_collection(NGO_COLLECTION)
+    ngos.delete_one(kwargs)
 
 
-def purge_update_duplicates(collection, ngos_to_upload):
+def purge_update_duplicates(ngos_to_upload):
     """
     Description:
         This function purges duplicate NGOs from a list of NGOs which need to
         be uploaded to a db, but it also should be able to detect when an NGO
         needs to be updated.
     Input:
-        The collection to upload into
         The list of NGOs to be uploaded
     Output:
         1) A list of NGOs which has been purged of duplicates
     """
-    extant_ngos = str(list_ngos_from_db(collection))
+    extant_ngos = str(list_ngos_from_db())
 
     new_ngos = []
     # use find to see if the name is already in the db
