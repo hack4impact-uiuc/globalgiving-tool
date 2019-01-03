@@ -22,3 +22,12 @@ def cli(ctx, n):
         return
     contents = requests.get(route).text
     print(contents)
+
+def dev_testscraper(collection, name):
+    try:
+        scrapers = list_scrapers_from_db(collection)
+        scraper = list(filter(lambda scraper: scraper["name"] == n, scrapers))
+        route = scraper[0]["_id"] + "/test"
+    except Exception:
+        return
+    return requests.get(route).text
