@@ -33,7 +33,7 @@ def cli(ctx, n, a):
     try:
         scrapers = list_scrapers_from_db()
         route_data = list(filter(lambda scraper: scraper["name"] == str(n), scrapers))
-        if (len(route_data) == 0):
+        if len(route_data) == 0:
             print("Scraper not found")
             return
         route_data = route_data[0]
@@ -54,7 +54,7 @@ def cli(ctx, n, a):
             print("Fetching all " + str(contents["pages"]) + " pages")
             f.write("Fetching all " + str(contents["pages"]) + " pages")
             for i in range(int(contents["pages"])):
-                try: 
+                try:
                     route = str(route_data["_id"]) + "page/" + str(i)
                     print("Fetching " + route)
                     f.write("Fetching " + route)

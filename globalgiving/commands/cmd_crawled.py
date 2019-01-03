@@ -18,9 +18,8 @@ from scraper_crawler.crawl_functions import rank_all, url_rank
 
 
 @click.command("crawled", short_help="Crawl for new directories and NGOs")
-@click.argument("number_urls", required=False)
 @pass_context
-def cli(ctx, number_urls):
+def cli(ctx):
 
     with open(os.getenv("HOME") + "/globalgiving/credentials.json") as f:
         data = json.load(f)
@@ -47,4 +46,4 @@ def cli(ctx, number_urls):
             "         Has "
             + str(rank_info["num_word_ngo"])
             + " appearances of ngo directory related words"
-    )
+        )
