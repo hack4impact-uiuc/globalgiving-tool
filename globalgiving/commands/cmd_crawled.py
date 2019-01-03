@@ -1,5 +1,5 @@
 import click
-from globalgiving.cli import pass_context
+from globalgiving.cli import pass_context, authenticate
 from globalgiving.db import db_get_collection
 import pymongo
 from globalgiving.config import MICROSERVICE_PKG_PATH, CRAWL_RANKED_COLLECTION
