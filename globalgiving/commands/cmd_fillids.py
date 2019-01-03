@@ -59,10 +59,10 @@ def cli(ctx):
     # Check list of updated NGOs and only delete/insert NGOs that now have registration office sites
     for updated_org in updated_list:
         if updated_org[REGISTRATION_FIELD][0] != "":
-            delete_one_ngo_from_db(collection, _id=updated_org["_id"])
+            delete_one_ngo_from_db(collection, _id=ObjectId(updated_org["_id"]))
 
     # Push updated documents to database
-    ctx.log(upload_data(collection, updated_list))
+    ctx.log(upload_data(collection, {"data": updated_list}))
 
 
 def dev_fillids(collection):
