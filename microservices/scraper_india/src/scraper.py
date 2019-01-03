@@ -43,33 +43,9 @@ def get_ngo_data(ngo_url):
     ngo_url = requests.get(ngo_url)
     # replace with url
     page_data = BeautifulSoup(ngo_url.content, "html.parser")
-    # ngo_name = page_data.find_all(
-    #     attrs={"class": "ngo-postheader entry-title"})
-    # print(page_data.title)
     contents = page_data.find_all(attrs={"class": "npos-postcontent clearfix"})
-    # print(contents)
     # # contents includes data regarding NGO name, address, contact information, & mission statement
     return compile_information(str(page_data.title), contents)
-
-
-# def get_ngo_page_fromngos(ngo_list):
-#     for ngo in ngo_list:
-#         ngo_url = requests.get(ngo["href"])
-#         get_ngo_data(ngo_url)
-
-
-# def get_ngo_page_fromcounty(county_list):
-#     # go through each county
-#     for county in county_list:
-#         county_url = requests.get(county["href"])
-#         county_page_data = BeautifulSoup(county_url.content, "html.parser")
-#         if len(county_page_data.find_all(attrs={"class": "ngo-postcontent"})) >= 1:
-#             ngo_list = county_page_data.find_all(attrs={"class": "ngo-postcontent"})[
-#                 0
-#             ].find_all("a", href=True)
-#         else:
-#             continue
-#         get_ngo_page_fromngos(ngo_list)
 
 
 # return ngo_dict
@@ -94,8 +70,6 @@ def compile_information(ngo_name, contents):
                 add = item.replace("Add", "").replace(":", "")
             if "Tel" in item:
                 tel = item.replace("Tel", "").replace(":", "")
-            # if "Mobile" in item:
-            #     ngo_dict["Mobile"] = item.replace("Mobile", "").replace(":", "")
             if "Email" in item:
                 email = item.replace("Email", "").replace(":", "")
             if "Website" in item:
