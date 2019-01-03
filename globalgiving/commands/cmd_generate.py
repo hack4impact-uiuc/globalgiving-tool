@@ -5,11 +5,9 @@ from cookiecutter.main import cookiecutter
 from globalgiving.cli import pass_context
 from globalgiving.db import list_scrapers_from_db
 
+MICROSERVICES_DIRECTORY = "/microservices"
 
-MS_DIR = "/microservices"
-TEMP_DIR = "/cookiecutter-scraper"
-MS_DELIM = "_"  # Delimeter to split on to check microservice existence
-TEMP_NAME_PARAM = "project_slug"  # Slug placeholder to be replaced by inputted name
+COOKIE_CUTTER_DIRECTORY = "/cookiecutter-scraper"
 
 
 @click.command("generate", short_help="Generate a new scraper template")
@@ -17,24 +15,23 @@ TEMP_NAME_PARAM = "project_slug"  # Slug placeholder to be replaced by inputted 
 @pass_context
 def cli(ctx, name):
     """
-    GG generate creates a new template scraper from the template in the microservices directory
-    and using the cookiecutter module.
+    GG generate creates a new template scraper
     """
-    # Get root directory and set start of existing scraper search to the root microservices directory
-    rootdir = os.pardir + MS_DIR
+    # Get root directory set start of scraper search to the root microservices directory
+    rootdir = os.getcwd() + MICROSERVICES_DIRECTORY
     subdir_list = next(os.walk(rootdir))[1]
 
     # Check if scraper already exists in list of subdirectories
     for scraper in subdir_list:
-        name_start_idx = scraper.find(MS_DELIM)
+        name_start_idx = scraper.find("-")
         if name == scraper[name_start_idx + 1 :]:
             ctx.log("Scraper {} already exists!".format(name))
             return
 
     # If scraper doesn't already exist, create new scraper template with the passed in name
     cookiecutter(
-        rootdir + TEMP_DIR,
-        extra_context={TEMP_NAME_PARAM: name},
+        rootdir + COOKIE_CUTTER_DIRECTORY,
+        extra_context={"project_slug": name},
         no_input=True,
         output_dir=rootdir,
     )

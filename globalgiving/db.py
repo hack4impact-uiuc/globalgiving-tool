@@ -56,7 +56,7 @@ def send_scraper_to_db(collection, name, url, test=False):
         payload[name] = bucket_name
         client = init_s3_credentials()
         client.create_bucket(Bucket=bucket_name)
-
+    
     updated = False
     try:
         post_id = collection.insert_one(payload).inserted_id
@@ -65,6 +65,9 @@ def send_scraper_to_db(collection, name, url, test=False):
             delete_scraper(collection, payload["_id"])
             post_id = collection.insert_one(payload).inserted_id
             updated = True
+        else:
+            print(e)
+            return
     return "Registration sent to db with id: " + post_id, updated
 
 
@@ -92,10 +95,10 @@ def upload_data(collection, data):
         exception.
     """
     # purge duplicates
-    data = purge_update_duplicates(collection, data)
+    data = data["data"]
+    data = purge_update_duplicates(data)
     if len(data) == 0:
         return "No new NGOs were found.\n\n"
-
     post_ids = collection.insert_many(data, ordered=False).inserted_ids
     try:
         assert len(data) == len(post_ids)

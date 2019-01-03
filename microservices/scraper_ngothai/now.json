@@ -1,9 +1,0 @@
-{
-    "public": true,
-    "type": "docker",
-    "version":1,
-    "alias":"gg-scraper-thai",
-    "features": {
-      "cloud": "v2"
-    }
-  }
