@@ -13,9 +13,7 @@ import json
 def cli(ctx, mongo_uri, token):
     collection = db_get_collection("credentials")
 
-    user_information = collection.find_one(
-        {"mongo_uri": mongo_uri, "token": token}
-    )
+    user_information = collection.find_one({"mongo_uri": mongo_uri, "token": token})
     if user_information == None:
         print("You are not authenticated")
         return
