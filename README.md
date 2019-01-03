@@ -114,10 +114,11 @@ Downloads the log file locally for that scraper run
 
 ## Web Crawing
 
-* **globalgiving crawl country=<country_name>**
+* **globalgiving crawl <country>**
+* **globalgiving crawl <country> <number_of_links_to_scrape>**
 This command will search for the specified country name using the Google Search API and rank each resulting link based
 on the presence of certain characteristics, including the number of external links as well as the number of occurrences 
-of NGO and directory.
+of NGO and directory. There is an optional parameter where you can specify how many links it will get from google's API 
 
 * **globalgiving crawled**
 Every time that the crawl command is utilized, the command line tool will store the links that it ranked as well as the resulting composite store in a database. Using the crawled command will retrieve the ranked pages and display them in descending order of rank.
