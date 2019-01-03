@@ -34,8 +34,6 @@ def init_s3_credentials():
         secret_key = user_information[CRED_SECRET_FIELD]
 
         client = boto3.client(
-            "s3",
-            aws_access_key_id=access_key,
-            aws_secret_access_key=secret_key,
+            "s3", aws_access_key_id=access_key, aws_secret_access_key=secret_key
         )
         return client
