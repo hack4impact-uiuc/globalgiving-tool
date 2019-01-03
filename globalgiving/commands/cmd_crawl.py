@@ -49,7 +49,7 @@ def cli(ctx, country, number_urls):
         ranked_link.insert_one(url_rank[url])
 
 
-def dev_crawl(collection, country, number_urls=3):
+def dev_crawl(collection, country, number_urls=1):
     """
     Helper method that gets called when testing the command using a mocked collection.
 

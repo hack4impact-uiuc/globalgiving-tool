@@ -1,8 +1,5 @@
-import click
 import mongomock
-import os
 
-from click.testing import CliRunner
 from globalgiving.commands.cmd_add import dev_add
 
 
