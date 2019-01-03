@@ -45,3 +45,29 @@ def cli(ctx, country, number_urls):
     for url in url_rank:
         print("Inserted " + str(url) + "'s information to database")
         ranked_link.insert_one(url_rank[url])
+    
+    return url_rank # Returned for basic testing of command
+
+
+def dev_crawl(collection, country, number_urls=3):
+    """
+    Helper method that gets called when testing the command using a mocked collection.
+
+    Input:
+        collection: collection to perform operations with/on
+        country: country parameter to use for Google search
+        number_urls: number of results to rank, defaulted to 3
+    """
+    for url in search("ngo directory" + country, lang="es", num=number_urls, stop=1):
+        parsed_uri = urlparse(url)
+        home_url = "{uri.scheme}://{uri.netloc}/".format(uri=parsed_uri)
+        if str(home_url) not in url_rank:
+            #     for url in url_rank:
+            cursor = collection.find({"url": home_url})
+            document_list = [url for url in cursor]
+            if len(document_list) == 0:
+                url_rank[home_url] = []
+        rank_all(country)
+
+    for url in url_rank:
+        collection.insert_one(url_rank[url])

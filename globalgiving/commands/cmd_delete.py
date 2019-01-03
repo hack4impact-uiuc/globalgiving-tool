@@ -25,3 +25,23 @@ def cli(ctx, name):
         return
     ctx.log("Deleting scraper {} . . . ".format(name))
     return delete_scraper(collection, ngo_id)
+
+
+def dev_delete(collection, name):
+    """
+    Helper method that gets called when testing the command using a mocked collection.
+
+    Input:
+        collection: collection to perform operations with/on
+        name: scraper to be deleted
+    """
+    try:
+        scrapers = list_scrapers_from_db(collection)
+        ngo_id = list(filter(lambda scraper: scraper["name"] == str(name), scrapers))[
+            0
+        ]["_id"]
+    except StopIteration:
+        return
+    except IndexError:
+        return
+    return delete_scraper(collection, ngo_id)
