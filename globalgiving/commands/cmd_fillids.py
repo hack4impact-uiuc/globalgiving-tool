@@ -91,4 +91,4 @@ def dev_fillids(collection):
         if updated_org[REGISTRATION_FIELD][0] != "":
             delete_one_ngo_from_db(collection, _id=ObjectId(updated_org["_id"]))
 
-    upload_data(collection, updated_list)
+    upload_data(collection, {"data": updated_list})

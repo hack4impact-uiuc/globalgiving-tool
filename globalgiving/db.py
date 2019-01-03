@@ -96,7 +96,7 @@ def upload_data(collection, data):
     """
     # purge duplicates
     data = data["data"]
-    data = purge_update_duplicates(data)
+    data = purge_update_duplicates(collection, data)
     if len(data) == 0:
         return "No new NGOs were found.\n\n"
     post_ids = collection.insert_many(data, ordered=False).inserted_ids
