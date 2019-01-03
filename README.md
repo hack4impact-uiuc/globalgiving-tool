@@ -131,7 +131,7 @@ This will generate the scraper in the microservices folder with everything autog
 ## Handoff: Integrating it into globalgivings pipeline
 
 * **globalgiving submit** 
-This currently writes all the scraped ngos to ````~/globalgiving/ngo_data.json````, but in reality should be talking to globalgivings central database of nonprofits. 
+This currently writes all the scraped ngos to ````~/globalgiving/ngo_data.json````, but in reality should be talking to GlobalGiving's central database of nonprofits. 
 
 
 
