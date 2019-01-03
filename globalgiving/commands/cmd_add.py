@@ -16,7 +16,14 @@ def cli(ctx, name, url):
     """
     authenticate()
     collection = db_get_collection()
-    doc_id, updated = send_scraper_to_db(collection, name, url)
-    if updated:
-        ctx.log("Updated scraper {}!".format(name))
-    ctx.log(doc_id)
+    result = send_scraper_to_db(collection, name, url)
+    ctx.log(result)
+
+
+def dev_add(collection, name, url):
+    """
+    This function is to be used for testing; it mirrors the code above, but
+    does not use click and allows a mocked DB to be passed in.
+    """
+    result = send_scraper_to_db(collection, name, url, test=True)
+    return result

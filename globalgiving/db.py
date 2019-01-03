@@ -57,18 +57,16 @@ def send_scraper_to_db(collection, name, url, test=False):
         client = init_s3_credentials()
         client.create_bucket(Bucket=bucket_name)
 
-    updated = False
     try:
         post_id = collection.insert_one(payload).inserted_id
     except Exception as e:
         if type(e).__name__ == "DuplicateKeyError":
             delete_scraper(collection, payload["_id"])
             post_id = collection.insert_one(payload).inserted_id
-            updated = True
         else:
             print(e)
             return
-    return "Registration sent to db with id: " + post_id, updated
+    return "Registration sent to db with id: " + post_id
 
 
 def list_scrapers_from_db(collection):

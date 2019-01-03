@@ -6,6 +6,7 @@ from globalgiving.db import send_scraper_to_db, list_scrapers_from_db
 def test_existence():
     # Mock collection and test data
     mock_collection = mongomock.MongoClient().db.collection
+
     name = "test"
     url = "url1"
 
@@ -24,7 +25,7 @@ def test_update():
     name = "test"
     url = "url1"
 
-    status = send_scraper_to_db(mock_collection, name, url, test=True)[0]
+    status = send_scraper_to_db(mock_collection, name, url, test=True)
     assert status == "Registration sent to db with id: url1"
     assert mock_collection.count_documents({}) == 1
 
