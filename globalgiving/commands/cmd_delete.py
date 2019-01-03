@@ -1,4 +1,5 @@
 import click
+from globalgiving.config import SCRAPER_COLL_NAME_FIELD
 from globalgiving.db import db_get_collection, list_scrapers_from_db, delete_scraper
 from globalgiving.cli import pass_context, authenticate
 
@@ -13,7 +14,7 @@ def cli(ctx, name):
     ctx.log(search.format(name))
     try:
         scrapers = list_scrapers_from_db(collection)
-        ngo_id = list(filter(lambda scraper: scraper["name"] == str(name), scrapers))[
+        ngo_id = list(filter(lambda scraper: scraper[SCRAPER_COLL_NAME_FIELD] == str(name), scrapers))[
             0
         ]["_id"]
         ctx.log("Scraper {} found!".format(name))
@@ -37,7 +38,7 @@ def dev_delete(collection, name):
     """
     try:
         scrapers = list_scrapers_from_db(collection)
-        ngo_id = list(filter(lambda scraper: scraper["name"] == str(name), scrapers))[
+        ngo_id = list(filter(lambda scraper: scraper[SCRAPER_COLL_NAME_FIELD] == str(name), scrapers))[
             0
         ]["_id"]
     except StopIteration:

@@ -1,22 +1,20 @@
 import click
 import os, sys
 from bson.objectid import ObjectId
-
+from globalgiving.config import MICROSERVICE_PKG_PATH, NGO_COLLECTION
 from globalgiving.cli import pass_context
 from globalgiving.db import (
-    NGO_COLLECTION,
     db_get_collection,
     list_ngos_from_db,
     upload_data,
     delete_one_ngo_from_db,
 )
 
-SCRAPER_REG_PATH = "../../../microservices"  # Sibling package path
 COUNTRY_FIELD = "country"
 REGISTRATION_FIELD = "registration"
 
 # Bring microservices directory into import path
-sys.path.append(os.path.realpath(os.path.dirname(__file__) + SCRAPER_REG_PATH))
+sys.path.append(os.path.realpath(os.path.dirname(__file__) + MICROSERVICE_PKG_PATH))
 from scraper_registerids.src.scraper import get_registration_site, get_country_code
 
 

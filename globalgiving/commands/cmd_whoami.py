@@ -2,6 +2,7 @@ import os
 import click
 import jwt
 from globalgiving.cli import pass_context
+from globalgiving.config import CREDENTIALS_PATH, CRED_URI_FIELD, CRED_TOKEN_FIELD
 import json
 
 
@@ -10,14 +11,14 @@ import json
 )
 @pass_context
 def cli(ctx):
-    if os.path.exists(os.getenv("HOME") + "/globalgiving/" + "credentials.json"):
-        with open(os.getenv("HOME") + "/globalgiving/credentials.json") as f:
+    if os.path.exists(os.getenv("HOME") + CREDENTIALS_PATH):
+        with open(os.getenv("HOME") + CREDENTIALS_PATH) as f:
             data = json.load(f)
         print(
             "You are logged in as "
-            + data["token"]
+            + data[CRED_TOKEN_FIELD]
             + " and your mongo uri is "
-            + data["mongo_uri"]
+            + data[CRED_URI_FIELD]
         )
     else:
         print("The file does not exist")

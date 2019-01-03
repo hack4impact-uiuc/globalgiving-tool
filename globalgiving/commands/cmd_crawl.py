@@ -2,6 +2,7 @@ import click
 import requests
 from googlesearch import search
 from globalgiving.cli import pass_context
+from globalgiving.config import MICROSERVICE_PKG_PATH, CREDENTIALS_PATH, CRED_URI_FIELD, CRAWL_RANKED_COLLECTION
 from urllib.parse import urlparse
 import dotenv
 import pymongo
@@ -9,10 +10,9 @@ import json
 import os
 import sys
 
-SCRAPER_REG_PATH = "../../../microservices"  # Sibling package path
 
 # Bring microservices directory into import path
-sys.path.append(os.path.realpath(os.path.dirname(__file__) + SCRAPER_REG_PATH))
+sys.path.append(os.path.realpath(os.path.dirname(__file__) + MICROSERVICE_PKG_PATH))
 from scraper_crawler.crawl_functions import rank_all, url_rank
 
 
@@ -26,11 +26,11 @@ def cli(ctx, country, number_urls):
     else:
         number_urls = int(number_urls)
 
-    with open(os.getenv("HOME") + "/globalgiving/credentials.json") as f:
+    with open(os.getenv("HOME") + CREDENTIALS_PATH) as f:
         data = json.load(f)
-    client = pymongo.MongoClient(data["mongo_uri"])
+    client = pymongo.MongoClient(data[CRED_URI_FIELD])
     db = client.get_database()
-    ranked_link = db["ranked_links"]
+    ranked_link = db[CRAWL_RANKED_COLLECTION]
 
     for url in search("ngo directory" + country, lang="es", num=number_urls, stop=1):
         parsed_uri = urlparse(url)
