@@ -2,10 +2,7 @@ import click
 from globalgiving.cli import pass_context
 from globalgiving.db import db_get_collection
 import pymongo
-from globalgiving.config import (
-    MICROSERVICE_PKG_PATH,
-    CRAWL_RANKED_COLLECTION,
-)
+from globalgiving.config import MICROSERVICE_PKG_PATH, CRAWL_RANKED_COLLECTION
 from urllib.parse import urlparse
 import os
 import sys

@@ -2,10 +2,7 @@ import click
 from googlesearch import search
 from globalgiving.cli import pass_context
 from globalgiving.db import db_get_collection
-from globalgiving.config import (
-    MICROSERVICE_PKG_PATH,
-    CRAWL_RANKED_COLLECTION,
-)
+from globalgiving.config import MICROSERVICE_PKG_PATH, CRAWL_RANKED_COLLECTION
 from urllib.parse import urlparse
 import pymongo
 import json
