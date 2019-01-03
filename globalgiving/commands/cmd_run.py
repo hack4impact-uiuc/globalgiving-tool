@@ -122,7 +122,7 @@ def run_all(ctx):
         for scraper in scrapers:
             n = scraper[SCRAPER_COLL_NAME_FIELD]
             names.append(n)
-            routes.append(scraper["_id"]+ "/data")
+            routes.append(scraper["_id"] + "/data")
             h.update(n.encode("utf-8"))
             bucket_name = n + "-" + h.hexdigest()
             filename = str(uuid.uuid4()) + ".txt"
