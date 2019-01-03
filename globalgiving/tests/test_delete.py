@@ -1,4 +1,3 @@
-import click
 import mongomock
 
 from globalgiving.commands.cmd_delete import dev_delete

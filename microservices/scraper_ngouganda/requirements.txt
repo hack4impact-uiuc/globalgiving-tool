@@ -1,6 +1,0 @@
-requests==2.20.0
-beautifulsoup4==4.6.3
-flask==0.12.3
-microservices==0.33.0
-pytest==3.8.2
-gunicorn==19.9.0

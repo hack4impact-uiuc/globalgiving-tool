@@ -13,13 +13,22 @@ def cli(ctx, n):
     search = "Finding scraper {} from list of registered scrapers..."
     ctx.log(search.format(n))
     try:
-        scrapers = list_scrapers_from_db(collection)
-        route = list(filter(lambda scraper: scraper["name"] == str(n), scrapers))[0][
-            "routes"
-        ]["Test"]
+        scrapers = list_scrapers_from_db()
+        scraper = list(filter(lambda scraper: scraper["name"] == n, scrapers))
+        route = scraper[0]["_id"] + "/test"
         ctx.log("Scraper {} found!".format(n))
-    except StopIteration:
+    except Exception:
         ctx.log("Scraper {} not found.".format(n))
         return
     contents = requests.get(route).text
     print(contents)
+
+
+def dev_testscraper(collection, name):
+    try:
+        scrapers = list_scrapers_from_db(collection)
+        scraper = list(filter(lambda scraper: scraper["name"] == n, scrapers))
+        route = scraper[0]["_id"] + "/test"
+    except Exception:
+        return
+    return requests.get(route).text

@@ -8,45 +8,27 @@ def test_existence():
     mock_collection = mongomock.MongoClient().db.collection
 
     name = "test"
-    url = "https://gg-scraper-example.now.sh"
-    namesList = ["Routes", "Test1", "Data", "Static"]
-    routesList = [url + "/" + name.lower() for name in namesList]
-    routesList[-1] += "/"  # last route is always static which has another /
+    url = "url1"
 
-    status = send_scraper_to_db(mock_collection, name, url, namesList, routesList)[
-        0
-    ]  # Send to db returns as tuple
-    assert (
-        status == "Registration sent to db with id: https://gg-scraper-example.now.sh"
-    )
+    send_scraper_to_db(mock_collection, name, url, test=True)
+    assert mock_collection.count_documents({}) == 1
 
     docs = list_scrapers_from_db(mock_collection)
-    assert len(docs) == 1
-
-    name = docs[0]["name"]
-    assert name == "test"
-
-    static_route = docs[0]["routes"]["Static"]
-    assert static_route == "https://gg-scraper-example.now.sh/static/"
+    assert docs[0]["name"] == "test"
+    assert docs[0]["_id"] == "url1"
 
 
 def test_update():
     # Mock collection and test data
     mock_collection = mongomock.MongoClient().db.collection
+    mock_collection.insert_one(dict(_id="url1", name="test"))
     name = "test"
-    url = "https://gg-scraper-example.now.sh"
-    # create a fake routes called Test1
-    namesList = ["Routes", "Test1", "Data", "Static"]
-    routesList = [url + "/" + name.lower() for name in namesList]
-    routesList[-1] += "/"  # last route is always static which has another /
+    url = "url1"
 
-    status = send_scraper_to_db(mock_collection, name, url, namesList, routesList)[0]
-    assert (
-        status == "Registration sent to db with id: https://gg-scraper-example.now.sh"
-    )
+    status = send_scraper_to_db(mock_collection, name, url, test=True)[0]
+    assert status == "Registration sent to db with id: url1"
+    assert mock_collection.count_documents({}) == 1
 
-    # Should update and still return the same message
-    status = send_scraper_to_db(mock_collection, name, url, namesList, routesList)[0]
-    assert (
-        status == "Registration sent to db with id: https://gg-scraper-example.now.sh"
-    )
+    docs = list_scrapers_from_db(mock_collection)
+    assert docs[0]["name"] == "test"
+    assert docs[0]["_id"] == "url1"

@@ -34,7 +34,7 @@ def db_get_collection(collectionName="scrapers"):
         return collection
 
 
-def send_scraper_to_db(collection, name, url, namesList, routesList):
+def send_scraper_to_db(collection, name, url, test=False):
     """
     Sends the name and routes to the database.
     Input:
@@ -49,15 +49,14 @@ def send_scraper_to_db(collection, name, url, namesList, routesList):
     """
     payload = {"name": name}
     payload["_id"] = url
-    bucket_name = name + BUCKET_DELIM + str(hash(name))
-    payload[name] = bucket_name
-    client = init_s3_credentials()
-    client.create_bucket(Bucket=bucket_name)
 
-    routes = {}
-    for routeName, routeURL in zip(namesList, routesList):
-        routes[routeName] = routeURL
-    payload["routes"] = routes
+    if not test:
+        # only run code if not testing to prevent continuous creation of s3 buckets
+        bucket_name = name + BUCKET_DELIM + str(hash(name))
+        payload[name] = bucket_name
+        client = init_s3_credentials()
+        client.create_bucket(Bucket=bucket_name)
+
     updated = False
     try:
         post_id = collection.insert_one(payload).inserted_id
@@ -66,6 +65,9 @@ def send_scraper_to_db(collection, name, url, namesList, routesList):
             delete_scraper(collection, payload["_id"])
             post_id = collection.insert_one(payload).inserted_id
             updated = True
+        else:
+            print(e)
+            return
     return "Registration sent to db with id: " + post_id, updated
 
 
@@ -74,29 +76,16 @@ def list_scrapers_from_db(collection):
     Gets all scrapers listed in the database in the specified collection. This function merely returns the
     scrapers as a list.
     """
-    # scrapers = db_get_collection()
     cursor = collection.find({})
     document_list = [doc for doc in cursor]
     return document_list
 
 
 def delete_scraper(collection, scraper_id):
-    # if test:
-    #     scrapers = db_get_collection("tests")
-    # else:
-    #     scrapers = db_get_collection()
     return collection.delete_one({"_id": scraper_id})
 
 
-# def delete_all_scrapers(test=False):
-#     if test:
-#         scrapers = db_get_collection("tests")
-#         scrapers.delete_many({})
-#     else:
-#         pass  # Don't do anything if called by accident!
-
-
-def upload_data(collection, data, test=False):
+def upload_data(collection, data):
     """
     Sends the NGO/CSO data to the database.
     Input:
@@ -105,19 +94,11 @@ def upload_data(collection, data, test=False):
         A confirmation that the data has been sent, otherwise an
         exception.
     """
-    # print(data)
-    # scrapers = db_get_collection(NGO_COLLECTION)
-    # bucket_name = name + "-" + str(hash(name))  # we need to figure out how
-    # logging is going to work for uploading ngo data
-    # payload[name] = bucket_name
-    # client = init_s3_credentials()
-    # client.create_bucket(Bucket=bucket_name)
-
     # purge duplicates
-    data = purge_update_duplicates(data)
+    data = data["data"]
+    data = purge_update_duplicates(collection, data)
     if len(data) == 0:
         return "No new NGOs were found.\n\n"
-
     post_ids = collection.insert_many(data, ordered=False).inserted_ids
     try:
         assert len(data) == len(post_ids)
@@ -136,7 +117,6 @@ def list_ngos_from_db(collection, **kwargs):
         collection: collection to get NGO data from
         kwargs: used to specify query parameters
     """
-    # ngos = db_get_collection(NGO_COLLECTION)
     cursor = collection.find(kwargs)
     ngo_list = [doc for doc in cursor]
     for ngo in ngo_list:
@@ -152,7 +132,6 @@ def delete_one_ngo_from_db(collection, **kwargs):
         collection: collection to get NGO data from
         kwargs: used to specify query parameters
     """
-    # ngos = db_get_collection(NGO_COLLECTION)
     collection.delete_one(kwargs)
 
 
