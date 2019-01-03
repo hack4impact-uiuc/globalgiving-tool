@@ -3,7 +3,8 @@ import click, requests
 import hashlib
 import os
 import uuid
-from globalgiving.db import list_scrapers_from_db, upload_data
+from globalgiving.config import NGO_COLLECTION, SCRAPER_COLL_NAME_FIELD
+from globalgiving.db import db_get_collection, list_scrapers_from_db, upload_data
 from globalgiving.cli import pass_context, authenticate
 from globalgiving.s3_interface import init_s3_credentials
 import json
@@ -15,24 +16,30 @@ import json
 @pass_context
 def cli(ctx, n, a):
     authenticate()
+    collection = db_get_collection()
+    ngo_collection = db_get_collection(NGO_COLLECTION)
     client = init_s3_credentials()
 
     if a:
         run_all(ctx)
         return
 
+    # Create new bucket name for log file by using hash
     h = hashlib.md5()
     h.update(n.encode("utf-8"))
     bucket_name = n + "-" + h.hexdigest()
 
+    # Generate unique file name for new log
     filename = str(uuid.uuid4()) + ".txt"
     f = open(filename, "w+")
 
     search = "Finding scraper {} from list of registered scrapers..."
     f.write(search.format(n) + "\n")
     try:
-        scrapers = list_scrapers_from_db()
-        route_data = list(filter(lambda scraper: scraper["name"] == str(n), scrapers))
+        scrapers = list_scrapers_from_db(collection)
+        route_data = list(
+            filter(lambda scraper: scraper[SCRAPER_COLL_NAME_FIELD] == str(n), scrapers)
+        )
         if len(route_data) == 0:
             print("Scraper not found")
             return
@@ -46,6 +53,7 @@ def cli(ctx, n, a):
         os.remove(filename)
         return
     try:
+        # Run scraper by getting the correct route and requesting it
         contents = requests.get(route).json()
         if "data" in contents:
             print("The data is uploaded")
@@ -99,6 +107,8 @@ def cli(ctx, n, a):
 
 def run_all(ctx):
     authenticate()
+    collection = db_get_collection()
+    ngo_collection = db_get_collection(NGO_COLLECTION)
     client = init_s3_credentials()
 
     h = hashlib.md5()
@@ -108,9 +118,9 @@ def run_all(ctx):
     log_filenames = []
 
     try:
-        scrapers = list_scrapers_from_db()
+        scrapers = list_scrapers_from_db(collection)
         for scraper in scrapers:
-            n = scraper["name"]
+            n = scraper[SCRAPER_COLL_NAME_FIELD]
             names.append(n)
             routes.append(scraper["routes"]["Data"])
             h.update(n.encode("utf-8"))
@@ -143,7 +153,7 @@ def run_all(ctx):
             ctx.log("Getting information for {} . . . ".format(name))
             contents = requests.get(route)
             log.write(contents.text)
-            log.write(upload_data(json.loads(contents.text)))
+            log.write(upload_data(ngo_collection, json.loads(contents.text)))
             log.write("Upload succeeded!")
             ctx.log("Uploading {} succeeded!".format(name))
         except Exception as e:

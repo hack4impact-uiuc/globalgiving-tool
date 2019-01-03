@@ -15,10 +15,12 @@ def cli(ctx, scraper_name, filename):
     authenticate()
     client = init_s3_credentials()
 
+    # Generate bucket name to fetch logs from
     h = hashlib.md5()
     h.update(scraper_name.encode("utf-8"))
     bucket_name = scraper_name + "-" + h.hexdigest()
 
+    # Attempt to find bucket for logs
     if not filename:
         response = client.list_buckets()
         if bucket_name not in [bucket["Name"] for bucket in response["Buckets"]]:
