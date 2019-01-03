@@ -13,6 +13,7 @@ def cli(ctx, n):
     search = "Finding scraper {} from list of registered scrapers..."
     ctx.log(search.format(n))
     try:
+        # Test scraper by sending request to test endpoint
         scrapers = list_scrapers_from_db()
         scraper = list(filter(lambda scraper: scraper["name"] == n, scrapers))
         route = scraper[0]["_id"] + "/test"

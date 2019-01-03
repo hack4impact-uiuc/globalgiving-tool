@@ -1,7 +1,6 @@
 import click
 from globalgiving.cli import pass_context, authenticate
 from globalgiving.db import db_get_collection, list_scrapers_from_db
-import os
 
 
 @click.command("list", short_help="List all available scrapers.")
@@ -14,7 +13,7 @@ def cli(ctx):
     """
     collection = db_get_collection()
     ctx.log("Listing all registered scrapers!")
-    all_docs = list_scrapers_from_db()
+    all_docs = list_scrapers_from_db(collection)
     for doc in all_docs:
         ctx.log("  {}".format(doc["name"]))
     return all_docs  # for testing

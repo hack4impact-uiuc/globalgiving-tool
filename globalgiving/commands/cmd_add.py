@@ -1,5 +1,4 @@
 import click
-import requests
 from globalgiving.cli import pass_context, authenticate
 from globalgiving.db import db_get_collection, send_scraper_to_db
 

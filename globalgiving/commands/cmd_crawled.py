@@ -1,13 +1,9 @@
 import click
-import requests
-from googlesearch import search
 from globalgiving.cli import pass_context
-from urllib.parse import urlparse
-import dotenv
+from globalgiving.db import db_get_collection
+import pymongo
 import os
 import sys
-import pymongo
-from operator import itemgetter
 import json
 
 SCRAPER_REG_PATH = "../../../microservices"  # Sibling package path
@@ -20,14 +16,8 @@ from scraper_crawler.crawl_functions import rank_all, url_rank
 @click.command("crawled", short_help="Crawl for new directories and NGOs")
 @pass_context
 def cli(ctx):
-
-    with open(os.getenv("HOME") + "/globalgiving/credentials.json") as f:
-        data = json.load(f)
-    uri = data["mongo_uri"]
-    client = pymongo.MongoClient(uri)
-    db = client.get_database()
-    ranked_link = db["ranked_links"]
-
+    authenticate()
+    ranked_link = db_get_collection("ranked_links")
     cursor = ranked_link.find({})
     directories = [_ for _ in cursor]
 

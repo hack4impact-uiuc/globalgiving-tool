@@ -3,7 +3,6 @@ import os
 from cookiecutter.main import cookiecutter
 
 from globalgiving.cli import pass_context
-from globalgiving.db import list_scrapers_from_db
 
 MICROSERVICES_DIRECTORY = "/microservices"
 
