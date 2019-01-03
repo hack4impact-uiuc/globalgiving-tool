@@ -45,8 +45,8 @@ def cli(ctx, country, number_urls):
     for url in url_rank:
         print("Inserted " + str(url) + "'s information to database")
         ranked_link.insert_one(url_rank[url])
-    
-    return url_rank # Returned for basic testing of command
+
+    return url_rank  # Returned for basic testing of command
 
 
 def dev_crawl(collection, country, number_urls=3):

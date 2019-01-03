@@ -3,7 +3,12 @@ import click, requests
 import hashlib
 import os
 import uuid
-from globalgiving.db import NGO_COLLECTION, db_get_collection, list_scrapers_from_db, upload_data
+from globalgiving.db import (
+    NGO_COLLECTION,
+    db_get_collection,
+    list_scrapers_from_db,
+    upload_data,
+)
 from globalgiving.cli import pass_context, authenticate
 from globalgiving.s3_interface import init_s3_credentials
 import json

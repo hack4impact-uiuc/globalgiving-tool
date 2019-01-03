@@ -49,7 +49,7 @@ def send_scraper_to_db(collection, name, url, test=False):
     """
     payload = {"name": name}
     payload["_id"] = url
-    
+
     if not test:
         # only run code if not testing to prevent continuous creation of s3 buckets
         bucket_name = name + BUCKET_DELIM + str(hash(name))

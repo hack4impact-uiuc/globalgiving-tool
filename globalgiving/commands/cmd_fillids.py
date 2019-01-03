@@ -3,7 +3,13 @@ import os, sys
 from bson.objectid import ObjectId
 
 from globalgiving.cli import pass_context
-from globalgiving.db import NGO_COLLECTION, db_get_collection, list_ngos_from_db, upload_data, delete_one_ngo_from_db
+from globalgiving.db import (
+    NGO_COLLECTION,
+    db_get_collection,
+    list_ngos_from_db,
+    upload_data,
+    delete_one_ngo_from_db,
+)
 
 SCRAPER_REG_PATH = "../../../microservices"  # Sibling package path
 COUNTRY_FIELD = "country"
@@ -73,9 +79,7 @@ def dev_fillids(collection):
 
     for org in ngo_list:
         if org[COUNTRY_FIELD].title() in prev_countries.keys():
-            org[REGISTRATION_FIELD] = [
-                prev_countries[org[COUNTRY_FIELD]]
-            ] 
+            org[REGISTRATION_FIELD] = [prev_countries[org[COUNTRY_FIELD]]]
             updated_list.append(org)
         else:
             registration_url = get_registration_site(org[COUNTRY_FIELD])
@@ -86,5 +90,5 @@ def dev_fillids(collection):
     for updated_org in updated_list:
         if updated_org[REGISTRATION_FIELD][0] != "":
             delete_one_ngo_from_db(collection, _id=ObjectId(updated_org["_id"]))
-            
+
     upload_data(collection, updated_list)

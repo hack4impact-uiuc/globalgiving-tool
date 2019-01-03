@@ -1,9 +1,6 @@
 import mongomock
 import pytest
-from globalgiving.db import (
-    send_scraper_to_db,
-    list_scrapers_from_db,
-)
+from globalgiving.db import send_scraper_to_db, list_scrapers_from_db
 
 
 def test_existence():
@@ -28,9 +25,7 @@ def test_update():
     url = "url1"
 
     status = send_scraper_to_db(mock_collection, name, url, test=True)[0]
-    assert (
-        status == "Registration sent to db with id: url1"
-    )
+    assert status == "Registration sent to db with id: url1"
     assert mock_collection.count_documents({}) == 1
 
     docs = list_scrapers_from_db(mock_collection)
