@@ -27,7 +27,7 @@ def dev_add(collection, name, url):
     This function is to be used for testing; it mirrors the code above, but
     does not use click and allows a mocked DB to be passed in.
     """
-    doc_id, updated = send_scraper_to_db(collection, name, url)
+    doc_id, updated = send_scraper_to_db(collection, name, url, test=True)
     if updated:
         return "Updated scraper {}!\n".format(name) + str(doc_id)
     else:
