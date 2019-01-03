@@ -1,22 +1,11 @@
 import mongomock
 import pytest
-from globalgiving.db import (
-    send_scraper_to_db,
-    list_scrapers_from_db,
-)
-
-# import pymongo
-# import os
-# import dotenv
-# import requests
+from globalgiving.db import send_scraper_to_db, list_scrapers_from_db
 
 
 def test_existence():
     # Mock collection
     mock_collection = mongomock.MongoClient().db.collection
-
-    # # Clear the testing collection
-    # delete_all_scrapers(test=True)
 
     name = "test"
     url = "https://gg-scraper-example.now.sh"
@@ -44,9 +33,6 @@ def test_existence():
 def test_update():
     # Mock collection
     mock_collection = mongomock.MongoClient().db.collection
-
-    # # Clear the testing collection
-    # delete_all_scrapers(test=True)
 
     name = "test"
     url = "https://gg-scraper-example.now.sh"
