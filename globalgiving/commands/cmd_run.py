@@ -56,6 +56,7 @@ def cli(ctx, n, a):
             for i in range(int(contents["pages"])):
                 try:
                     url = str(route_data["_id"]) + "page"
+                    # TODO: Current hack-run the scraper on localhost, and it will get all the pages, there is a deployment bug atm
                     url = "http://localhost:5000/page"
                     print("Fetching " + url)
                     f.write("Fetching " + url)
