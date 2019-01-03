@@ -55,11 +55,16 @@ def cli(ctx, n, a):
             f.write("Fetching all " + str(contents["pages"]) + " pages")
             for i in range(int(contents["pages"])):
                 try:
-                    route = str(route_data["_id"]) + "page/" + str(i)
-                    print("Fetching " + route)
-                    f.write("Fetching " + route)
-                    contents = requests.get(route).json()
-                    f.write(upload_data(contents))
+                    url = str(route_data["_id"]) + "page"
+                    url = "http://localhost:5000/page"
+                    print("Fetching " + url)
+                    f.write("Fetching " + url)
+                    # contents = requests.get(route).json()
+                    payload = {"url": str(contents["urls"][i])}
+                    print(payload)
+                    data = requests.post(url, json=json.dumps(payload))
+                    print(data.json())
+                    f.write(upload_data(data.json()))
                     print("The data is uploaded")
                 except Exception as e:
                     print(e)
