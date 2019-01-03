@@ -2,7 +2,12 @@ import click
 import requests
 from googlesearch import search
 from globalgiving.cli import pass_context
-from globalgiving.config import MICROSERVICE_PKG_PATH, CREDENTIALS_PATH, CRED_URI_FIELD, CRAWL_RANKED_COLLECTION
+from globalgiving.config import (
+    MICROSERVICE_PKG_PATH,
+    CREDENTIALS_PATH,
+    CRED_URI_FIELD,
+    CRAWL_RANKED_COLLECTION,
+)
 from urllib.parse import urlparse
 import dotenv
 import os

@@ -4,11 +4,7 @@ import hashlib
 import os
 import uuid
 from globalgiving.config import NGO_COLLECTION, SCRAPER_COLL_NAME_FIELD
-from globalgiving.db import (
-    db_get_collection,
-    list_scrapers_from_db,
-    upload_data,
-)
+from globalgiving.db import db_get_collection, list_scrapers_from_db, upload_data
 from globalgiving.cli import pass_context, authenticate
 from globalgiving.s3_interface import init_s3_credentials
 import json
@@ -39,7 +35,9 @@ def cli(ctx, n, a):
     f.write(search.format(n) + "\n")
     try:
         scrapers = list_scrapers_from_db(collection)
-        route_data = list(filter(lambda scraper: scraper[SCRAPER_COLL_NAME_FIELD] == str(n), scrapers))
+        route_data = list(
+            filter(lambda scraper: scraper[SCRAPER_COLL_NAME_FIELD] == str(n), scrapers)
+        )
         if len(route_data) == 0:
             print("Scraper not found")
             return

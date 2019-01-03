@@ -3,7 +3,13 @@ import boto3
 import os
 import json
 import pymongo
-from globalgiving.config import CREDENTIALS_PATH, CRED_URI_FIELD, CRED_TOKEN_FIELD, CRED_ACCESS_FIELD, CRED_SECRET_FIELD
+from globalgiving.config import (
+    CREDENTIALS_PATH,
+    CRED_URI_FIELD,
+    CRED_TOKEN_FIELD,
+    CRED_ACCESS_FIELD,
+    CRED_SECRET_FIELD,
+)
 
 
 def init_s3_credentials():
@@ -20,7 +26,10 @@ def init_s3_credentials():
         db = client.get_database()
 
         user_information = db["credentials"].find_one(
-            {CRED_URI_FIELD: data[CRED_URI_FIELD], CRED_TOKEN_FIELD: data[CRED_TOKEN_FIELD]}
+            {
+                CRED_URI_FIELD: data[CRED_URI_FIELD],
+                CRED_TOKEN_FIELD: data[CRED_TOKEN_FIELD],
+            }
         )
 
         if user_information == None:

@@ -15,7 +15,9 @@ def cli(ctx, n):
     ctx.log(search.format(n))
     try:
         scrapers = list_scrapers_from_db(collection)
-        scraper = list(filter(lambda scraper: scraper[SCRAPER_COLL_NAME_FIELD] == n, scrapers))
+        scraper = list(
+            filter(lambda scraper: scraper[SCRAPER_COLL_NAME_FIELD] == n, scrapers)
+        )
         route = scraper[0]["_id"] + "/test"
         ctx.log("Scraper {} found!".format(n))
     except Exception:
@@ -28,7 +30,9 @@ def cli(ctx, n):
 def dev_testscraper(collection, name):
     try:
         scrapers = list_scrapers_from_db(collection)
-        scraper = list(filter(lambda scraper: scraper[SCRAPER_COLL_NAME_FIELD] == n, scrapers))
+        scraper = list(
+            filter(lambda scraper: scraper[SCRAPER_COLL_NAME_FIELD] == n, scrapers)
+        )
         route = scraper[0]["_id"] + "/test"
     except Exception:
         return

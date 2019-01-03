@@ -2,7 +2,12 @@ import os
 import click
 import pymongo
 from globalgiving.cli import pass_context
-from globalgiving.config import CREDENTIALS_PATH, CRED_URI_FIELD, CLI_DIR_NAME, CRED_TOKEN_FIELD
+from globalgiving.config import (
+    CREDENTIALS_PATH,
+    CRED_URI_FIELD,
+    CLI_DIR_NAME,
+    CRED_TOKEN_FIELD,
+)
 import json
 
 

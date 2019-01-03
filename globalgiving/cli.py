@@ -5,7 +5,14 @@ import jwt
 import dotenv
 import pymongo
 import json
-from globalgiving.config import CREDENTIALS_PATH, CRED_URI_FIELD, CRED_TOKEN_FIELD, COMMANDS_HOOK, COMMANDS_DIR_NAME, COMMANDS_FILE_FULL
+from globalgiving.config import (
+    CREDENTIALS_PATH,
+    CRED_URI_FIELD,
+    CRED_TOKEN_FIELD,
+    COMMANDS_HOOK,
+    COMMANDS_DIR_NAME,
+    COMMANDS_FILE_FULL,
+)
 
 CONTEXT_SETTINGS = dict(auto_envvar_prefix="GlobalGiving")
 
@@ -69,7 +76,10 @@ def authenticate():
         client = pymongo.MongoClient(data[CRED_URI_FIELD])
         db = client.get_database()
         user_information = db["credentials"].find_one(
-            {CRED_URI_FIELD: data[CRED_URI_FIELD], CRED_TOKEN_FIELD: data[CRED_TOKEN_FIELD]}
+            {
+                CRED_URI_FIELD: data[CRED_URI_FIELD],
+                CRED_TOKEN_FIELD: data[CRED_TOKEN_FIELD],
+            }
         )
         if user_information is None:
             print("Authentication failed")

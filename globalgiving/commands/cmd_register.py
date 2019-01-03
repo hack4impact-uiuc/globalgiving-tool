@@ -3,7 +3,14 @@ import click
 import jwt
 import pymongo
 from globalgiving.cli import pass_context
-from globalgiving.config import CREDENTIALS_PATH, CLI_DIR_NAME, CRED_URI_FIELD, CRED_TOKEN_FIELD, CRED_ACCESS_FIELD, CRED_SECRET_FIELD
+from globalgiving.config import (
+    CREDENTIALS_PATH,
+    CLI_DIR_NAME,
+    CRED_URI_FIELD,
+    CRED_TOKEN_FIELD,
+    CRED_ACCESS_FIELD,
+    CRED_SECRET_FIELD,
+)
 import uuid
 import json
 
@@ -30,10 +37,16 @@ def cli(ctx, mongo_uri, access_key, secret_key):
         print("Invalid mongodb credentials")
         return
 
-    if not os.path.exists(os.getenv("HOME") + CLI_DIR_NAME ):
-        os.makedirs(os.getenv("HOME") + CLI_DIR_NAME )
+    if not os.path.exists(os.getenv("HOME") + CLI_DIR_NAME):
+        os.makedirs(os.getenv("HOME") + CLI_DIR_NAME)
     with open(os.getenv("HOME") + CREDENTIALS_PATH, "w") as f:
-        json.dump({CRED_URI_FIELD: mongo_uri, CRED_TOKEN_FIELD: user_information[CRED_TOKEN_FIELD]}, f)
+        json.dump(
+            {
+                CRED_URI_FIELD: mongo_uri,
+                CRED_TOKEN_FIELD: user_information[CRED_TOKEN_FIELD],
+            },
+            f,
+        )
         f.close()
 
     ctx.log(

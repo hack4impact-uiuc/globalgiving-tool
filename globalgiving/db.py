@@ -2,7 +2,12 @@ import pymongo
 import dotenv
 import os
 from globalgiving.s3_interface import init_s3_credentials
-from globalgiving.config import CREDENTIALS_PATH, CRED_URI_FIELD, NGO_COLLECTION, SCRAPER_COLL_NAME_FIELD
+from globalgiving.config import (
+    CREDENTIALS_PATH,
+    CRED_URI_FIELD,
+    NGO_COLLECTION,
+    SCRAPER_COLL_NAME_FIELD,
+)
 import json
 
 
