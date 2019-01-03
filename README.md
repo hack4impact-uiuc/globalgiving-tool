@@ -98,6 +98,11 @@ Uses the test endpoint to give you an example of what the data looks like
 Runs the scraper on the entire directory and adds all the nonprofits to the database. This command can be called without a scraper name and just with the -a flag, which signifies to run all of the available scrapers.
     * Example: globalgiving run australia
 
+* **globalgiving fillids**
+This command fetches all of the NGOs from the database that don't have any logged registration IDs and scrapes for the first registration office website
+that it can find and then creates a list and populates it with the website url.
+    * Example: globalgiving fillids
+
 * **globalgiving log <scrape_name>** 
 Gets a list of all uploaded logs from every run of the scraper
     * Example: globalgiving run australia
