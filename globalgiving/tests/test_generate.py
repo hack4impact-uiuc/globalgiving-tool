@@ -3,7 +3,7 @@ import os
 
 from click.testing import CliRunner
 from globalgiving.commands.cmd_generate import cli
-from globalgiving.commands.cmd_generate import MICROSERVICES_DIRECTORY
+from globalgiving.config import MICROSERVICES_DIR_NAME
 
 
 PYCACHE = "__pycache__"
