@@ -60,8 +60,6 @@ def cli(ctx):
     for updated_org in updated_list:
         if updated_org[REGISTRATION_FIELD][0] != "":
             delete_one_ngo_from_db(collection, _id=ObjectId(updated_org["_id"]))
-        else:
-            updated_list.remove(updated_org)
 
     # Push updated documents to database
     ctx.log(upload_data(collection, {"data": updated_list}))
@@ -91,7 +89,5 @@ def dev_fillids(collection):
     for updated_org in updated_list:
         if updated_org[REGISTRATION_FIELD][0] != "":
             delete_one_ngo_from_db(collection, _id=ObjectId(updated_org["_id"]))
-        else:
-            updated_list.remove(updated_org)
 
     upload_data(collection, {"data": updated_list})
