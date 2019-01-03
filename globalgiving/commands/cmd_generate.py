@@ -6,7 +6,7 @@ from globalgiving.cli import pass_context
 from globalgiving.db import list_scrapers_from_db
 
 
-MICROSERVICE_DIR = "/microservices"
+MICROSERVICES_DIRECTORY = "/microservices"
 COOKIE_CUTTER_DIRECTORY = "/cookiecutter-scraper"
 
 
@@ -19,7 +19,7 @@ def cli(ctx, name):
     and using the cookiecutter module.
     """
     # Get root directory and set start of existing scraper search to the root microservices directory
-    rootdir = os.pardir + MICROSERVICE_DIR
+    rootdir = os.pardir + MICROSERVICES_DIRECTORY
     subdir_list = next(os.walk(rootdir))[1]
 
     # Check if scraper already exists in list of subdirectories
