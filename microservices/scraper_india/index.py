@@ -1,7 +1,7 @@
 from flask import Flask, request, jsonify
 from flask_restplus import Resource, Api, fields
 from werkzeug.contrib.fixers import ProxyFix
-from src.scraper import scrape, scrape_page, srape_page_urls
+from src.scraper import get_one_nonprofit, get_page_data, get_ngo_data
 import json
 
 app = Flask(__name__)
@@ -12,29 +12,28 @@ api = Api(app)
 @api.route("/url")
 class Scraper(Resource):
     def get(self):
-        return "http://www.hati.my/"
+        return "https://ngosindia.com/ngos-of-india/"
 
 
 @api.route("/data")
 class Scraper(Resource):
     def get(self):
-        orgs = scrape()
-        return {"pages": orgs["pages"], "urls": orgs["urls"]}
+        return {"data": get_page_data()}
 
 
 @api.route("/page", methods=["POST"])
 class Scraper(Resource):
     def post(self):
-        org = scrape_page((json.loads(request.json))["url"])
-        print(org)
+        print((json.loads(request.json))["url"])
+        org = get_ngo_data((json.loads(request.json))["url"])
+        # print(org)
         return {"data": org}
 
 
 @api.route("/test")
-class ScraperVietnam(Resource):
+class Scraper(Resource):
     def get(self):
-        org = scrape(one=True)
-        return {"test": org[0]}
+        return {"test": get_one_nonprofit()}
 
 
 if __name__ == "__main__":

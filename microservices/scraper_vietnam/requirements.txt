@@ -8,3 +8,5 @@ MarkupSafe==1.1.0
 psycopg2==2.7.6.1
 pytz==2018.7
 beautifulsoup4==4.6.3
+flask==0.12.3
+requests==2.20.0
