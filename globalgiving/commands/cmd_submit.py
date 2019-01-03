@@ -2,7 +2,7 @@ import click
 import os
 import dotenv
 import json
-from globalgiving.db import list_ngos_from_db
+from globalgiving.db import NGO_COLLECTION, db_get_collection, list_ngos_from_db
 from globalgiving.cli import pass_context, authenticate
 
 
@@ -15,10 +15,11 @@ def cli(ctx):
     `~/globalgiving/ngo_data.json`
     """
     authenticate()
+    collection = db_get_collection(NGO_COLLECTION)
     dotenv.load_dotenv(dotenv.find_dotenv())
 
     # get all NGOs
-    ngo_list = list_ngos_from_db()
+    ngo_list = list_ngos_from_db(collection)
 
     # just write to a file for now
     if not os.path.exists(os.getenv("HOME") + "/globalgiving/"):

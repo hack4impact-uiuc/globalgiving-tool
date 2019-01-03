@@ -47,3 +47,20 @@ def cli(ctx):
             + str(rank_info["num_word_ngo"])
             + " appearances of ngo directory related words"
         )
+
+
+def dev_crawled(collection):
+    """
+    Helper method that gets called when testing the command using a mocked collection.
+
+    Input:
+        collection: collection to perform operations with/on
+    """
+    cursor = collection.find({})
+    directories = [_ for _ in cursor]
+
+    ranked_ngo_directories = []
+    for directory in directories:
+        ranked_ngo_directories += [(directory["url"], directory["composite_score"])]
+
+    return ranked_ngo_directories

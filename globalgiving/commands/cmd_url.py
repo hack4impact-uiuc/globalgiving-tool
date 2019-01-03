@@ -1,6 +1,6 @@
 import click
 import requests
-from globalgiving.db import list_scrapers_from_db
+from globalgiving.db import db_get_collection, list_scrapers_from_db
 from globalgiving.cli import pass_context, authenticate
 import json
 
@@ -10,7 +10,8 @@ import json
 @pass_context
 def cli(ctx, scraper_name):
     authenticate()
-    scrapers = list_scrapers_from_db()
+    collection = db_get_collection()
+    scrapers = list_scrapers_from_db(collection)
 
     # If you have a scraper name, find the url for that scraper
     if scraper_name:

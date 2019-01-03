@@ -1,6 +1,6 @@
 import click
 import requests
-from globalgiving.db import list_scrapers_from_db
+from globalgiving.db import db_get_collection, list_scrapers_from_db
 from globalgiving.cli import pass_context, authenticate
 
 
@@ -9,6 +9,7 @@ from globalgiving.cli import pass_context, authenticate
 @pass_context
 def cli(ctx, n):
     authenticate()
+    collection = db_get_collection()
     search = "Finding scraper {} from list of registered scrapers..."
     ctx.log(search.format(n))
     try:
@@ -21,3 +22,13 @@ def cli(ctx, n):
         return
     contents = requests.get(route).text
     print(contents)
+
+
+def dev_testscraper(collection, name):
+    try:
+        scrapers = list_scrapers_from_db(collection)
+        scraper = list(filter(lambda scraper: scraper["name"] == n, scrapers))
+        route = scraper[0]["_id"] + "/test"
+    except Exception:
+        return
+    return requests.get(route).text
