@@ -23,6 +23,7 @@ def cli(ctx, n):
     contents = requests.get(route).text
     print(contents)
 
+
 def dev_testscraper(collection, name):
     try:
         scrapers = list_scrapers_from_db(collection)
