@@ -10,6 +10,7 @@ def get_one_nonprofit():
     url = "https://nposindia.com/amazing-life-ministries-andaman-nicobar-islands/"
     return get_ngo_data(url)
 
+
 def get_page_data():
     # Specify url to scrape from
     target_url = requests.get("https://ngosindia.com/ngos-of-india/")
@@ -24,13 +25,12 @@ def get_page_data():
         if "Delhi" in state or "Daman and Diu" in state or "Haryana" in state:
             continue
         state_url = requests.get(state["href"])
-    #     # check that the page_data is in the correct format for getting the list
+        #     # check that the page_data is in the correct format for getting the list
         state_page_data = BeautifulSoup(state_url.content, "html.parser")
-        has_ngo_data = state_page_data.find_all(
-            attrs={"class": "ngo-layout-cell"})
+        has_ngo_data = state_page_data.find_all(attrs={"class": "ngo-layout-cell"})
         if has_ngo_data:
             ngo_list = has_ngo_data[1].find_all("a", href=True)
-            if (len(ngo_list) > 0 and "NGOs" in str(ngo_list[0])):
+            if len(ngo_list) > 0 and "NGOs" in str(ngo_list[0]):
                 ngo_urls += ngo_list
     urls = []
     for ngo in ngo_urls:
@@ -77,10 +77,9 @@ def compile_information(ngo_name, contents):
     global ngo_content_list
     ngo_dict = {}
     # seperate neccesary information (phone,email,address,etc.)
-    ngo_dict["Name"] = str(
-        ngo_name[ngo_name.find(">") + 1: ngo_name.find("<", 2)])
+    ngo_dict["Name"] = str(ngo_name[ngo_name.find(">") + 1 : ngo_name.find("<", 2)])
     # print(ngo_name)
-    print(str(ngo_name[ngo_name.find(">") + 1: ngo_name.find("<", 2)]))
+    print(str(ngo_name[ngo_name.find(">") + 1 : ngo_name.find("<", 2)]))
     if len(contents) > 1:
         content = str(contents[1]).split("\n")
         # Remove additional text in string like ("Add:","Tel:",etc.)
