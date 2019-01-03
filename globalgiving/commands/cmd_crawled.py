@@ -12,9 +12,8 @@ import json
 
 
 @click.command("crawled", short_help="Crawl for new directories and NGOs")
-@click.argument("number_urls", required=False)
 @pass_context
-def cli(ctx, number_urls):
+def cli(ctx):
 
     with open(os.getenv("HOME") + "/globalgiving/credentials.json") as f:
         data = json.load(f)
@@ -33,3 +32,20 @@ def cli(ctx, number_urls):
     print("Ranked Set of NGO's gathered")
     for ngo_directory in ranked_ngo_directories:
         print("   " + str(ngo_directory[0]) + "  " + str(ngo_directory[1]))
+
+
+def dev_crawled(collection):
+    """
+    Helper method that gets called when testing the command using a mocked collection.
+
+    Input:
+        collection: collection to perform operations with/on
+    """
+    cursor = collection.find({})
+    directories = [_ for _ in cursor]
+
+    ranked_ngo_directories = []
+    for directory in directories:
+        ranked_ngo_directories += [(directory["url"], directory["composite_score"])]
+    
+    return ranked_ngo_directories
