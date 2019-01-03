@@ -27,7 +27,7 @@ def cli(ctx, country, number_urls):
     else:
         number_urls = int(number_urls)
 
-    # Perform google search and start ranking results
+    # Perform google search and start ranking results, get a set number of urls
     for url in search("ngo directory" + country, lang="es", num=number_urls, stop=1):
         parsed_uri = urlparse(url)
         home_url = "{uri.scheme}://{uri.netloc}/".format(uri=parsed_uri)
