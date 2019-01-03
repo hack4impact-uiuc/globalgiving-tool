@@ -3,7 +3,6 @@ import boto3
 import os
 import json
 import pymongo
-from globalgiving.db import db_get_collection
 from globalgiving.config import (
     CREDENTIALS_PATH,
     CRED_URI_FIELD,
@@ -18,8 +17,11 @@ def init_s3_credentials():
 
     with open(os.getenv("HOME") + CREDENTIALS_PATH) as f:
         data = json.load(f)
-        collection = db_get_collection(CRED_COLLECTION)
-        user_information = collection.find_one(
+        client = pymongo.MongoClient(data[CRED_URI_FIELD])
+
+        db = client.get_database()
+
+        user_information = db[CRED_COLLECTION].find_one(
             {
                 CRED_URI_FIELD: data[CRED_URI_FIELD],
                 CRED_TOKEN_FIELD: data[CRED_TOKEN_FIELD],
