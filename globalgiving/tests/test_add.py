@@ -18,7 +18,7 @@ def test_add_one():
     result = dev_add(mock_collection, name, url)
 
     # test for expected result
-    assert result == url
+    assert result == "Registration sent to db with id: " + url
 
     # submit again
     result = dev_add(mock_collection, name, url)
