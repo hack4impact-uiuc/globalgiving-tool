@@ -10,6 +10,7 @@ from globalgiving.config import (
     CRED_TOKEN_FIELD,
     CRED_ACCESS_FIELD,
     CRED_SECRET_FIELD,
+    CRED_COLLECTION,
 )
 import uuid
 import json
@@ -30,7 +31,7 @@ def cli(ctx, mongo_uri, access_key, secret_key):
     }
 
     try:
-        credentials = db_get_collection("credentials")
+        credentials = db_get_collection(CRED_COLLECTION)
     except:
         print("Invalid mongodb credentials")
         return

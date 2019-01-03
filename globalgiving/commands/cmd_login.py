@@ -8,6 +8,7 @@ from globalgiving.config import (
     CRED_URI_FIELD,
     CLI_DIR_NAME,
     CRED_TOKEN_FIELD,
+    CRED_COLLECTION,
 )
 import json
 
@@ -17,8 +18,10 @@ import json
 @click.option("--token", prompt=True)
 @pass_context
 def cli(ctx, mongo_uri, token):
-    collection = db_get_collection("credentials")
-    user_information = collection.find_one({"mongo_uri": mongo_uri, "token": token})
+    collection = db_get_collection(CRED_COLLECTION)
+    user_information = collection.find_one(
+        {CRED_URI_FIELD: mongo_uri, CRED_TOKEN_FIELD: token}
+    )
     if user_information == None:
         print("You are not authenticated")
         return
