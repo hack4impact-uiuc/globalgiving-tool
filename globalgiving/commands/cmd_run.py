@@ -122,7 +122,7 @@ def run_all(ctx):
         for scraper in scrapers:
             n = scraper[SCRAPER_COLL_NAME_FIELD]
             names.append(n)
-            routes.append(scraper["_id"]+ "/data")
+            routes.append(scraper["_id"] + "/data")
             h.update(n.encode("utf-8"))
             bucket_name = n + "-" + h.hexdigest()
             filename = str(uuid.uuid4()) + ".txt"
@@ -151,11 +151,14 @@ def run_all(ctx):
     for name, route, log, filename in zip(names, routes, log_files, log_filenames):
         try:
             ctx.log("Getting information for {} . . . ".format(name))
-            contents = requests.get(route)
-            log.write(contents.text)
-            log.write(upload_data(ngo_collection, json.loads(contents.text)))
-            log.write("Upload succeeded!")
-            ctx.log("Uploading {} succeeded!".format(name))
+            contents = requests.get(route).json()
+            if "data" in contents:
+                log.write(contents)
+                log.write(upload_data(ngo_collection, contents))
+                log.write("Upload succeeded!")
+                ctx.log("Uploading {} succeeded!".format(name))
+            else:
+                ctx.log("Skipping this scraper")
         except Exception as e:
             log.write("Upload failed.")
             ctx.log("Uploading {} failed.".format(name))
