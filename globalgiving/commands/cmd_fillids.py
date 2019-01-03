@@ -62,7 +62,6 @@ def cli(ctx):
             delete_one_ngo_from_db(collection, _id=ObjectId(updated_org["_id"]))
         else:
             updated_list.remove(updated_org)
-
     # Push updated documents to database
     ctx.log(upload_data(collection, {"data": updated_list}))
 
