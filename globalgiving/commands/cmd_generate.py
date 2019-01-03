@@ -1,12 +1,8 @@
 import click
 import os
 from cookiecutter.main import cookiecutter
-
+from globalgiving.config import MICROSERVICES_DIR_NAME, COOKIE_DIR_NAME
 from globalgiving.cli import pass_context
-
-MICROSERVICES_DIRECTORY = "/microservices"
-
-COOKIE_CUTTER_DIRECTORY = "/cookiecutter-scraper"
 
 
 @click.command("generate", short_help="Generate a new scraper template")
@@ -22,7 +18,7 @@ def cli(ctx, name):
 
     # Check if scraper already exists in list of subdirectories
     for scraper in subdir_list:
-        name_start_idx = scraper.find("-")
+        name_start_idx = scraper.find("_")
         if name == scraper[name_start_idx + 1 :]:
             ctx.log("Scraper {} already exists!".format(name))
             return

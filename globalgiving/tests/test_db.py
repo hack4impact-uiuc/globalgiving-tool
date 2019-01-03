@@ -6,7 +6,6 @@ from globalgiving.db import send_scraper_to_db, list_scrapers_from_db
 def test_existence():
     # Mock collection and test data
     mock_collection = mongomock.MongoClient().db.collection
-
     name = "test"
     url = "url1"
 

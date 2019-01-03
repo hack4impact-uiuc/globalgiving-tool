@@ -3,6 +3,12 @@ import click
 import pymongo
 from globalgiving.cli import pass_context
 from globalgiving.db import db_get_collection
+from globalgiving.config import (
+    CREDENTIALS_PATH,
+    CRED_URI_FIELD,
+    CLI_DIR_NAME,
+    CRED_TOKEN_FIELD,
+)
 import json
 
 
@@ -12,15 +18,14 @@ import json
 @pass_context
 def cli(ctx, mongo_uri, token):
     collection = db_get_collection("credentials")
-
     user_information = collection.find_one({"mongo_uri": mongo_uri, "token": token})
     if user_information == None:
         print("You are not authenticated")
         return
     del user_information["_id"]
-    if not os.path.exists(os.getenv("HOME") + "/globalgiving/"):
-        os.makedirs(os.getenv("HOME") + "/globalgiving/")
-    with open(os.getenv("HOME") + "/globalgiving/credentials.json", "w") as f:
-        json.dump({"mongo_uri": mongo_uri, "token": token}, f)
+    if not os.path.exists(os.getenv("HOME") + CLI_DIR_NAME):
+        os.makedirs(os.getenv("HOME") + CLI_DIR_NAME)
+    with open(os.getenv("HOME") + CREDENTIALS_PATH, "w") as f:
+        json.dump({CRED_URI_FIELD: mongo_uri, CRED_TOKEN_FIELD: token}, f)
         f.close()
     print("You have succesfully logged in")

@@ -24,9 +24,9 @@ We wanted to create a crawler in which you can search for potential directories 
 #### Scrapers
 Every scraper is it's own serverless microservice. The initial idea was that we wanted every scraper to be indepedent and have a familiar API such that the cli tool could handle adding and running new scrapers or transformations (such as adding registration ids) to the data. 
 
-To do this, every scraper has a route four ```/url``` that tells you what site is being scraped, a ```\test``` endpoint for an example of what the scraped data looks like, and a ```\run``` endpoint that actually scrapes the entire website, populates the database with the nonprofits, and sends the logs to s3. 
+To do this, every scraper has a route ```/url``` that tells you what site is being scraped, a ```/test``` endpoint for an example of what the scraped data looks like, and a ```/run``` endpoint that actually scrapes the entire website, populates the database with the nonprofits, and sends the logs to s3. 
 
-In concept this makes it cleaner, but we wanted to remove all the pains of deploying each flask microservices, so we adopted a tool called how that allow's use to make serverless lambda deployments. It treats every flask endpoint as a lambda function and deploys it. If you are in any of the microservices folders, you simply run ```now && now alias``` to update. This reads the ```now.json``` file that tells it how to build it and what the routes should be. This allows us not to have to worry about the configurations for deployment and allows it to automatically scale.
+In concept this makes it cleaner, but we wanted to remove all the pains of deploying each flask microservices, so we adopted a tool called now that allows us to make serverless lambda deployments. It treats every flask endpoint as a lambda function and deploys it. If you are in any of the microservices folders, you simply run ```now && now alias``` to update. This reads the ```now.json``` file that tells it how to build it and what the routes should be. This allows us not to have to worry about the configurations for deployment and allows it to automatically scale.
 
 There was one last concern, which was for how long some of the scrapers take to run, since these deployments do timeout. To handle this, if the ```\data``` endpoint returns a number of pages, it hits every one of the pages ```\page\<number>```, scraping a portion of the website and adding to to the database. This pagination allows us to get the rest of the data even if one of the pages fails, allows us to have better logging, and splits up the logic effectively.
 
@@ -53,16 +53,16 @@ globalgiving -h
 ## Authentication
 
 * **globalgiving register** 
-Prompts you for your aws keys and mongo uri. It returns you a token with all the relevant information.
+Prompts you for your AWS keys and Mongo URI. It returns you a token with all the relevant information.
 
 * **globalgiving login** 
-Prompts you for your mongo uri and token, and fetches the rest of the information for you.
+Prompts you for your Mongo URI and token, and fetches the rest of the information for you.
 
 * **globalgiving logout** 
-Logs you out and clears your information
+Logs you out and clears your information.
 
 * **globalgiving whoami** 
-Tells you what your token and mongo uri currently are. 
+Tells you what your token and Mongo URI currently are. 
 
 ## Registering and deleting scrapers
 
@@ -78,7 +78,7 @@ Removes that scraper from the list of scrapers in the database
 ## Getting metadata from scrapers 
 
 * **globalgiving list** 
-Lists all the scrapers availible
+Lists all the scrapers available
 
 * **globalgiving urls**
 Lists all of the base urls that the scrapers are gathering information from

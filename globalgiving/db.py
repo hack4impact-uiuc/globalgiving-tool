@@ -2,13 +2,15 @@ import pymongo
 import dotenv
 import os
 from globalgiving.s3_interface import init_s3_credentials
+from globalgiving.config import (
+    CREDENTIALS_PATH,
+    CRED_URI_FIELD,
+    NGO_COLLECTION,
+    SCRAPER_COLL_NAME_FIELD,
+)
 import json
 
 
-CREDENTIALS_PATH = "/globalgiving/credentials.json"
-BUCKET_DELIM = "-"
-NGO_COLLECTION = "ngo_data"
-CRED_URI_FIELD = "mongo_uri"
 ENV_URI_FIELD = "URI"
 
 
@@ -47,12 +49,12 @@ def send_scraper_to_db(collection, name, url, test=False):
         A confirmation that the scraper has been registered, otherwise an
         exception.
     """
-    payload = {"name": name}
+    payload = {SCRAPER_COLL_NAME_FIELD: name}
     payload["_id"] = url
 
     if not test:
         # only run code if not testing to prevent continuous creation of s3 buckets
-        bucket_name = name + BUCKET_DELIM + str(hash(name))
+        bucket_name = name + "-" + str(hash(name))
         payload[name] = bucket_name
         client = init_s3_credentials()
         client.create_bucket(Bucket=bucket_name)

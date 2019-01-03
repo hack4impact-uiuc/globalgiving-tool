@@ -2,14 +2,18 @@ import click
 from globalgiving.cli import pass_context
 from globalgiving.db import db_get_collection
 import pymongo
+from globalgiving.config import (
+    MICROSERVICE_PKG_PATH,
+    CRAWL_RANKED_COLLECTION,
+)
+from urllib.parse import urlparse
 import os
 import sys
 import json
 
-SCRAPER_REG_PATH = "../../../microservices"  # Sibling package path
 
 # Bring microservices directory into import path
-sys.path.append(os.path.realpath(os.path.dirname(__file__) + SCRAPER_REG_PATH))
+sys.path.append(os.path.realpath(os.path.dirname(__file__) + MICROSERVICE_PKG_PATH))
 from scraper_crawler.crawl_functions import rank_all, url_rank
 
 
@@ -17,7 +21,7 @@ from scraper_crawler.crawl_functions import rank_all, url_rank
 @pass_context
 def cli(ctx):
     authenticate()
-    ranked_link = db_get_collection("ranked_links")
+    ranked_link = db_get_collection(CRAWL_RANKED_COLLECTION)
     cursor = ranked_link.find({})
     directories = [_ for _ in cursor]
 

@@ -3,7 +3,7 @@ import os
 
 from click.testing import CliRunner
 from globalgiving.commands.cmd_generate import cli
-from globalgiving.commands.cmd_generate import MICROSERVICES_DIRECTORY
+from globalgiving.config import MICROSERVICES_DIR_NAME
 
 
 PYCACHE = "__pycache__"
@@ -14,7 +14,7 @@ SCRAPER_DELIM = "scraper"
 def get_first_scraper():
     """Helper method to get the first existing scraper in microservices for testing."""
     # Get root directory and set start of existing scraper search to the root microservices directory
-    rootdir = os.pardir + MICROSERVICES_DIRECTORY
+    rootdir = os.pardir + MICROSERVICES_DIR_NAME
     subdir_list = next(os.walk(rootdir))[1]
 
     # Get first non pycache scraper
@@ -29,7 +29,7 @@ def get_first_scraper():
 def get_num_scrapers():
     """Helper method to get the number of scrapers"""
     # Get root directory and set start of existing scraper search to the root microservices directory
-    rootdir = os.pardir + MICROSERVICES_DIRECTORY
+    rootdir = os.pardir + MICROSERVICES_DIR_NAME
     subdir_list = next(os.walk(rootdir))[1]
 
     # Return the number of scrapers

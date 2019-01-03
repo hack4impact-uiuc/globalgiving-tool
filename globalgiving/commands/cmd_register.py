@@ -3,6 +3,14 @@ import click
 import pymongo
 from globalgiving.cli import pass_context
 from globalgiving.db import db_get_collection
+from globalgiving.config import (
+    CREDENTIALS_PATH,
+    CLI_DIR_NAME,
+    CRED_URI_FIELD,
+    CRED_TOKEN_FIELD,
+    CRED_ACCESS_FIELD,
+    CRED_SECRET_FIELD,
+)
 import uuid
 import json
 
@@ -15,10 +23,10 @@ import json
 def cli(ctx, mongo_uri, access_key, secret_key):
 
     user_information = {
-        "mongo_uri": str(mongo_uri),
-        "access_key": str(access_key),
-        "secret_key": str(secret_key),
-        "token": str(uuid.uuid4()),
+        CRED_URI_FIELD: str(mongo_uri),
+        CRED_ACCESS_FIELD: str(access_key),
+        CRED_SECRET_FIELD: str(secret_key),
+        CRED_TOKEN_FIELD: str(uuid.uuid4()),
     }
 
     try:
@@ -27,15 +35,21 @@ def cli(ctx, mongo_uri, access_key, secret_key):
         print("Invalid mongodb credentials")
         return
 
-    if not os.path.exists(os.getenv("HOME") + "/globalgiving/"):
-        os.makedirs(os.getenv("HOME") + "/globalgiving/")
-    with open(os.getenv("HOME") + "/globalgiving/credentials.json", "w") as f:
-        json.dump({"mongo_uri": mongo_uri, "token": user_information["token"]}, f)
+    if not os.path.exists(os.getenv("HOME") + CLI_DIR_NAME):
+        os.makedirs(os.getenv("HOME") + CLI_DIR_NAME)
+    with open(os.getenv("HOME") + CREDENTIALS_PATH, "w") as f:
+        json.dump(
+            {
+                CRED_URI_FIELD: mongo_uri,
+                CRED_TOKEN_FIELD: user_information[CRED_TOKEN_FIELD],
+            },
+            f,
+        )
         f.close()
 
     ctx.log(
         "\nYou have succesfully registered. \nPlease store this token in a safe place "
-        + user_information["token"]
+        + user_information[CRED_TOKEN_FIELD]
     )
 
     # Adding credentials to the database
