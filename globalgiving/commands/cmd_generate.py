@@ -3,7 +3,6 @@ import os
 from cookiecutter.main import cookiecutter
 from globalgiving.config import MICROSERVICES_DIR_NAME, COOKIE_DIR_NAME
 from globalgiving.cli import pass_context
-from globalgiving.db import list_scrapers_from_db
 
 
 @click.command("generate", short_help="Generate a new scraper template")

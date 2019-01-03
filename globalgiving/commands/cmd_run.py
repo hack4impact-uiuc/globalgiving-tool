@@ -24,10 +24,12 @@ def cli(ctx, n, a):
         run_all(ctx)
         return
 
+    # Create new bucket name for log file by using hash
     h = hashlib.md5()
     h.update(n.encode("utf-8"))
     bucket_name = n + "-" + h.hexdigest()
 
+    # Generate unique file name for new log
     filename = str(uuid.uuid4()) + ".txt"
     f = open(filename, "w+")
 
@@ -51,6 +53,7 @@ def cli(ctx, n, a):
         os.remove(filename)
         return
     try:
+        # Run scraper by getting the correct route and requesting it
         contents = requests.get(route).json()
         if "data" in contents:
             print("The data is uploaded")

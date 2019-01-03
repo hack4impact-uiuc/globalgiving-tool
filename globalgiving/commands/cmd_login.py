@@ -2,11 +2,13 @@ import os
 import click
 import pymongo
 from globalgiving.cli import pass_context
+from globalgiving.db import db_get_collection
 from globalgiving.config import (
     CREDENTIALS_PATH,
     CRED_URI_FIELD,
     CLI_DIR_NAME,
     CRED_TOKEN_FIELD,
+    CRED_COLLECTION,
 )
 import json
 
@@ -16,11 +18,8 @@ import json
 @click.option("--token", prompt=True)
 @pass_context
 def cli(ctx, mongo_uri, token):
-    client = pymongo.MongoClient(mongo_uri)
-
-    db = client.get_database()
-
-    user_information = db["credentials"].find_one(
+    collection = db_get_collection(CRED_COLLECTION)
+    user_information = collection.find_one(
         {CRED_URI_FIELD: mongo_uri, CRED_TOKEN_FIELD: token}
     )
     if user_information == None:

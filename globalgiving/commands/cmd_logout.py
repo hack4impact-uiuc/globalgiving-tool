@@ -1,6 +1,5 @@
 import os
 import click
-import jwt
 from globalgiving.cli import pass_context
 from globalgiving.config import CREDENTIALS_PATH
 

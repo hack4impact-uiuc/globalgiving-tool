@@ -24,7 +24,7 @@ def test_update():
     name = "test"
     url = "url1"
 
-    status = send_scraper_to_db(mock_collection, name, url, test=True)[0]
+    status = send_scraper_to_db(mock_collection, name, url, test=True)
     assert status == "Registration sent to db with id: url1"
     assert mock_collection.count_documents({}) == 1
 

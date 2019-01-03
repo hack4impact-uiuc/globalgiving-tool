@@ -21,6 +21,7 @@ CRED_TOKEN_FIELD = "token"
 # Collections, DB
 NGO_COLLECTION = "ngo_data"
 CRAWL_RANKED_COLLECTION = "ranked_links"
+CRED_COLLECTION = "credentials"
 SCRAPER_COLL_NAME_FIELD = "name"
 
 

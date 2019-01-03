@@ -2,7 +2,7 @@ import click
 import os, sys
 from bson.objectid import ObjectId
 from globalgiving.config import MICROSERVICE_PKG_PATH, NGO_COLLECTION
-from globalgiving.cli import pass_context
+from globalgiving.cli import pass_context, authenticate
 from globalgiving.db import (
     db_get_collection,
     list_ngos_from_db,
@@ -27,6 +27,7 @@ def cli(ctx):
     """
     GG fill-ids enriches the database by inserting the site of the registration office for that specific country
     """
+    authenticate()
     # Specify collection to perform operations to
     collection = db_get_collection(NGO_COLLECTION)
     ctx.log("Finding and inserting registration office sites into the database...")

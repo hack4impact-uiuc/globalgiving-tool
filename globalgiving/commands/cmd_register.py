@@ -1,8 +1,8 @@
 import os
 import click
-import jwt
 import pymongo
 from globalgiving.cli import pass_context
+from globalgiving.db import db_get_collection
 from globalgiving.config import (
     CREDENTIALS_PATH,
     CLI_DIR_NAME,
@@ -10,6 +10,7 @@ from globalgiving.config import (
     CRED_TOKEN_FIELD,
     CRED_ACCESS_FIELD,
     CRED_SECRET_FIELD,
+    CRED_COLLECTION,
 )
 import uuid
 import json
@@ -30,9 +31,7 @@ def cli(ctx, mongo_uri, access_key, secret_key):
     }
 
     try:
-        client = pymongo.MongoClient(mongo_uri)
-        db = client.get_database()
-        credentials = db["credentials"]
+        credentials = db_get_collection(CRED_COLLECTION)
     except:
         print("Invalid mongodb credentials")
         return

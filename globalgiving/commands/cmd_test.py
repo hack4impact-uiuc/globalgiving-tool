@@ -14,6 +14,7 @@ def cli(ctx, n):
     search = "Finding scraper {} from list of registered scrapers..."
     ctx.log(search.format(n))
     try:
+        # Test scraper by sending request to test endpoint
         scrapers = list_scrapers_from_db(collection)
         scraper = list(
             filter(lambda scraper: scraper[SCRAPER_COLL_NAME_FIELD] == n, scrapers)
