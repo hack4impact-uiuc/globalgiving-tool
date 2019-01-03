@@ -3,12 +3,8 @@ import click, requests
 import hashlib
 import os
 import uuid
-from globalgiving.db import (
-    NGO_COLLECTION,
-    db_get_collection,
-    list_scrapers_from_db,
-    upload_data,
-)
+from globalgiving.config import NGO_COLLECTION, SCRAPER_COLL_NAME_FIELD
+from globalgiving.db import db_get_collection, list_scrapers_from_db, upload_data
 from globalgiving.cli import pass_context, authenticate
 from globalgiving.s3_interface import init_s3_credentials
 import json
@@ -38,8 +34,10 @@ def cli(ctx, n, a):
     search = "Finding scraper {} from list of registered scrapers..."
     f.write(search.format(n) + "\n")
     try:
-        scrapers = list_scrapers_from_db()
-        route_data = list(filter(lambda scraper: scraper["name"] == str(n), scrapers))
+        scrapers = list_scrapers_from_db(collection)
+        route_data = list(
+            filter(lambda scraper: scraper[SCRAPER_COLL_NAME_FIELD] == str(n), scrapers)
+        )
         if len(route_data) == 0:
             print("Scraper not found")
             return
@@ -113,7 +111,7 @@ def run_all(ctx):
     try:
         scrapers = list_scrapers_from_db(collection)
         for scraper in scrapers:
-            n = scraper["name"]
+            n = scraper[SCRAPER_COLL_NAME_FIELD]
             names.append(n)
             routes.append(scraper["routes"]["Data"])
             h.update(n.encode("utf-8"))

@@ -1,4 +1,5 @@
 import os, click, jwt, pymongo, dotenv
+from globalgiving.config import CLI_DIR_NAME
 from globalgiving.cli import pass_context
 
 
@@ -21,7 +22,7 @@ def cli(ctx, user, password):
         return
 
     # write jw token to a file
-    with open(os.getenv("HOME") + "/globalgiving/" + ".jwt", "wb") as f:
+    with open(os.getenv("HOME") + CLI_DIR_NAME + ".jwt", "wb") as f:
         f.write(jwtoken)
         f.close()
 
