@@ -1,4 +1,3 @@
-import click
 import mongomock
 
 from globalgiving.commands.cmd_crawled import dev_crawled

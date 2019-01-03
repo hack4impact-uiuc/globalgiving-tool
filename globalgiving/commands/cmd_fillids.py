@@ -1,5 +1,6 @@
 import click
 import os, sys
+from bson.objectid import ObjectId
 
 from globalgiving.cli import pass_context
 from globalgiving.db import NGO_COLLECTION, db_get_collection, list_ngos_from_db, upload_data, delete_one_ngo_from_db
@@ -57,3 +58,33 @@ def cli(ctx):
 
     # Push updated documents to database
     ctx.log(upload_data(collection, updated_list))
+
+
+def dev_fillids(collection):
+    """
+    Helper method that gets called when testing the command using a mocked collection.
+
+    Input:
+        collection: collection to perform operations with/on
+    """
+    ngo_list = list_ngos_from_db(collection, registration=None, country={"$ne": None})
+    updated_list = []
+    prev_countries = dict()
+
+    for org in ngo_list:
+        if org[COUNTRY_FIELD].title() in prev_countries.keys():
+            org[REGISTRATION_FIELD] = [
+                prev_countries[org[COUNTRY_FIELD]]
+            ] 
+            updated_list.append(org)
+        else:
+            registration_url = get_registration_site(org[COUNTRY_FIELD])
+            prev_countries[org[COUNTRY_FIELD].title()] = registration_url
+            org[REGISTRATION_FIELD] = [registration_url]
+            updated_list.append(org)
+
+    for updated_org in updated_list:
+        if updated_org[REGISTRATION_FIELD][0] != "":
+            delete_one_ngo_from_db(collection, _id=ObjectId(updated_org["_id"]))
+            
+    upload_data(collection, updated_list)
