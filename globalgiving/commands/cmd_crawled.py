@@ -47,5 +47,5 @@ def dev_crawled(collection):
     ranked_ngo_directories = []
     for directory in directories:
         ranked_ngo_directories += [(directory["url"], directory["composite_score"])]
-    
+
     return ranked_ngo_directories

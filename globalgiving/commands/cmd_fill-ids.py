@@ -2,7 +2,13 @@ import click
 import os, sys
 
 from globalgiving.cli import pass_context
-from globalgiving.db import NGO_COLLECTION, db_get_collection, list_ngos_from_db, upload_data, delete_one_ngo_from_db
+from globalgiving.db import (
+    NGO_COLLECTION,
+    db_get_collection,
+    list_ngos_from_db,
+    upload_data,
+    delete_one_ngo_from_db,
+)
 
 SCRAPER_REG_PATH = "../../../microservices"  # Sibling package path
 COUNTRY_FIELD = "country"
