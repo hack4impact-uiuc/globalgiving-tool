@@ -56,7 +56,7 @@ def send_scraper_to_db(collection, name, url, test=False):
         payload[name] = bucket_name
         client = init_s3_credentials()
         client.create_bucket(Bucket=bucket_name)
-    
+
     updated = False
     try:
         post_id = collection.insert_one(payload).inserted_id
