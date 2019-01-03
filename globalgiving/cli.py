@@ -1,8 +1,6 @@
 import os
 import sys
 import click
-import jwt
-import dotenv
 import pymongo
 import json
 from globalgiving.config import (
