@@ -29,15 +29,6 @@ class Scraper(Resource):
         print(org)
         return {"data": org}
 
-
-# @api.route("/page/<number>")
-# class Scraper(Resource):
-#     def get(self, number):
-#         links = srape_page_urls(int(number))
-#         orgs = scrape_page(links["url"][0])
-#         return {"data": orgs}
-
-
 @api.route("/test")
 class ScraperVietnam(Resource):
     def get(self):
