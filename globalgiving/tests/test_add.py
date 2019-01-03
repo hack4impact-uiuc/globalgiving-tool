@@ -24,4 +24,4 @@ def test_add_one():
     result = dev_add(mock_collection, name, url)
 
     # make sure it updates
-    assert result == "Updated scraper {}!\n".format(name) + url
+    assert result == "Registration sent to db with id: " + url

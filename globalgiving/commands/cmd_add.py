@@ -26,4 +26,4 @@ def dev_add(collection, name, url):
     does not use click and allows a mocked DB to be passed in.
     """
     result = send_scraper_to_db(collection, name, url, test=True)
-    return str(result)
+    return result
