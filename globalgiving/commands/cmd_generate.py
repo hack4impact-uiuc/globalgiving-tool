@@ -4,6 +4,7 @@ from cookiecutter.main import cookiecutter
 from globalgiving.config import MICROSERVICES_DIR_NAME, COOKIE_DIR_NAME
 from globalgiving.cli import pass_context
 
+
 @click.command("generate", short_help="Generate a new scraper template")
 @click.argument("name", required=True, type=str)
 @pass_context
