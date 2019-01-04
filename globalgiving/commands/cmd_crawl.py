@@ -27,13 +27,12 @@ def cli(ctx, country, number_urls):
     else:
         number_urls = int(number_urls)
 
-    # Perform google search and start ranking results
+    # Perform google search and start ranking results, get a set number of urls
     for url in search("ngo directory" + country, lang="es", num=number_urls, stop=1):
         parsed_uri = urlparse(url)
         home_url = "{uri.scheme}://{uri.netloc}/".format(uri=parsed_uri)
         print("Crawling --- ", home_url)
         if str(home_url) not in url_rank:
-            #     for url in url_rank:
             # Check if url has already been ranked before
             cursor = ranked_link.find({"url": home_url})
             document_list = [url for url in cursor]
@@ -62,7 +61,6 @@ def dev_crawl(collection, country, number_urls=1):
         parsed_uri = urlparse(url)
         home_url = "{uri.scheme}://{uri.netloc}/".format(uri=parsed_uri)
         if str(home_url) not in url_rank:
-            #     for url in url_rank:
             cursor = collection.find({"url": home_url})
             document_list = [url for url in cursor]
             if len(document_list) == 0:
