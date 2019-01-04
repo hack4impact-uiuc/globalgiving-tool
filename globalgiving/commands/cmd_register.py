@@ -31,7 +31,10 @@ def cli(ctx, mongo_uri, access_key, secret_key):
     }
 
     try:
-        credentials = db_get_collection(CRED_COLLECTION)
+        # Use passed in mongo_uri - if it errors, it's not valid
+        client = pymongo.MongoClient(mongo_uri)
+        db = client.get_database()
+        credentials = db[CRED_COLLECTION]
     except:
         print("Invalid mongodb credentials")
         return
