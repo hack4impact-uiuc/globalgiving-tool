@@ -1,4 +1,4 @@
-Flask==1.0.2
+Flask==1.0
 flask-restplus==0.12.1
 Flask-SQLAlchemy==2.3.2
 itsdangerous==1.1.0
